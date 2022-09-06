@@ -1,0 +1,91 @@
+.statistics {
+    width: 345px;
+}
+
+.statisticsTitle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.statCards {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+
+.warrantyCard {
+    border-radius: 4px;
+    border: 1px solid white;
+    width: 150px;
+    margin: 5px 0;
+    background-color: lightgray;
+}
+
+.warrantyText {
+    padding: 4px;
+    font-size: 15px;
+    color: teal;
+}
+
+.maintenanceCard {
+    border-radius: 4px;
+    border: 1px solid white;
+    width: 150px;
+    margin: 5px 0;
+    background-color: lightgray;
+}
+
+.statCard {
+    border-radius: 4px;
+    border: 1px solid white;
+    width: 150px;
+    margin: 5px 0;
+    background-color: lightgray;
+}
+
+.equipmentNotesContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.equipmentNotesCard {
+    border-radius: 4px;
+    border: 1px solid white;
+    width: 315px;
+    margin: 5px 0;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.labelContainer {
+    display: flex;
+    align-items: center;
+}
+
+.editIcon {
+    margin-left: auto;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.statLabel {
+    padding: 4px 4px 0 4px;
+    font-size: 13px;
+    color: black;
+}
+
+.statText {
+    padding: 0 4px 4px 4px;
+    font-size: 15px;
+    color: teal;
+}
+
+.notesText {
+    padding: 4px;
+    font-size: 15px;
+    color: teal;
+}
