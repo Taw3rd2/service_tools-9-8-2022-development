@@ -1,6 +1,11 @@
 import "./modalOne.css";
 
-const ModalOne = ({ modalSize, modalTitle, modalContent, closeModalOne }) => {
+const ModalOne = ({
+  modalOneSize,
+  modalOneTitle,
+  modalOneContent,
+  closeModalOne,
+}) => {
   const onBackgroundClick = (e) => {
     e.preventDefault();
     if (e.target === document.getElementById("modalContainer")) {
@@ -14,9 +19,9 @@ const ModalOne = ({ modalSize, modalTitle, modalContent, closeModalOne }) => {
       id="modalContainer"
       onClick={(e) => onBackgroundClick(e)}
     >
-      <div className="modal" style={{ width: modalSize }}>
-        <div className="modalTitle">{modalTitle}</div>
-        <div className="modalContent">{modalContent}</div>
+      <div className="modal" style={{ width: modalOneSize }}>
+        <div className="modalTitle">{modalOneTitle}</div>
+        <div className="modalContent">{modalOneContent}</div>
       </div>
     </div>
   );

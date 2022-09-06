@@ -33,7 +33,7 @@ const MaintenanceListContent = ({
   customer,
   openMaintenanceDetails,
   openCreateMaintenance,
-  closeBasicModal,
+  closeModalOne,
 }) => {
   const maintenance = useSyncedNestedCollection(
     "customers",
@@ -75,7 +75,7 @@ const MaintenanceListContent = ({
   };
 
   return (
-    <div style={{ padding: "8px" }}>
+    <div>
       <Grid2 container spacing={2}>
         <Grid2 xs={12}>
           <TableContainer
@@ -170,7 +170,7 @@ const MaintenanceListContent = ({
           color="primary"
           startIcon={<Close />}
           sx={defaultTableButton}
-          onClick={() => closeBasicModal()}
+          onClick={() => closeModalOne()}
         >
           Close
         </Button>

@@ -521,15 +521,14 @@ const HomePage = () => {
 
   //Maintenance List (1)
   const openMaintenanceList = () => {
-    openBasicModal(
+    openModalOne(
       "70%",
-      "maintenance-list",
       "Maintenance List",
       <MaintenanceList
         customer={customer}
         openMaintenanceDetails={openMaintenanceDetails}
         openCreateMaintenance={openCreateMaintenance}
-        closeBasicModal={closeBasicModal}
+        closeModalOne={closeModalOne}
       />
     );
   };
