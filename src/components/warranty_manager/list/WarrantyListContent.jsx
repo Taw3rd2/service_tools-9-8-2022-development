@@ -32,7 +32,7 @@ const WarrantyListContent = ({
   customer,
   openWarrantyDetails,
   openCreateWarranty,
-  closeBasicModal,
+  closeModalOne,
 }) => {
   const equipment = useSyncedNestedCollection(
     "customers",
@@ -90,7 +90,7 @@ const WarrantyListContent = ({
   };
 
   return (
-    <div style={{ padding: "8px" }}>
+    <div>
       <Grid2 container spacing={2}>
         <Grid2 xs={12}>
           <TableContainer
@@ -175,7 +175,7 @@ const WarrantyListContent = ({
           color="primary"
           startIcon={<Close />}
           sx={defaultTableButton}
-          onClick={() => closeBasicModal()}
+          onClick={() => closeModalOne()}
         >
           Close
         </Button>

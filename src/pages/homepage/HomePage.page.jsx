@@ -463,15 +463,14 @@ const HomePage = () => {
 
   // (1)
   const openWarrantyList = () => {
-    openBasicModal(
+    openModalOne(
       "55%",
-      "warranty-list",
       "Warranty",
       <WarrantyList
         customer={customer}
         openWarrantyDetails={openWarrantyDetails}
         openCreateWarranty={openCreateWarranty}
-        closeBasicModal={closeBasicModal}
+        closeModalOne={closeModalOne}
       />
     );
   };
