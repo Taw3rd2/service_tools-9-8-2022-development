@@ -31,7 +31,7 @@ import { Close } from "@mui/icons-material";
 const DispatchHistoryList = ({
   customer,
   openDispatchDetails,
-  closeDispatchHistory,
+  closeModalOne,
 }) => {
   const db = getFirestore();
 
@@ -54,7 +54,7 @@ const DispatchHistoryList = ({
   }, [db, customer.id]);
 
   return (
-    <div style={{ padding: "8px" }}>
+    <div>
       <Grid2>
         <TableContainer
           component={Paper}
@@ -129,7 +129,7 @@ const DispatchHistoryList = ({
           color="primary"
           variant="outlined"
           startIcon={<Close />}
-          onClick={() => closeDispatchHistory()}
+          onClick={() => closeModalOne()}
         >
           Close
         </Button>

@@ -409,14 +409,13 @@ const HomePage = () => {
   };
 
   const openDispatchHistory = () => {
-    openBasicModal(
+    openModalOne(
       "60%",
-      "disptch-history-list",
       "Dispatch History",
       <DispatchHistoryList
         customer={customer}
         openDispatchDetails={openDispatchDetails}
-        closeDispatchHistory={closeBasicModal}
+        closeModalOne={closeModalOne}
       />
     );
   };
