@@ -32,7 +32,7 @@ const CustomerEquipmentListContent = ({
   customer,
   openCustomerEquipmentDetails,
   openCreateCustomerEquipment,
-  closeBasicModal,
+  closeModalOne,
 }) => {
   const equipment = useSyncedNestedCollection(
     "customers",
@@ -58,7 +58,7 @@ const CustomerEquipmentListContent = ({
   };
 
   return (
-    <Grid2 container spacing={2} style={{ padding: "8px" }}>
+    <Grid2 container spacing={2}>
       <Grid2 xs={12}>
         <TableContainer
           component={Paper}
@@ -142,7 +142,7 @@ const CustomerEquipmentListContent = ({
             Add New Equipment
           </Button>
           <Button
-            onClick={() => closeBasicModal()}
+            onClick={() => closeModalOne()}
             variant="outlined"
             color="primary"
             startIcon={<Close />}

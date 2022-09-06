@@ -358,15 +358,14 @@ const HomePage = () => {
   };
 
   const openCustomerEquipmentList = () => {
-    openBasicModal(
+    openModalOne(
       "70%",
-      "customer-equipment-list",
       "Customer Equipment",
       <CustomerEquipmentList
         customer={customer}
         openCustomerEquipmentDetails={openCustomerEquipmentDetails}
         openCreateCustomerEquipment={openCreateCustomerEquipment}
-        closeBasicModal={closeBasicModal}
+        closeModalOne={closeModalOne}
       />
     );
   };
