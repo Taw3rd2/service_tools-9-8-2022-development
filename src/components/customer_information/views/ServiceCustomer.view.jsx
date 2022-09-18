@@ -14,21 +14,10 @@ import { Edit } from "@mui/icons-material";
 
 const ServiceCustomer = ({
   customer,
-  openEditCustomerModal,
-  openEditBillingModal,
+  openEditCustomerDetails,
+  openEditCustomerBilling,
   openCustomerEquipmentList,
-  getCurrentCustomer,
 }) => {
-  const handleOpeningEditCustomerModal = () => {
-    openEditCustomerModal();
-    getCurrentCustomer(customer);
-  };
-
-  const handleOpeningEditBillingModal = () => {
-    openEditBillingModal();
-    getCurrentCustomer(customer);
-  };
-
   if (customer.lastname === "") {
     return <Spinner />;
   } else {
@@ -175,7 +164,7 @@ const ServiceCustomer = ({
                   variant="outlined"
                   color="primary"
                   sx={{ background: lightTheme.palette.primary.contrastText }}
-                  onClick={() => handleOpeningEditCustomerModal()}
+                  onClick={() => openEditCustomerDetails()}
                   startIcon={<Edit />}
                   fullWidth
                 >
@@ -205,7 +194,7 @@ const ServiceCustomer = ({
                   variant="outlined"
                   color="primary"
                   sx={{ background: lightTheme.palette.primary.contrastText }}
-                  onClick={() => handleOpeningEditBillingModal()}
+                  onClick={() => openEditCustomerBilling()}
                   startIcon={<Edit />}
                   fullWidth
                 >

@@ -22,7 +22,7 @@ import EquipmentAddonCard from "../shared/EquipmentAddonCard";
 import { doc, getFirestore } from "firebase/firestore";
 import { createNamedDocument } from "../../../firebase/firestore.utils";
 
-const CreateCustomerEquipment = ({ customer, closeBasicSecondModal }) => {
+const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
   const [equipmentValues, setEquipmentValues] = useState({
     equipmentName: "",
     equipmentInstallDate: null,
@@ -67,7 +67,7 @@ const CreateCustomerEquipment = ({ customer, closeBasicSecondModal }) => {
     );
     createNamedDocument(equipmentDocumentRef, newEquipment)
       .then(() => {
-        closeBasicSecondModal();
+        closeModalTwo();
       })
       .catch((error) => console.log("Firestore Error: ", error));
   };
@@ -279,7 +279,7 @@ const CreateCustomerEquipment = ({ customer, closeBasicSecondModal }) => {
             variant="outlined"
             color="primary"
             startIcon={<Close />}
-            onClick={() => closeBasicSecondModal()}
+            onClick={() => closeModalTwo()}
             tabIndex={11}
           >
             Cancel

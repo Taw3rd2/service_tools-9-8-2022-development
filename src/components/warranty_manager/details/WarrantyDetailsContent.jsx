@@ -15,7 +15,7 @@ const WarrantyDetailsContent = ({
   customer,
   selectedWarranty,
   openDeleteWarranty,
-  closeBasicSecondModal,
+  closeModalTwo,
 }) => {
   const [jobNumber, setJobNumber] = useState(
     selectedWarranty ? selectedWarranty.jobNumber : ""
@@ -55,15 +55,11 @@ const WarrantyDetailsContent = ({
       },
     };
 
-    updateWarranty(customer, warrantyValues, closeBasicSecondModal);
+    updateWarranty(customer, warrantyValues, closeModalTwo);
   };
 
   return (
-    <form
-      onSubmit={onWarrantyUpdate}
-      autoComplete="new password"
-      style={{ padding: "8px" }}
-    >
+    <form onSubmit={onWarrantyUpdate} autoComplete="new password">
       <Grid2 container spacing={2} sx={{ marginTop: "8px" }}>
         <Grid2 xs={6}>
           <TextField
@@ -152,7 +148,7 @@ const WarrantyDetailsContent = ({
           sx={defaultTableButton}
           color="primary"
           variant="outlined"
-          onClick={() => closeBasicSecondModal()}
+          onClick={() => closeModalTwo()}
           startIcon={<Close />}
         >
           Close

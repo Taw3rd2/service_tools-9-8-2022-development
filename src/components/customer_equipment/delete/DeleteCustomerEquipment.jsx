@@ -15,7 +15,7 @@ const DeleteCustomerEquipment = ({
 }) => {
   console.log("selectedEquipment: ", selectedEquipment);
   return (
-    <div style={{ padding: "8px" }}>
+    <div>
       <Grid2 container spacing={2}>
         <Grid2 xs={12}>
           <Typography variant="body1" gutterBottom>

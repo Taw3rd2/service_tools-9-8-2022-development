@@ -16,7 +16,7 @@ const EquipmentGallery = ({ selectedEquipment, openImageViewer }) => {
                 alt="equipment"
                 className="img"
                 key={index}
-                onClick={() => openImageViewer(pic.imageUrl)}
+                onClick={() => openImageViewer(pic, selectedEquipment)}
               />
             </div>
           ))

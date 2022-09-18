@@ -2,7 +2,21 @@ import React, { useState } from "react";
 import { useSyncedCollection } from "../../../firebase/firestore.utils";
 import { setDateToZeroHours } from "../../../utilities/dateUtils";
 
-const CreateDispatch = ({ customer, closeCreateDispatch }) => {
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import { ArrowUpward, Close } from "@mui/icons-material";
+import { submitDispatchToFirestore } from "../dispatchFunctions";
+
+const CreateDispatch = ({ customer, closeModalOne }) => {
   const [dispatchData, setDispatchData] = useState({
     altPhoneName: customer.altPhoneName ? customer.altPhoneName : "",
     altphone: customer.altphone ? customer.altphone : "",
@@ -32,13 +46,18 @@ const CreateDispatch = ({ customer, closeCreateDispatch }) => {
     setDispatchData({ ...dispatchData, [prop]: event.target.value });
   };
 
-  const handleDispatchDateChange = (prop, value) => {
+  const handleDispatchDateChange = (prop) => (value) => {
     setDispatchData({ ...dispatchData, [prop]: value });
   };
 
   const handleIssueChange = (event) => {
-    const { value } = event.target;
-    // finish this
+    const option = workList.filter((i) => event.target.value.includes(i.item));
+
+    setDispatchData({
+      ...dispatchData,
+      issue: event.target.value,
+      shorthand: option[0].shorthand,
+    });
   };
 
   const dispatchers = useSyncedCollection("dispatchers");
@@ -48,6 +67,7 @@ const CreateDispatch = ({ customer, closeCreateDispatch }) => {
 
   const submitDispatch = (event) => {
     event.preventDefault();
+    submitDispatchToFirestore(customer, dispatchData, closeModalOne);
   };
 
   //   const localInvoiceId = invoiceId !== undefined ? invoiceId : "";
@@ -57,7 +77,308 @@ const CreateDispatch = ({ customer, closeCreateDispatch }) => {
   //       : ""
   //   );
 
-  return <div>CreateDispatch</div>;
+  return (
+    <form onSubmit={submitDispatch} autoComplete="new-password">
+      <Grid2 container spacing={2} style={{ marginTop: "8px" }}>
+        <Grid2 xs={4}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Scheduled Date"
+              fullWidth
+              value={dispatchData.start}
+              onChange={handleDispatchDateChange("start")}
+              color="primary"
+              inputProps={{ tabIndex: "1" }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Grid2>
+        <Grid2 xs={4}>
+          <TextField
+            label="Lead Source"
+            value={dispatchData.leadSource}
+            fullWidth
+            required
+            onChange={handleDispatchDataChange("leadSource")}
+            inputProps={{ tabIndex: "2" }}
+          />
+        </Grid2>
+        <Grid2 xs={4}>
+          {dispatchers.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="select-operator">Dispatcher</InputLabel>
+              <Select
+                labelId="select-operator"
+                id="operator"
+                value={dispatchData.takenBy}
+                label="Dispatcher"
+                onChange={handleDispatchDataChange("takenBy")}
+                inputProps={{ tabIndex: "3" }}
+              >
+                {dispatchers
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((dispatcher, index) => (
+                    <MenuItem key={index} value={dispatcher.name}>
+                      {dispatcher.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="First Name"
+            fullWidth
+            value={dispatchData.firstname}
+            onChange={handleDispatchDataChange("firstname")}
+            inputProps={{ tabIndex: "4" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Last Name"
+            fullWidth
+            required
+            value={dispatchData.lastname}
+            onChange={handleDispatchDataChange("lastname")}
+            inputProps={{ tabIndex: "5" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Job Address"
+            fullWidth
+            required
+            value={dispatchData.street}
+            onChange={handleDispatchDataChange("street")}
+            inputProps={{ tabIndex: "6" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="City, State, Zip Code"
+            fullWidth
+            value={dispatchData.city}
+            onChange={handleDispatchDataChange("city")}
+            inputProps={{ tabIndex: "7" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Primary Contact"
+            fullWidth
+            value={dispatchData.phoneName}
+            onChange={handleDispatchDataChange("phoneName")}
+            inputProps={{ tabIndex: "8" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Alternate Contact"
+            fullWidth
+            value={dispatchData.altPhoneName}
+            onChange={handleDispatchDataChange("altPhoneName")}
+            inputProps={{ tabIndex: "10" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Primary Phone Number"
+            fullWidth
+            value={dispatchData.phone}
+            onChange={handleDispatchDataChange("phone")}
+            inputProps={{ tabIndex: "9" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Alternate Phone Number"
+            fullWidth
+            value={dispatchData.altphone}
+            onChange={handleDispatchDataChange("altphone")}
+            inputProps={{ tabIndex: "11" }}
+          />
+        </Grid2>
+        <Grid2 xs={6}>
+          {workList.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="select-work-ordered">Work Ordered</InputLabel>
+              <Select
+                labelId="select-work-ordered"
+                id="work-ordered"
+                value={dispatchData.issue}
+                label="Work ordered"
+                onChange={handleIssueChange}
+                inputProps={{ tabIndex: "12" }}
+              >
+                {workList
+                  .sort((a, b) => a.item.localeCompare(b.item))
+                  .map((issue) => (
+                    <MenuItem key={issue.id} value={issue.item}>
+                      {issue.item}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+        </Grid2>
+        <Grid2 xs={6}>
+          <TextField
+            label="Slotted Time"
+            fullWidth
+            value={dispatchData.timeAlotted}
+            onChange={handleDispatchDataChange("timeAlotted")}
+            inputProps={{ tabIndex: "13" }}
+          />
+        </Grid2>
+        <Grid2 xs={4}>
+          {technicians.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="select-tech-lead">Tech Lead</InputLabel>
+              <Select
+                labelId="select-tech-lead"
+                id="tech-lead"
+                value={dispatchData.techLead}
+                label="Tech Lead"
+                onChange={handleDispatchDataChange("techLead")}
+                inputProps={{ tabIndex: "14" }}
+              >
+                {technicians
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((technician) => (
+                    <MenuItem key={technician.id} value={technician.name}>
+                      {technician.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+        </Grid2>
+        <Grid2 xs={4}>
+          {technicians.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="select-tech-helper">Tech Helper</InputLabel>
+              <Select
+                labelId="select-tech-helper"
+                id="tech-helper"
+                value={dispatchData.techHelper}
+                label="Tech helper"
+                onChange={handleDispatchDataChange("techHelper")}
+                inputProps={{ tabIndex: "15" }}
+              >
+                <MenuItem value={"NONE"}>None</MenuItem>
+                {technicians
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((technician) => (
+                    <MenuItem key={technician.id} value={technician.name}>
+                      {technician.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+        </Grid2>
+        <Grid2 xs={4}>
+          {payments.length > 0 && (
+            <FormControl fullWidth>
+              <InputLabel id="select-payment">Payment</InputLabel>
+              <Select
+                labelId="select-payment"
+                id="payment"
+                value={dispatchData.payment}
+                label="Payment"
+                onChange={handleDispatchDataChange("payment")}
+                inputProps={{ tabIndex: "16" }}
+              >
+                {payments
+                  .sort((a, b) => a.item.localeCompare(b.item))
+                  .map((payment) => (
+                    <MenuItem key={payment.id} value={payment.item}>
+                      {payment.item}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+          )}
+        </Grid2>
+        <Grid2 xs={12}>
+          <TextField
+            label="Notes"
+            multiline
+            fullWidth
+            rows={5}
+            variant="outlined"
+            value={dispatchData.notes}
+            onChange={handleDispatchDataChange("notes")}
+            inputProps={{ tabIndex: "17" }}
+          />
+        </Grid2>
+        <Grid2 xs={4}>
+          <FormControl fullWidth>
+            <InputLabel id="time-of-day-select">Time Of Day</InputLabel>
+            <Select
+              labelId="time-of-day-select"
+              id="time-of-day"
+              value={dispatchData.timeOfDay}
+              label="Time Of Day"
+              onChange={handleDispatchDataChange("timeOfDay")}
+              inputProps={{ tabIndex: "18" }}
+            >
+              <MenuItem value="AM">AM</MenuItem>
+              <MenuItem value="Anytime">Anytime</MenuItem>
+              <MenuItem value="First Call">First Call</MenuItem>
+              <MenuItem value="Last Call">Last Call</MenuItem>
+              <MenuItem value="overtime">Overtime</MenuItem>
+              <MenuItem value="PM">PM</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid2>
+        <Grid2 xs={4}>
+          <TextField
+            label="Job Number"
+            fullWidth
+            required
+            value={dispatchData.jobNumber}
+            onChange={handleDispatchDataChange("jobNumber")}
+            inputProps={{ tabIndex: "19" }}
+          />
+        </Grid2>
+      </Grid2>
+      <Grid2
+        container
+        alignItems="flex-start"
+        justifyContent="flex-end"
+        direction="row"
+        style={{ marginTop: "16px" }}
+      >
+        <Button
+          variant="outlined"
+          tabIndex={20}
+          color="primary"
+          type="submit"
+          sx={{
+            marginLeft: "8px",
+          }}
+          startIcon={<ArrowUpward />}
+        >
+          Submit
+        </Button>
+        <Button
+          variant="outlined"
+          tabIndex={21}
+          color="primary"
+          onClick={() => closeModalOne()}
+          sx={{
+            marginLeft: "8px",
+          }}
+          startIcon={<Close />}
+        >
+          Cancel
+        </Button>
+      </Grid2>
+    </form>
+  );
 };
 
 export default CreateDispatch;

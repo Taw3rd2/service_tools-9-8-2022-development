@@ -12,7 +12,7 @@ import { AddCircleOutline, Close } from "@mui/icons-material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-const CreateWarrantyContent = ({ customer, closeBasicSecondModal }) => {
+const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
   const equipment = useSyncedNestedCollection(
     "customers",
     customer.id,
@@ -65,13 +65,13 @@ const CreateWarrantyContent = ({ customer, closeBasicSecondModal }) => {
         selectedEquipment,
         warrantyValues,
         equipment,
-        closeBasicSecondModal
+        closeModalTwo
       );
     }
   };
 
   return (
-    <div style={{ padding: "8px" }}>
+    <div>
       <EquipmentPicker
         equipment={equipment}
         selectedEquipment={selectedEquipment}
@@ -153,7 +153,7 @@ const CreateWarrantyContent = ({ customer, closeBasicSecondModal }) => {
               color="primary"
               type="button"
               variant="outlined"
-              onClick={() => closeBasicSecondModal()}
+              onClick={() => closeModalTwo()}
               startIcon={<Close />}
             >
               Close
@@ -185,7 +185,7 @@ const CreateWarrantyContent = ({ customer, closeBasicSecondModal }) => {
               color="primary"
               type="button"
               variant="outlined"
-              onClick={() => closeBasicSecondModal()}
+              onClick={() => closeModalTwo()}
               startIcon={<Close />}
             >
               Close

@@ -14,7 +14,7 @@ import { Button, InputAdornment, TextField, Typography } from "@mui/material";
 import { Close, AddCircleOutline } from "@mui/icons-material";
 import { defaultTableButton } from "../../../theme/Theme";
 
-const CreateMaintenanceContent = ({ customer, closeBasicSecondModal }) => {
+const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
   const equipment = useSyncedNestedCollection(
     "customers",
     customer.id,
@@ -63,13 +63,13 @@ const CreateMaintenanceContent = ({ customer, closeBasicSecondModal }) => {
         selectedEquipment,
         maintenanceValues,
         equipment,
-        closeBasicSecondModal
+        closeModalTwo
       );
     }
   };
 
   return (
-    <div style={{ padding: "8px" }}>
+    <div>
       <EquipmentPicker
         equipment={equipment}
         selectedEquipment={selectedEquipment}
@@ -157,7 +157,7 @@ const CreateMaintenanceContent = ({ customer, closeBasicSecondModal }) => {
             color="primary"
             startIcon={<Close />}
             sx={defaultTableButton}
-            onClick={() => closeBasicSecondModal()}
+            onClick={() => closeModalTwo()}
           >
             Close
           </Button>

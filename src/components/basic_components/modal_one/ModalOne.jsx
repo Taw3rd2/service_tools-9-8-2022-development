@@ -1,4 +1,4 @@
-import "./modalOne.css";
+import "../../../global_style/style.css";
 
 const ModalOne = ({
   modalOneSize,
@@ -8,7 +8,7 @@ const ModalOne = ({
 }) => {
   const onBackgroundClick = (e) => {
     e.preventDefault();
-    if (e.target === document.getElementById("modalContainer")) {
+    if (e.target === document.getElementById("modalOneContainer")) {
       closeModalOne();
     }
   };
@@ -16,12 +16,19 @@ const ModalOne = ({
   return (
     <div
       className="modalContainer"
-      id="modalContainer"
+      id="modalOneContainer"
+      style={{ zIndex: 10 }}
       onClick={(e) => onBackgroundClick(e)}
     >
-      <div className="modal" style={{ width: modalOneSize }}>
-        <div className="modalTitle">{modalOneTitle}</div>
-        <div className="modalContent">{modalOneContent}</div>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div className="modal" style={{ width: modalOneSize }}>
+          <div className="modalTitle">{modalOneTitle}</div>
+          <div className="modalContent">{modalOneContent}</div>
+        </div>
       </div>
     </div>
   );

@@ -18,11 +18,9 @@ export default function SignIn({ setUser }) {
 
   const logInWithEmail = async (e) => {
     e.preventDefault();
-    console.log("log in with email");
     setLoading(true);
     try {
       await logIn(email, password).then((res) => {
-        console.log("Signed in with email: ", res.user);
         setUser(res.user);
         setLoading(false);
         navigate("/homepage");
@@ -34,11 +32,9 @@ export default function SignIn({ setUser }) {
   };
 
   const logInWithGoogle = () => {
-    console.log("log in with google");
     const provider = new GoogleAuthProvider();
     signInWithPopup(googleAuth, provider)
       .then((res) => {
-        console.log("Signed in with google: ", res.user);
         setUser(res.user);
         setLoading(false);
         navigate("/homepage");
@@ -91,6 +87,7 @@ export default function SignIn({ setUser }) {
               </span>
             </form>
             <button
+              type="button"
               className="signInWithGoogle"
               onClick={() => logInWithGoogle()}
               disabled

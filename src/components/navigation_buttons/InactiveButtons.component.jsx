@@ -21,7 +21,6 @@ const InactiveButtons = () => {
           flexGrow: 1,
           border: "2px solid black",
           backgroundColor: "lightgray",
-          marginRight: "4px",
           padding: "4px",
         }}
       >

@@ -14,7 +14,7 @@ const MaintenanceDetailsContent = ({
   customer,
   selectedMaintenance,
   openDeleteMaintenance,
-  closeBasicSecondModal,
+  closeModalTwo,
 }) => {
   const [salePrice, setSalePrice] = useState(
     selectedMaintenance.salePrice ? selectedMaintenance.salePrice : ""
@@ -53,15 +53,11 @@ const MaintenanceDetailsContent = ({
       equipmentSerial: selectedMaintenance.equipmentSerial,
     };
 
-    updateMaintenance(customer, maintenanceValues, closeBasicSecondModal);
+    updateMaintenance(customer, maintenanceValues, closeModalTwo);
   };
 
   return (
-    <form
-      onSubmit={onUpdateMaintenance}
-      autoComplete="new password"
-      style={{ padding: "8px" }}
-    >
+    <form onSubmit={onUpdateMaintenance} autoComplete="new password">
       <Grid2 container spacing={2} sx={{ marginTop: "8px" }}>
         <Grid2 xs={6}>
           <TextField
@@ -152,14 +148,14 @@ const MaintenanceDetailsContent = ({
           startIcon={<Update />}
           sx={defaultTableButton}
         >
-          Update Maintenance
+          Update
         </Button>
         <Button
           variant="outlined"
           color="primary"
           startIcon={<Close />}
           sx={defaultTableButton}
-          onClick={() => closeBasicSecondModal()}
+          onClick={() => closeModalTwo()}
         >
           Close
         </Button>

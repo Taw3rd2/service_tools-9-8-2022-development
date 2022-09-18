@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { useSyncedNestedDocument } from "../../../firebase/firestore.utils";
+
+import { getFormattedDate } from "../../../utilities/dateUtils";
 
 import EquipmentGallery from "../gallery/EquipmentGallery";
 import EquipmentStatistics from "../statistics/EquipmentStatistics";
@@ -9,9 +12,7 @@ import {
   DeleteForever,
   Edit,
 } from "@mui/icons-material";
-import { useState } from "react";
-
-import { getFormattedDate } from "../../../utilities/dateUtils";
+import "../../../global_style/style.css";
 import "./customerEquipmentDetails.css";
 
 const CustomerEquipmentDetails = ({
@@ -45,9 +46,18 @@ const CustomerEquipmentDetails = ({
     setStatbarOpen(!statbarOpen);
   };
 
+  const handleOpeningImageViewer = (fileName, url) => {
+    const image = {
+      id: "main",
+      imageUrl: url,
+      imageName: fileName,
+    };
+    openImageViewer(image, selectedEquipment);
+  };
+
   return (
-    <div className="container">
-      <div className="mainContent">
+    <div className="equipmentDetailsContainer">
+      <div className="mainContent" style={{ paddingBottom: "8px" }}>
         <div className="cardHeader">
           {selectedEquipment.equipmentName !== undefined && (
             <div className="avatar">
@@ -59,8 +69,8 @@ const CustomerEquipmentDetails = ({
               {selectedEquipment.equipmentName}
             </div>
             <div className="installDate">
-              {selectedEquipment.equipmentInstallDate
-                ? getFormattedDate(selectedEquipment.equipmentInstallDate)
+              {unit.equipmentInstallDate
+                ? getFormattedDate(unit.equipmentInstallDate)
                 : "No Install Date Set"}
             </div>
           </div>
@@ -87,7 +97,12 @@ const CustomerEquipmentDetails = ({
               src={unit.equipmentImageDownloadUrl}
               alt="primary equipment"
               className="img"
-              onClick={() => openImageViewer(unit.equipmentImageDownloadUrl)}
+              onClick={() =>
+                handleOpeningImageViewer(
+                  unit.equipmentImageFileName,
+                  unit.equipmentImageDownloadUrl
+                )
+              }
             />
           ) : (
             <div className="noImageLoaded">No Image Loaded</div>
@@ -134,52 +149,58 @@ const CustomerEquipmentDetails = ({
             <Edit />
           </div>
         </div>
-        <div className="buttonBar">
+        <div className="buttonBar" style={{ marginRight: "4px" }}>
           <button
+            type="button"
             className="deleteButton"
             onClick={() => openDeleteCustomerEquipment(unit)}
           >
-            <DeleteForever /> Delete
+            <DeleteForever />
+            <span className="iconSeperation">Delete</span>
           </button>
           <button
+            type="button"
             className="standardButton"
             onClick={() => handleStatbarOpen(unit)}
           >
-            <BarChart /> Stats
+            <BarChart />
+            <span className="iconSeperation">Stats</span>
           </button>
           <button
+            type="button"
             className="standardButton"
             onClick={() => handleSidebarOpen(unit)}
           >
-            <Camera /> Gallery
+            <Camera />
+            <span className="iconSeperation">Gallery</span>
           </button>
           <button
+            type="button"
             className="standardButton"
             onClick={() => closeBasicSecondModal()}
           >
-            <Close /> Close
+            <Close />
+            <span className="iconSeperation">Close</span>
           </button>
         </div>
       </div>
-      <div
-        className={sidebarOpen ? "sidebar effect-1" : "sidebarActive effect-1"}
-        id="gallery-sidebar"
-      >
-        <EquipmentGallery
-          selectedEquipment={unit}
-          openImageViewer={openImageViewer}
-        />
-      </div>
-      <div
-        className={statbarOpen ? "sidebar effect-1" : "sidebarActive effect-1"}
-        id="gallery-sidebar"
-      >
-        <EquipmentStatistics
-          customer={customer}
-          selectedEquipment={unit}
-          openEditSingleField={openEditSingleField}
-        />
-      </div>
+      {sidebarOpen && (
+        <div className="sidebar effect-1" id="equipment-gallery">
+          <EquipmentGallery
+            selectedEquipment={unit}
+            openImageViewer={openImageViewer}
+          />
+        </div>
+      )}
+      {statbarOpen && (
+        <div className="sidebar effect-2" id="equipment-statbar">
+          <EquipmentStatistics
+            customer={customer}
+            selectedEquipment={unit}
+            openEditSingleField={openEditSingleField}
+          />
+        </div>
+      )}
     </div>
   );
 };

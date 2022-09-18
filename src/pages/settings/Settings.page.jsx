@@ -10,7 +10,7 @@ import TechnicianList from "./technicians/TechnicianList";
 import Work from "./work_list/Work.modal";
 import WorkList from "./work_list/WorkList";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import "../../global_style/style.css";
 
 const Settings = () => {
   //Delete a settings list item
@@ -71,34 +71,36 @@ const Settings = () => {
   };
 
   return (
-    <>
-      <Grid2 container spacing={1}>
-        <Grid2 xs={4}>
+    <div className="settings">
+      <div className="settingsTopRow">
+        <div className="settingsTopLeft">
           <DispatcherList
             openDispatcherModal={openDispatcherModal}
             openDeleteItemModal={openDeleteItemModal}
           />
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="settingsTopMiddle">
           <PaymentList
             openDeleteItemModal={openDeleteItemModal}
             openPaymentModal={openPaymentModal}
           />
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="settingsTopRight">
           <WorkList
             openDeleteItemModal={openDeleteItemModal}
             openWorkModal={openWorkModal}
           />
-        </Grid2>
-        <Grid2 xs={8}>
+        </div>
+      </div>
+      <div className="settingsBottomRow">
+        <div className="settingsBottomLeft"></div>
+        <div className="settingsBottomRight">
           <TechnicianList
             openDeleteItemModal={openDeleteItemModal}
             openTechnicianModal={openTechnicianModal}
           />
-        </Grid2>
-        <Grid2 xs={4}></Grid2>
-      </Grid2>
+        </div>
+      </div>
       {isDispatcherModalOpen && (
         <Dispatcher
           isDispatcherModalOpen={isDispatcherModalOpen}
@@ -135,7 +137,7 @@ const Settings = () => {
           technician={technician}
         />
       )}
-    </>
+    </div>
   );
 };
 

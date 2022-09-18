@@ -1,67 +1,46 @@
-import React, { useState, lazy, Suspense } from "react";
-
-import { ThemeProvider } from "@mui/material";
-import { lightTheme } from "../../theme/Theme";
-
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { useEffect, useState, lazy, Suspense } from "react";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 
 import CustomerInformation from "../../components/customer_information/CustomerInformation.component";
 import CustomerSearch from "../../components/customer_search/CustomerSearch.component";
-import TaskList from "../../components/task_list/TaskList.component";
 import NavigationButtons from "../../components/navigation_buttons/NavigationButtons.component";
 import Spinner from "../../components/spinner/Spinner";
 import CustomerNotesList from "../../components/customer_notes/list/CustomerNotesList";
 
-//Customer
-const AddCustomerModal = lazy(() =>
-  import("../../components/customer_search/AddCustomer.modal")
-);
-const EditCustomerInfoModal = lazy(() =>
-  import(
-    "../../components/customer_information/modals/customer/EditCustomerInfo.modal"
-  )
-);
-const EditBillingModal = lazy(() =>
-  import(
-    "../../components/customer_information/modals/customer/EditCustomerBilling.modal"
-  )
-);
-const DeleteCustomerModal = lazy(() =>
-  import(
-    "../../components/customer_information/modals/customer/DeleteCustomer.modal"
-  )
-);
+import "../../global_style/style.css";
 
-//Dispatch
-const CreateDispatchModal = lazy(() =>
-  import(
-    "../../components/navigation_buttons/create_new_dispatch/CreateDispatch.modal"
-  )
-);
-
-//new
-//Modals
+//Base Modals
 const ModalOne = lazy(() =>
   import("../../components/basic_components/modal_one/ModalOne")
 );
-const BasicContentModal = lazy(() =>
-  import("../../components/basic_components/BasicModal.modal")
+const ModalTwo = lazy(() =>
+  import("../../components/basic_components/modal_two/ModalTwo")
 );
-const BasicSecondContentModal = lazy(() =>
-  import("../../components/basic_components/BasicSecondModal.modal")
+const ModalThree = lazy(() =>
+  import("../../components/basic_components/modal_three/ModalThree")
 );
-const BasicThirdContentModal = lazy(() =>
-  import("../../components/basic_components/BasicThirdModal.modal")
+const ModalFour = lazy(() =>
+  import("../../components/basic_components/modal_four/ModalFour")
 );
-const BasicDeleteContent = lazy(() =>
-  import("../../components/basic_components/BasicDeleteContent")
+//Customer
+const CreateCustomer = lazy(() =>
+  import("../../components/customer_information/create/CreateCustomer")
+);
+const DeleteCustomer = lazy(() =>
+  import("../../components/customer_information/delete/DeleteCustomer")
+);
+const EditCustomerDetails = lazy(() =>
+  import("../../components/customer_information/details/EditCustomerDetails")
+);
+const EditCustomerBilling = lazy(() =>
+  import("../../components/customer_information/details/EditCustomerBilling")
 );
 //Customer Notes
 const CustomerNote = lazy(() =>
-  import("../../components/customer_notes/create/CustomerNote")
+  import("../../components/customer_notes/create_and_details/CustomerNote")
 );
 const DeleteCustomerNote = lazy(() =>
-  import("../../components/customer_notes/delete/DeleteCustomerNote")
+  import("../../components/customer_notes/delete_note/DeleteCustomerNote")
 );
 //Customer Equipment
 const CreateCustomerEquipment = lazy(() =>
@@ -79,12 +58,20 @@ const CustomerEquipmentDetails = lazy(() =>
   import("../../components/customer_equipment/details/CustomerEquipmentDetails")
 );
 const ImageViewer = lazy(() =>
-  import("../../components/customer_equipment/shared/ImageViewer")
+  import("../../components/customer_equipment/gallery/image_viewer/ImageViewer")
+);
+const DeleteGalleryImage = lazy(() =>
+  import(
+    "../../components/customer_equipment/gallery/delete/DeleteGalleryImage"
+  )
 );
 const EditSingleField = lazy(() =>
   import("../../components/customer_equipment/shared/EditSingleField")
 );
-//Dispatch History
+//Dispatch
+const CreateDispatch = lazy(() =>
+  import("../../components/dispatches/create_dispatch/CreateDispatch")
+);
 const DispatchHistoryList = lazy(() =>
   import("../../components/dispatches/dispatch_history/DispatchHistoryList")
 );
@@ -126,67 +113,36 @@ const PartQuoteDetails = lazy(() =>
 const CreatePartsQuote = lazy(() =>
   import("../../components/parts_quotes/create/CreatePartsQuoteContent")
 );
+const DeletePartsQuote = lazy(() => {
+  import("../../components/parts_quotes/delete/DeletePartsQuote");
+});
 
 const HomePage = () => {
   //CustomerSearch
   const [customer, setCustomer] = useState({ id: "" });
+  const [client, setClient] = useState({ id: "" });
   const handleCustomerSelected = (customer) => {
     setCustomer(customer);
   };
 
-  const [currentCustomer, setCurrentCustomer] = useState({});
-  const getCurrentCustomer = (currentCustomerData) => {
-    setCurrentCustomer(currentCustomerData);
-  };
+  const db = getFirestore();
+  useEffect(() => {
+    if (customer === null || customer.id === "") {
+      setClient({ id: "" });
+    } else {
+      const unsubscribe = onSnapshot(
+        doc(db, "customers", customer.id),
+        (doc) => {
+          setClient({ ...doc.data(), id: doc.id });
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+      return () => unsubscribe();
+    }
+  }, [db, customer]);
 
-  //Add Customer Modal
-  const [isAddCustomerModalOpen, setAddCustomerModalOpen] = useState(false);
-  const openAddCustomerModal = () => {
-    setAddCustomerModalOpen(true);
-  };
-  const closeAddCustomerModal = () => {
-    setAddCustomerModalOpen(false);
-  };
-
-  //Edit Customer Modal
-  const [isEditCustomerModalOpen, setEditCustomerModalOpen] = useState(false);
-  const openEditCustomerModal = () => {
-    setEditCustomerModalOpen(true);
-  };
-  const closeEditCustomerModal = () => {
-    setEditCustomerModalOpen(false);
-  };
-
-  //Edit Customer Billing Modal
-  const [isEditBillingModalOpen, setEditBillingModalOpen] = useState(false);
-  const openEditBillingModal = () => {
-    setEditBillingModalOpen(true);
-  };
-  const closeEditBillingModal = () => {
-    setEditBillingModalOpen(false);
-  };
-
-  //Delete Customer Confirmation Modal
-  const [isDeleteCustomerModalOpen, setDeleteCustomerModalOpen] =
-    useState(false);
-  const openDeleteCustomerModal = () => {
-    setDeleteCustomerModalOpen(true);
-  };
-  const closeDeleteCustomerModal = () => {
-    setDeleteCustomerModalOpen(false);
-  };
-
-  //Create Disptch
-  const [isCreateDispatchModalOpen, setCreateDispatchmodalOpen] =
-    useState(false);
-  const openCreateDispatchModal = () => {
-    setCreateDispatchmodalOpen(true);
-  };
-  const closeCreateDispatchModal = () => {
-    setCreateDispatchmodalOpen(false);
-  };
-
-  //NEW
   //ModalOne
   const [isModalOneOpen, setModalOneOpen] = useState(false);
   const [modalOneSize, setModalOneSize] = useState("45%");
@@ -207,149 +163,181 @@ const HomePage = () => {
     setModalOneOpen(false);
   };
 
-  //Basic Modal
-  const [isBasicModalOpen, setBasicModalOpen] = useState(false);
-  const [modalSize, setModalSize] = useState("45%");
-  const [modalAriaLabel, setModalAriaLabel] = useState("default-label");
-  const [modalTitle, setModalTitle] = useState("Basic Modal");
-  const [modalContent, setModalContent] = useState(<div>Default Content</div>);
-  const openBasicModal = (size, label, title, content) => {
-    setModalSize(size);
-    setModalAriaLabel(label);
-    setModalTitle(title);
-    setModalContent(content);
-    setBasicModalOpen(true);
-  };
-  const closeBasicModal = () => {
-    setModalSize("45%");
-    setModalAriaLabel("default-label");
-    setModalTitle("Basic Modal");
-    setModalContent(<div>Default Content</div>);
-    setBasicModalOpen(false);
-  };
-
-  //Basic Second Modal
-  const [isBasicSecondModalOpen, setBasicSecondModalOpen] = useState(false);
-  const [secondModalSize, setSecondModalSize] = useState("45%");
-  const [secondModalAriaLabel, setSecondModalAriaLabel] =
-    useState("default-label");
-  const [secondModalTitle, setSecondModalTitle] = useState("Basic Modal");
-  const [secondModalContent, setSecondModalContent] = useState(
-    <div>Default Content</div>
+  //ModalTwo
+  const [isModalTwoOpen, setModalTwoOpen] = useState(false);
+  const [modalTwoSize, setModalTwoSize] = useState("45%");
+  const [modalTwoTitle, setModalTwoTitle] = useState("Modal Two");
+  const [modalTwoContent, setModalTwoContent] = useState(
+    <div>Modal Two Content</div>
   );
-  const openBasicSecondModal = (size, label, title, content) => {
-    setSecondModalSize(size);
-    setSecondModalAriaLabel(label);
-    setSecondModalTitle(title);
-    setSecondModalContent(content);
-    setBasicSecondModalOpen(true);
+  const openModalTwo = (size, title, content) => {
+    setModalTwoSize(size);
+    setModalTwoTitle(title);
+    setModalTwoContent(content);
+    setModalTwoOpen(true);
   };
-  const closeBasicSecondModal = () => {
-    setSecondModalSize("45%");
-    setSecondModalAriaLabel("default-label");
-    setSecondModalTitle("Basic Modal");
-    setSecondModalContent(<div>Default Content</div>);
-    setBasicSecondModalOpen(false);
+  const closeModalTwo = () => {
+    setModalTwoSize("45%");
+    setModalTwoTitle("Modal Two");
+    setModalTwoContent(<div>Modal Two Content</div>);
+    setModalTwoOpen(false);
   };
 
-  //Basic third Modal
-  const [isBasicThirdModalOpen, setBasicThirdModalOpen] = useState(false);
-  const [thirdModalSize, setThirdModalSize] = useState("45%");
-  const [thirdModalAriaLabel, setThirdModalAriaLabel] =
-    useState("default-label");
-  const [thirdModalTitle, setThirdModalTitle] = useState("Basic Modal");
-  const [thirdModalContent, setThirdModalContent] = useState(
-    <div>Default Content</div>
+  //ModalThree
+  const [isModalThreeOpen, setModalThreeOpen] = useState(false);
+  const [modalThreeSize, setModalThreeSize] = useState("45%");
+  const [modalThreeTitle, setModalThreeTitle] = useState("Modal Three");
+  const [modalThreeContent, setModalThreeContent] = useState(
+    <div>Modal Three Content</div>
   );
-  const openBasicThirdModal = (size, label, title, content) => {
-    setThirdModalSize(size);
-    setThirdModalAriaLabel(label);
-    setThirdModalTitle(title);
-    setThirdModalContent(content);
-    setBasicThirdModalOpen(true);
+  const openModalThree = (size, title, content) => {
+    setModalThreeSize(size);
+    setModalThreeTitle(title);
+    setModalThreeContent(content);
+    setModalThreeOpen(true);
   };
-  const closeBasicThirdModal = () => {
-    setThirdModalSize("45%");
-    setThirdModalAriaLabel("default-label");
-    setThirdModalTitle("Basic Modal");
-    setThirdModalContent(<div>Default Content</div>);
-    setBasicThirdModalOpen(false);
+  const closeModalThree = () => {
+    setModalThreeSize("45%");
+    setModalThreeTitle("Modal Three");
+    setModalThreeContent(<div>Modal Three Content</div>);
+    setModalThreeOpen(false);
   };
 
-  //Customer Notes
-  const openCreateCustomerNote = () => {
-    openBasicModal(
+  //ModalFour
+  const [isModalFourOpen, setModalFourOpen] = useState(false);
+  const [modalFourSize, setModalFourSize] = useState("45%");
+  const [modalFourTitle, setModalFourTitle] = useState("Modal Four");
+  const [modalFourContent, setModalFourContent] = useState(
+    <div>Modal Four Content</div>
+  );
+  const openModalFour = (size, title, content) => {
+    setModalFourSize(size);
+    setModalFourTitle(title);
+    setModalFourContent(content);
+    setModalFourOpen(true);
+  };
+  const closeModalFour = () => {
+    setModalFourSize("45%");
+    setModalFourTitle("Modal Three");
+    setModalFourContent(<div>Modal Three Content</div>);
+    setModalFourOpen(false);
+  };
+
+  const openCreateCustomer = () => {
+    openModalOne(
       "30%",
-      "create-customer-note",
+      "Create Customer",
+      <CreateCustomer closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openEditCustomerDetails = () => {
+    openModalOne(
+      "30%",
+      "Edit Customer Details",
+      <EditCustomerDetails
+        customer={client}
+        openDeleteCustomer={openDeleteCustomer}
+        closeModalOne={closeModalOne}
+      />
+    );
+  };
+
+  const openEditCustomerBilling = () => {
+    openModalOne(
+      "30%",
+      "Edit Customer Billing",
+      <EditCustomerBilling customer={client} closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openDeleteCustomer = () => {
+    openModalTwo(
+      "20%",
+      "Delete Customer",
+      <DeleteCustomer
+        customer={client}
+        handleCustomerSelected={handleCustomerSelected}
+        closeDetails={closeModalOne}
+        closeDelete={closeModalTwo}
+      />
+    );
+  };
+
+  const openCreateDispatch = () => {
+    openModalOne(
+      "25%",
+      "Create Dispatch",
+      <CreateDispatch customer={client} closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openCreateCustomerNote = () => {
+    openModalOne(
+      "30%",
       "Note",
-      <CustomerNote customer={customer} closeCustomerNote={closeBasicModal} />
+      <CustomerNote customer={client} closeModalOne={closeModalOne} />
     );
   };
 
   const openDeleteCustomerNote = (note) => {
-    openBasicSecondModal(
-      "30%",
-      "delete-customer-note",
+    openModalTwo(
+      "20%",
       "Delete Note",
       <DeleteCustomerNote
-        customer={customer}
+        customer={client}
         selectedNote={note}
-        closeDetails={closeBasicModal}
-        closeDelete={closeBasicSecondModal}
+        closeDetails={closeModalOne}
+        closeDelete={closeModalTwo}
       />
     );
   };
 
   const openCustomerNoteDetails = (note) => {
-    openBasicModal(
+    openModalOne(
       "30%",
-      "customer-note-details",
       "Note Details",
       <CustomerNote
-        customer={customer}
-        closeCustomerNote={closeBasicModal}
+        customer={client}
+        closeModalOne={closeModalOne}
         selectedNote={note}
         openDeleteCustomerNote={openDeleteCustomerNote}
       />
     );
   };
 
-  //Customer Equipment
   const openCreateCustomerEquipment = () => {
-    openBasicSecondModal(
+    openModalTwo(
       "30%",
-      "create-customer-equipment",
       "Create Equipment",
       <CreateCustomerEquipment
-        customer={customer}
-        closeBasicSecondModal={closeBasicSecondModal}
+        customer={client}
+        closeModalTwo={closeModalTwo}
       />
     );
   };
 
   const openDeleteCustomerEquipment = (equipment) => {
-    openBasicThirdModal(
+    openModalThree(
       "25%",
-      "delete-customer-equipment",
       "Delete Equipment",
       <DeleteCustomerEquipment
-        customer={customer}
+        customer={client}
         selectedEquipment={equipment}
-        closeDetails={closeBasicSecondModal}
-        closeDelete={closeBasicThirdModal}
+        closeDetails={closeModalTwo}
+        closeDelete={closeModalThree}
       />
     );
   };
 
   const openCustomerEquipmentDetails = (equipment) => {
-    openBasicSecondModal(
-      385,
-      "customer-equipment-details",
+    openModalTwo(
+      420,
       "Equipment Details",
       <CustomerEquipmentDetails
-        customer={customer}
+        customer={client}
         selectedEquipment={equipment}
-        closeBasicSecondModal={closeBasicSecondModal}
+        closeBasicSecondModal={closeModalTwo}
         openDeleteCustomerEquipment={openDeleteCustomerEquipment}
         openImageViewer={openImageViewer}
         openEditSingleField={openEditSingleField}
@@ -362,7 +350,7 @@ const HomePage = () => {
       "70%",
       "Customer Equipment",
       <CustomerEquipmentList
-        customer={customer}
+        customer={client}
         openCustomerEquipmentDetails={openCustomerEquipmentDetails}
         openCreateCustomerEquipment={openCreateCustomerEquipment}
         closeModalOne={closeModalOne}
@@ -370,7 +358,6 @@ const HomePage = () => {
     );
   };
 
-  //EditSingleField
   const openEditSingleField = (
     customerId,
     equipmentId,
@@ -378,9 +365,8 @@ const HomePage = () => {
     fieldKey,
     fieldValue
   ) => {
-    openBasicThirdModal(
+    openModalThree(
       "15%",
-      "edit-single-field",
       "",
       <EditSingleField
         customerId={customerId}
@@ -388,23 +374,44 @@ const HomePage = () => {
         fieldName={fieldName}
         fieldKey={fieldKey}
         fieldValue={fieldValue}
-        closeEditSingleField={closeBasicThirdModal}
+        closeEditSingleField={closeModalThree}
       />
     );
   };
 
-  //Image Viewer
-  const openImageViewer = (img) => {
-    openBasicThirdModal(
+  const openImageViewer = (img, selectedEquipment) => {
+    openModalThree(
       "80%",
-      "enlarged-image",
       ``,
-      <ImageViewer src={img} closeImageViewer={closeBasicThirdModal} />
+      <ImageViewer
+        src={img}
+        selectedEquipment={selectedEquipment}
+        closeImageViewer={closeModalThree}
+        openDeleteGalleryImage={openDeleteGalleryImage}
+      />
+    );
+  };
+
+  const openDeleteGalleryImage = (img, equip) => {
+    openModalFour(
+      "30%",
+      "Delete Gallery Image",
+      <DeleteGalleryImage
+        customer={customer}
+        selectedEquipment={equip}
+        selectedImage={img}
+        closeImageViewer={closeModalThree}
+        closeDelete={closeModalFour}
+      />
     );
   };
 
   const openDispatchDetails = (dispatch) => {
-    openBasicSecondModal("", "dispatch-details", <div />);
+    openModalTwo(
+      "40%",
+      "Dispatch Details",
+      <div>I will put this back in after performace updates</div>
+    );
   };
 
   const openDispatchHistory = () => {
@@ -412,7 +419,7 @@ const HomePage = () => {
       "60%",
       "Dispatch History",
       <DispatchHistoryList
-        customer={customer}
+        customer={client}
         openDispatchDetails={openDispatchDetails}
         closeModalOne={closeModalOne}
       />
@@ -420,52 +427,45 @@ const HomePage = () => {
   };
 
   const openCreateWarranty = () => {
-    openBasicSecondModal(
+    openModalTwo(
       "45%",
-      "create-warranty",
       "Create New Warranty",
-      <CreateWarranty
-        customer={customer}
-        closeBasicSecondModal={closeBasicSecondModal}
-      />
+      <CreateWarranty customer={client} closeModalTwo={closeModalTwo} />
     );
   };
 
   const openWarrantyDetails = (warr) => {
-    openBasicSecondModal(
+    openModalTwo(
       "20%",
-      "warranty-details",
       `${warr.equipmentName} Warranty Details`,
       <WarrantyDetails
-        customer={customer}
+        customer={client}
         selectedWarranty={warr}
         openDeleteWarranty={openDeleteWarranty}
-        closeBasicSecondModal={closeBasicSecondModal}
+        closeModalTwo={closeModalTwo}
       />
     );
   };
 
   const openDeleteWarranty = (warr) => {
-    openBasicThirdModal(
+    openModalThree(
       "30%",
-      "delete-warranty",
       "Delete Warranty",
       <DeleteWarrantyContent
-        customer={customer}
+        customer={client}
         selectedWarranty={warr}
-        closeDetails={closeBasicSecondModal}
-        closeDelete={closeBasicThirdModal}
+        closeDetails={closeModalTwo}
+        closeDelete={closeModalThree}
       />
     );
   };
 
-  // (1)
   const openWarrantyList = () => {
     openModalOne(
       "55%",
       "Warranty",
       <WarrantyList
-        customer={customer}
+        customer={client}
         openWarrantyDetails={openWarrantyDetails}
         openCreateWarranty={openCreateWarranty}
         closeModalOne={closeModalOne}
@@ -473,56 +473,46 @@ const HomePage = () => {
     );
   };
 
-  // (2)
   const openCreateMaintenance = () => {
-    openBasicSecondModal(
+    openModalTwo(
       "45%",
-      "create-maintenance",
       "Create New Maintenance",
-      <CreateMaintenance
-        customer={customer}
-        closeBasicSecondModal={closeBasicSecondModal}
-      />
+      <CreateMaintenance customer={client} closeModalTwo={closeModalTwo} />
     );
   };
 
-  // (2)
   const openMaintenanceDetails = (maint) => {
-    openBasicSecondModal(
+    openModalTwo(
       "20%",
-      "maintenance-details",
       `${maint.equipmentName} Maintenance Details`,
       <MaintenanceDetails
-        customer={customer}
+        customer={client}
         selectedMaintenance={maint}
         openDeleteMaintenance={openDeleteMaintenance}
-        closeBasicSecondModal={closeBasicSecondModal}
+        closeModalTwo={closeModalTwo}
       />
     );
   };
 
-  //Delete Maintenance (3)
   const openDeleteMaintenance = (selectedMaintenance) => {
-    openBasicThirdModal(
+    openModalThree(
       "30%",
-      "delete-maintenance",
       `Delete Maintenance for ${selectedMaintenance.equipmentName}`,
       <DeleteMaintenanceContent
-        customer={customer}
+        customer={client}
         selectedMaintenance={selectedMaintenance}
-        closeDetailsModal={closeBasicSecondModal}
-        closeDeleteModal={closeBasicThirdModal}
+        closeDetailsModal={closeModalTwo}
+        closeDeleteModal={closeModalThree}
       />
     );
   };
 
-  //Maintenance List (1)
   const openMaintenanceList = () => {
     openModalOne(
       "70%",
       "Maintenance List",
       <MaintenanceList
-        customer={customer}
+        customer={client}
         openMaintenanceDetails={openMaintenanceDetails}
         openCreateMaintenance={openCreateMaintenance}
         closeModalOne={closeModalOne}
@@ -530,44 +520,39 @@ const HomePage = () => {
     );
   };
 
-  //parts quote details (2)
   const [partsQuote, setPartsQuote] = useState({});
   const openPartQuoteDetails = (quote) => {
     setPartsQuote(quote);
-    openBasicSecondModal(
+    openModalTwo(
       "65%",
-      "parts-quote-details",
       "Part Quote Details",
       <PartQuoteDetails
-        customer={customer}
+        customer={client}
         partsQuote={quote}
         openDeletePartsQuote={openDeletePartsQuote}
-        closeBasicSecondModal={closeBasicSecondModal}
+        closeModalTwo={closeModalTwo}
       />
     );
   };
 
-  //delete parts quotes (3)
   const openDeletePartsQuote = () => {
-    openBasicThirdModal(
+    openModalThree(
       "35%",
-      "parts-quote-delete",
       "Delete Parts Quote",
-      <BasicDeleteContent
-        customer={customer}
+      <DeletePartsQuote
+        customer={client}
         itemToDelete={partsQuote}
-        closeModal={closeBasicThirdModal}
+        closeModal={closeModalThree}
       />
     );
   };
 
-  //parts quote list (1)
   const openPartsQuoteList = () => {
     openModalOne(
       "45%",
       "Parts Quotes",
       <PartsQuoteList
-        customer={customer}
+        customer={client}
         openPartQuoteDetails={openPartQuoteDetails}
         openCreatePartsQuote={openCreatePartsQuote}
         closeBasicModal={closeModalOne}
@@ -575,104 +560,52 @@ const HomePage = () => {
     );
   };
 
-  //create parts Quotes (2)
   const openCreatePartsQuote = () => {
-    openBasicSecondModal(
+    openModalTwo(
       "65%",
-      "create-parts-quote",
       "Create New Parts Quote",
-      <CreatePartsQuote closeBasicSecondModal={closeBasicSecondModal} />
+      <CreatePartsQuote closeModalTwo={closeModalTwo} />
     );
   };
 
   return (
-    <ThemeProvider theme={lightTheme}>
-      <Grid2 container spacing={2}>
-        <Grid2 xs={4} sx={{ marginTop: "4px" }}>
+    <div className="homePage">
+      <div className="homepageTopRow">
+        <div className="homepageTopLeft">
           <CustomerSearch
             handleCustomerSelected={handleCustomerSelected}
-            openAddCustomerModal={openAddCustomerModal}
+            openCreateCustomer={openCreateCustomer}
           />
-        </Grid2>
-        <Grid2 xs={4} sx={{ marginTop: "4px" }}>
+        </div>
+        <div className="homepageTopMiddle">
           <CustomerInformation
-            customer={customer}
-            openEditCustomerModal={openEditCustomerModal}
+            customer={client}
+            openEditCustomerDetails={openEditCustomerDetails}
+            openEditCustomerBilling={openEditCustomerBilling}
             openCustomerEquipmentList={openCustomerEquipmentList}
-            openEditBillingModal={openEditBillingModal}
-            getCurrentCustomer={getCurrentCustomer}
           />
-        </Grid2>
-        <Grid2 xs={4} sx={{ marginTop: "4px" }}>
+        </div>
+        <div className="homepageTopRight">
           <NavigationButtons
-            openCreateDispatchModal={openCreateDispatchModal}
+            openCreateDispatch={openCreateDispatch}
             openDispatchHistory={openDispatchHistory}
             openMaintenanceList={openMaintenanceList}
             openWarrantyList={openWarrantyList}
             openPartsQuoteList={openPartsQuoteList}
-            customer={customer}
+            customer={client}
           />
-        </Grid2>
-      </Grid2>
-      <Grid2 container spacing={2}>
-        <Grid2 xs={6} sx={{ marginTop: "4px" }}>
-          <TaskList />
-        </Grid2>
-        <Grid2 xs={6} sx={{ marginTop: "4px" }}>
+        </div>
+      </div>
+      <div className="homepageBottomRow">
+        <div className="homepageBottomLeft"></div>
+        <div className="homepageBottomRight">
           <CustomerNotesList
-            customer={customer}
+            customer={client}
             openCreateCustomerNote={openCreateCustomerNote}
             openCustomerNoteDetails={openCustomerNoteDetails}
           />
-        </Grid2>
-      </Grid2>
-      {isAddCustomerModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <AddCustomerModal
-            isAddCustomerModalOpen={isAddCustomerModalOpen}
-            closeAddCustomerModal={closeAddCustomerModal}
-          />
-        </Suspense>
-      )}
-      {isEditCustomerModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <EditCustomerInfoModal
-            customer={currentCustomer}
-            isEditCustomerModalOpen={isEditCustomerModalOpen}
-            closeEditCustomerModal={closeEditCustomerModal}
-            openDeleteCustomerModal={openDeleteCustomerModal}
-          />
-        </Suspense>
-      )}
-      {isEditBillingModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <EditBillingModal
-            customer={currentCustomer}
-            isEditBillingModalOpen={isEditBillingModalOpen}
-            closeEditBillingModal={closeEditBillingModal}
-          />
-        </Suspense>
-      )}
-      {isDeleteCustomerModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <DeleteCustomerModal
-            isDeleteCustomerModalOpen={isDeleteCustomerModalOpen}
-            closeEditCustomerModal={closeEditCustomerModal}
-            closeDeleteCustomerModal={closeDeleteCustomerModal}
-            setCustomer={setCustomer}
-            customer={customer}
-          />
-        </Suspense>
-      )}
-      {isCreateDispatchModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <CreateDispatchModal
-            isCreateDispatchModalOpen={isCreateDispatchModalOpen}
-            closeCreateDispatchModal={closeCreateDispatchModal}
-            customer={customer}
-          />
-        </Suspense>
-      )}
+        </div>
+      </div>
       {isModalOneOpen && (
         <Suspense fallback={<Spinner />}>
           <ModalOne
@@ -683,43 +616,37 @@ const HomePage = () => {
           />
         </Suspense>
       )}
-      {isBasicModalOpen && (
+      {isModalTwoOpen && (
         <Suspense fallback={<Spinner />}>
-          <BasicContentModal
-            isBasicModalOpen={isBasicModalOpen}
-            closeBasicModal={closeBasicModal}
-            modalSize={modalSize}
-            modalAriaLabel={modalAriaLabel}
-            modalTitle={modalTitle}
-            modalContent={modalContent}
+          <ModalTwo
+            modalTwoSize={modalTwoSize}
+            modalTwoTitle={modalTwoTitle}
+            modalTwoContent={modalTwoContent}
+            closeModalTwo={closeModalTwo}
           />
         </Suspense>
       )}
-      {isBasicSecondModalOpen && (
+      {isModalThreeOpen && (
         <Suspense fallback={<Spinner />}>
-          <BasicSecondContentModal
-            isBasicSecondModalOpen={isBasicSecondModalOpen}
-            closeBasicSecondModal={closeBasicSecondModal}
-            secondModalSize={secondModalSize}
-            secondModalAriaLabel={secondModalAriaLabel}
-            secondModalTitle={secondModalTitle}
-            secondModalContent={secondModalContent}
+          <ModalThree
+            modalThreeSize={modalThreeSize}
+            modalThreeTitle={modalThreeTitle}
+            modalThreeContent={modalThreeContent}
+            closeModalThree={closeModalThree}
           />
         </Suspense>
       )}
-      {isBasicThirdModalOpen && (
+      {isModalFourOpen && (
         <Suspense fallback={<Spinner />}>
-          <BasicThirdContentModal
-            isBasicThirdModalOpen={isBasicThirdModalOpen}
-            closeBasicThirdModal={closeBasicThirdModal}
-            thirdModalSize={thirdModalSize}
-            thirdModalAriaLabel={thirdModalAriaLabel}
-            thirdModalTitle={thirdModalTitle}
-            thirdModalContent={thirdModalContent}
+          <ModalFour
+            modalFourSize={modalFourSize}
+            modalFourTitle={modalFourTitle}
+            modalFourContent={modalFourContent}
+            closeModalFour={closeModalFour}
           />
         </Suspense>
       )}
-    </ThemeProvider>
+    </div>
   );
 };
 

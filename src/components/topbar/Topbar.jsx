@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import { getAuth } from "firebase/auth";
 
 import { logOut } from "../../firebase/firestore.utils";
 import { useNavigate } from "react-router-dom";
 
-import "./topbar.css";
+import { CalendarMonth, People, Settings } from "@mui/icons-material";
+import "../../global_style/style.css";
 
-const Topbar = ({ currentUser, setUser }) => {
+const Topbar = ({ setUser }) => {
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
   let navigate = useNavigate();
   const btnRef = useRef();
 
@@ -23,6 +28,7 @@ const Topbar = ({ currentUser, setUser }) => {
   }, []);
 
   const handleLogOut = async () => {
+    console.log("Logout triggered!");
     try {
       logOut().then(() => {
         console.log("Signed Out!");
@@ -36,17 +42,17 @@ const Topbar = ({ currentUser, setUser }) => {
   };
 
   const links = [
-    { name: "Customers", path: "/homepage", key: 0 },
-    { name: "Schedule", path: "/schedule", key: 1 },
-    { name: "Settings", path: "/settings", key: 2 },
+    { name: "Customers", path: "/homepage", key: 0, icon: <People /> },
+    { name: "Schedule", path: "/schedule", key: 1, icon: <CalendarMonth /> },
+    { name: "Settings", path: "/settings", key: 2, icon: <Settings /> },
     // { name: "Inventory", link: "/parts_catalog", key: 3 },
     // { name: "Accounting", link: "/accounting", key: 4 },
   ];
 
   const getDisplayName = (user) => {
-    if (user.displayName) {
+    if (currentUser && user.displayName) {
       return user.displayName;
-    } else if (user.email) {
+    } else if (currentUser && user.email) {
       return user.email;
     } else {
       return "";
@@ -59,14 +65,16 @@ const Topbar = ({ currentUser, setUser }) => {
         <span className="topbarLogo">Service Tools</span>
       </div>
       <div className="topbarCenter">
-        {currentUser.displayName || currentUser.email ? (
+        {(currentUser !== null && currentUser.displayName) ||
+        (currentUser !== null && currentUser.email) ? (
           links.map((link) => (
             <button
               key={link.key}
               onClick={() => navigate(link.path)}
-              className="topbarButtonLink"
+              className="standardButton"
             >
-              {link.name}
+              {link.icon}
+              <span className="iconSeperation">{link.name}</span>
             </button>
           ))
         ) : (

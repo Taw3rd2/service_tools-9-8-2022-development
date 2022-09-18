@@ -10,7 +10,7 @@ const PartsQuoteDetailsContent = ({
   customer,
   partsQuote,
   openDeletePartsQuote,
-  closeBasicSecondModal,
+  closeModalTwo,
 }) => {
   console.log("partsQuote", partsQuote);
   return (
@@ -55,7 +55,7 @@ const PartsQuoteDetailsContent = ({
           color="primary"
           startIcon={<Close />}
           sx={defaultTableButton}
-          onClick={() => closeBasicSecondModal()}
+          onClick={() => closeModalTwo()}
         >
           Close
         </Button>

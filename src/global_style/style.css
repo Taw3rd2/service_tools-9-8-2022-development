@@ -1,0 +1,308 @@
+/* topbar */
+.topbarContainer {
+    height: 65px;
+    width: 100%;
+    background-color: teal;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.topbarLeft {
+    flex: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbarCenter {
+    flex: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbarRight {
+    flex: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+}
+
+.topbarLogo {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+}
+
+.topbarButtonLink {
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-right: 20px;
+    cursor: pointer;
+    color: teal;
+}
+
+.topbarUser {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.topbarDropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.topbarDropdownContent {
+    display: block;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    text-align: center;
+    border: 1px solid teal;
+}
+
+.topbarDropdownLink {
+    color: teal;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+/* homePage */
+.homePage {
+    width: 100%;
+    height: auto;
+}
+
+.homepageTopRow {
+    display: flex;
+}
+
+.homepageTopLeft {
+    flex: 4;
+    padding: 8px;
+}
+
+.homepageTopMiddle {
+    flex: 4;
+    padding: 8px;
+}
+
+.homepageTopRight {
+    flex: 4;
+    padding: 8px;
+}
+
+.homepageBottomRow {
+    display: flex;
+    align-items: center;
+}
+
+.homepageBottomLeft {
+    flex: 6;
+}
+
+.homepageBottomRight {
+    flex: 6;
+    padding: 8px;
+}
+
+/* Image Viewer */
+.imageContainer {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px;
+    background-color: teal;
+}
+
+/* Settings */
+.settings {
+    width: 100%;
+    height: auto;
+}
+
+.settingsTopRow {
+    display: flex;
+}
+
+.settingsTopLeft {
+    flex: 4;
+    padding: 8px;
+}
+
+.settingsTopMiddle {
+    flex: 4;
+    padding: 8px;
+}
+
+.settingsTopRight {
+    flex: 4;
+    padding: 8px;
+}
+
+.settingsBottomRow {
+    display: flex;
+}
+
+.settingsBottomLeft {
+    flex: 4;
+}
+
+.settingsBottomRight {
+    flex: 8;
+    padding-right: 8px;
+    padding-left: 16px;
+}
+
+/* Edits */
+.row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.singleRowInput {
+    flex: 12;
+}
+
+.doubleRowInput {
+    flex: 6;
+}
+
+.tripleRowInput {
+    flex: 4;
+}
+
+/* Text Area */
+.textarea {
+    outline: none;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.container textarea {
+    resize: none;
+    margin-top: 16px;
+    border: 1px solid #ccc;
+}
+
+/* Button Bar */
+.buttonBar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-direction: row;
+    margin-top: 16px;
+}
+
+/* Buttons */
+.iconSeperation {
+    margin-left: 8px;
+}
+
+.deleteButton {
+    display: flex;
+    align-items: center;
+    border: 1px solid pink;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+    color: red;
+}
+
+.deleteButton:hover {
+    display: flex;
+    align-items: center;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+    color: red;
+}
+
+.standardButton {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(132, 230, 230, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+    color: teal;
+}
+
+.standardButton:hover {
+    display: flex;
+    align-items: center;
+    border: 1px solid teal;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+    color: teal;
+}
+
+/* Modal */
+.modalContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation-name: modalopen;
+    animation-duration: 0.5s;
+}
+
+.modal {
+    background-color: #f4f4f4;
+    position: absolute;
+    float: left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 8px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.modalTitle {
+    margin-left: 8px;
+    font-size: 22px;
+    color: teal;
+}
+
+.modalContent {
+    margin: 8px;
+}
+
+@keyframes modalopen {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

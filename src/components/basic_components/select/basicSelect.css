@@ -1,0 +1,75 @@
+.wrapper {
+    width: 100%;
+
+}
+
+.selectButton,
+.options li {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+}
+
+.options {
+    padding-left: 16px;
+}
+
+.selectButton {
+    height: 55px;
+    font-size: 20px;
+    padding: 0 20px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background: #fff;
+    justify-content: space-between;
+}
+
+.selectButton i {
+    font-size: 31px;
+    transition: transform 0.3s linear;
+}
+
+.iconOpen {
+    font-size: 31px;
+    transition: transform 0.3s linear;
+    transform: rotate(-180deg);
+}
+
+.content {
+    position: absolute;
+    display: block;
+    margin-top: 4px;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.content .options {
+    margin-top: 4px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.options::-webkit-scrollbar {
+    width: 7px;
+}
+
+.options::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 25px;
+}
+
+.options::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 25px;
+}
+
+.options li {
+    height: 40px;
+    font-size: 20px;
+    border-radius: 5px;
+    padding: 0 15px;
+}
+
+.options li:hover {
+    background: lightgray;
+}

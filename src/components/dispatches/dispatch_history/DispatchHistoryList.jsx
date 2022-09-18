@@ -90,6 +90,7 @@ const DispatchHistoryList = ({
                   .map((item) => (
                     <TableRow
                       key={item.id}
+                      sx={{ cursor: "pointer" }}
                       onClick={() => openDispatchDetails(item)}
                     >
                       <TableCell align="center" sx={defaultBodyTableCell}>

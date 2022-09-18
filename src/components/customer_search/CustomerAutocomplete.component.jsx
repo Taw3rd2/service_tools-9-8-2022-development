@@ -65,6 +65,7 @@ const CustomerAutocomplete = ({
               {...params}
               label="Search Last Names or Business Names"
               variant="outlined"
+              autoFocus
             />
           )}
         />
@@ -107,6 +108,7 @@ const CustomerAutocomplete = ({
               {...params}
               label="Search by the Street Address"
               variant="outlined"
+              autoFocus
             />
           )}
         />
@@ -149,6 +151,7 @@ const CustomerAutocomplete = ({
               {...params}
               label="Search by City's"
               variant="outlined"
+              autoFocus
             />
           )}
         />

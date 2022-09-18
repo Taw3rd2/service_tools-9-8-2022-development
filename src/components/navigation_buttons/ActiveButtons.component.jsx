@@ -18,7 +18,7 @@ const reportButton = {
 
 const ActiveButtons = ({
   customer,
-  openCreateDispatchModal,
+  openCreateDispatch,
   openDispatchHistory,
   openWarrantyList,
   openMaintenanceList,
@@ -68,12 +68,11 @@ const ActiveButtons = ({
           flexGrow: 1,
           border: "2px solid black",
           backgroundColor: "lightgray",
-          marginRight: "4px",
           padding: "4px",
         }}
       >
         <Grid2 container spacing={2}>
-          <Grid2 xs={3} onClick={() => openCreateDispatchModal()}>
+          <Grid2 xs={3} onClick={() => openCreateDispatch()}>
             <div style={reportButton}>
               <AddCircle
                 sx={{

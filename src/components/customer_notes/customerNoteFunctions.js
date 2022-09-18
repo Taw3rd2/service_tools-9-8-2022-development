@@ -26,7 +26,6 @@ export const updateNoteToFirestore = (
   closeCustomerNote
 ) => {
   const db = getFirestore();
-  console.log("current note details: ", note);
   updateDocument(doc(db, "customers", customer.id, "Activity", noteId), note)
     .then(() => closeCustomerNote())
     .catch((error) => console.log("firebase error", error));
@@ -38,7 +37,6 @@ export const deleteCustomerNote = (
   closeDetails,
   closeDelete
 ) => {
-  console.log("selectedNote: ", selectedNote);
   const db = getFirestore();
 
   deleteDocument(doc(db, "customers", customer.id, "Activity", selectedNote.id))

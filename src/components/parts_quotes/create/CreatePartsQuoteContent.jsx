@@ -5,7 +5,7 @@ import { Button, Typography } from "@mui/material";
 import { AddCircleOutline, Close } from "@mui/icons-material";
 import { defaultTableButton } from "../../../theme/Theme";
 
-const CreatePartsQuoteContent = ({ closeBasicSecondModal }) => {
+const CreatePartsQuoteContent = ({ closeModalTwo }) => {
   return (
     <>
       <Grid2 container spacing={2}>
@@ -32,7 +32,7 @@ const CreatePartsQuoteContent = ({ closeBasicSecondModal }) => {
           color="primary"
           startIcon={<Close />}
           sx={defaultTableButton}
-          onClick={() => closeBasicSecondModal()}
+          onClick={() => closeModalTwo()}
         >
           Close
         </Button>
