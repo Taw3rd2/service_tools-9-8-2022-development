@@ -88,10 +88,6 @@ const CustomerEquipmentListContent = ({
                 <TableCell align="center" sx={getDefaultHeadTableCell(100)}>
                   Labor Expiration
                 </TableCell>
-                <TableCell
-                  align="center"
-                  sx={getDefaultHeadTableCell(100)}
-                ></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -116,11 +112,6 @@ const CustomerEquipmentListContent = ({
                   {getStyledTableCell(unit.equipmentContract)}
                   {getStyledTableCell(unit.equipmentWarranty)}
                   {getStyledTableCell(unit.laborWarranty)}
-                  <TableCell align="center">
-                    <Button variant="outlined" color="primary">
-                      Details
-                    </Button>
-                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

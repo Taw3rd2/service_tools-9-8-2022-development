@@ -100,7 +100,7 @@ const CustomerNote = ({
         className="typeAndOperatorRow"
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          gap: "16px",
           marginTop: "16px",
         }}
       >

@@ -50,9 +50,7 @@ const DeleteCustomerEquipment = lazy(() =>
   import("../../components/customer_equipment/delete/DeleteCustomerEquipment")
 );
 const CustomerEquipmentList = lazy(() =>
-  import(
-    "../../components/customer_equipment/list/CustomerEquipmentListContent"
-  )
+  import("../../components/customer_equipment/list/CustomerEquipmentList")
 );
 const CustomerEquipmentDetails = lazy(() =>
   import("../../components/customer_equipment/details/CustomerEquipmentDetails")
@@ -73,7 +71,7 @@ const CreateDispatch = lazy(() =>
   import("../../components/dispatches/create_dispatch/CreateDispatch")
 );
 const DispatchHistoryList = lazy(() =>
-  import("../../components/dispatches/dispatch_history/DispatchHistoryList")
+  import("../../components/dispatches/dispatch_history/DispatchList")
 );
 //Maintenance Content
 const CreateMaintenance = lazy(() =>
@@ -83,7 +81,7 @@ const DeleteMaintenanceContent = lazy(() =>
   import("../../components/maintenance_manager/delete/DeleteMaintenanceContent")
 );
 const MaintenanceList = lazy(() =>
-  import("../../components/maintenance_manager/list/MaintenanceListContent")
+  import("../../components/maintenance_manager/list/MaintenanceList")
 );
 const MaintenanceDetails = lazy(() =>
   import(
@@ -98,7 +96,7 @@ const DeleteWarrantyContent = lazy(() =>
   import("../../components/warranty_manager/delete/DeleteWarrantyContent")
 );
 const WarrantyList = lazy(() =>
-  import("../../components/warranty_manager/list/WarrantyListContent")
+  import("../../components/warranty_manager/list/WarrantyList")
 );
 const WarrantyDetails = lazy(() =>
   import("../../components/warranty_manager/details/WarrantyDetailsContent")
@@ -347,7 +345,7 @@ const HomePage = () => {
 
   const openCustomerEquipmentList = () => {
     openModalOne(
-      "70%",
+      "55%",
       "Customer Equipment",
       <CustomerEquipmentList
         customer={client}
@@ -462,7 +460,7 @@ const HomePage = () => {
 
   const openWarrantyList = () => {
     openModalOne(
-      "55%",
+      "35%",
       "Warranty",
       <WarrantyList
         customer={client}
@@ -509,7 +507,7 @@ const HomePage = () => {
 
   const openMaintenanceList = () => {
     openModalOne(
-      "70%",
+      "50%",
       "Maintenance List",
       <MaintenanceList
         customer={client}
