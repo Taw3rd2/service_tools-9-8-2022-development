@@ -149,6 +149,7 @@ const CustomerNotesList = ({
                     key={note.id}
                     onClick={() => openCustomerNoteDetails(note)}
                     sx={{ cursor: "pointer" }}
+                    hover
                   >
                     <TableCell align="left">{note.operator}</TableCell>
                     <TableCell align="left">{note.type}</TableCell>

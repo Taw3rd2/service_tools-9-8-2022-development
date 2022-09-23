@@ -101,6 +101,7 @@ const MaintenanceList = ({
                 onClick={() => {
                   openMaintenanceDetails(maint);
                 }}
+                hover
               >
                 <TableCell align="center" sx={defaultBodyTableCell}>
                   {maint.mNumber}

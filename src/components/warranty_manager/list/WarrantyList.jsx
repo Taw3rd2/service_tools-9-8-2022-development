@@ -110,6 +110,7 @@ const WarrantyList = ({
                 key={warranty.id}
                 sx={{ cursor: "pointer" }}
                 onClick={() => openWarrantyDetails(warranty)}
+                hover
               >
                 <TableCell align="center" sx={defaultBodyTableCell}>
                   {warranty.jobNumber}

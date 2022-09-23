@@ -78,6 +78,7 @@ const DispatchList = ({ customer, openDispatchDetails, closeModalOne }) => {
                     key={item.id}
                     sx={{ cursor: "pointer" }}
                     onClick={() => openDispatchDetails()}
+                    hover
                   >
                     <TableCell align="center" sx={defaultBodyTableCell}>
                       {getFormattedDate(item.dateScheduled)}

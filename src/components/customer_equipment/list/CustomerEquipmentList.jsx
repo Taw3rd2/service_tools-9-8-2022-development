@@ -84,6 +84,7 @@ const CustomerEquipmentList = ({
                 key={index}
                 onClick={() => openCustomerEquipmentDetails(unit)}
                 sx={{ cursor: "pointer" }}
+                hover
               >
                 <TableCell align="left" sx={defaultBodyTableCell}>
                   {unit.equipmentName}
