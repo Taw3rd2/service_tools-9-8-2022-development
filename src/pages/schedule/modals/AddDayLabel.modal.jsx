@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { ToastContext } from "../../../context/toastContext";
 
 import { createUnNamedDocument } from "../../../firebase/firestore.utils";
 
@@ -19,6 +20,7 @@ import {
 import { ArrowUpward, Close } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const modalStyle = {
   position: "absolute",
@@ -37,6 +39,7 @@ const AddDayLabel = ({
   closeAddDayLabelModal,
   calendarDateSelected,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const [technicians, setTechnicians] = useState([]);
@@ -61,9 +64,31 @@ const AddDayLabel = ({
       locationName,
       tech,
     };
-    createUnNamedDocument(collection(db, "calLabel"), newLabel).then(() =>
-      closeAddDayLabelModal()
-    );
+    createUnNamedDocument(collection(db, "calLabel"), newLabel)
+      .then(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "SUCCESS",
+            title: "Day Label",
+            message: "Day label added to the cloud",
+          },
+        });
+        closeAddDayLabelModal();
+      })
+      .catch((error) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "ERROR",
+            title: "Day Label",
+            message: "Error submitting label information",
+          },
+        });
+        console.log("Firebase error: ", error);
+      });
   };
 
   return (

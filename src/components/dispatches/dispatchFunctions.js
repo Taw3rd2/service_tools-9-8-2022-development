@@ -6,6 +6,8 @@ import { setDateToZeroHours } from "../../utilities/dateUtils";
 export const submitDispatchToFirestore = (
   customer,
   dispatch,
+  activateSuccessNotification,
+  activateFailureNotification,
   closeModalOne
 ) => {
   const db = getFirestore();
@@ -47,8 +49,14 @@ export const submitDispatchToFirestore = (
     };
 
     createNamedDocument(doc(db, "events", techLeadGeneratedId), newDispatch)
-      .then(() => closeModalOne())
-      .catch((error) => console.log("error: ", error));
+      .then(() => {
+        activateSuccessNotification();
+        closeModalOne();
+      })
+      .catch((error) => {
+        activateFailureNotification();
+        console.log("error: ", error);
+      });
   } else {
     const docForhelperId = doc(collection(db, "events"));
     const techHelperGeneratedId = docForhelperId.id;
@@ -127,7 +135,13 @@ export const submitDispatchToFirestore = (
           newhelperDispatch
         )
       )
-      .then(() => closeModalOne())
-      .catch((error) => console.log("error: ", error));
+      .then(() => {
+        activateSuccessNotification();
+        closeModalOne();
+      })
+      .catch((error) => {
+        activateFailureNotification();
+        console.log("error: ", error);
+      });
   }
 };

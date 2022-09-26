@@ -1,15 +1,19 @@
+import { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
+import { updateCustomer } from "../customerInformationFunctions";
 import { ArrowUpward, Close, DeleteForever } from "@mui/icons-material";
 import { Checkbox, TextField } from "@mui/material";
-import { useState } from "react";
 
 import "../../../global_style/style.css";
-import { updateCustomer } from "../customerInformationFunctions";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const EditCustomerDetails = ({
   customer,
   openDeleteCustomer,
   closeModalOne,
 }) => {
+  const { dispatch } = useContext(ToastContext);
+
   const [lastNameError, setLastNameError] = useState(false);
   const [customerValues, setCustomerValues] = useState({
     billingiscommercial: customer.billingiscommercial
@@ -52,8 +56,38 @@ const EditCustomerDetails = ({
       return;
     } else {
       setLastNameError(false);
-      updateCustomer(customer, customerValues, closeModalOne);
+      updateCustomer(
+        customer,
+        customerValues,
+        activateUpdateSuccessNotification,
+        activateUpdateFailureNotification,
+        closeModalOne
+      );
     }
+  };
+
+  const activateUpdateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Update Customer Information",
+        message: "Customer information updated in the cloud",
+      },
+    });
+  };
+
+  const activateUpdateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Update Customer Information",
+        message: "There was an error updating",
+      },
+    });
   };
 
   return (

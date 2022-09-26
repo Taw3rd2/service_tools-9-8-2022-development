@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getFirestore, collection, doc } from "firebase/firestore";
+import { ToastContext } from "../../../context/toastContext";
 
 import {
   createUnNamedDocument,
@@ -19,6 +20,7 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const style = {
   position: "absolute",
@@ -37,6 +39,7 @@ const Dispatcher = ({
   closeDispatcherModal,
   dispatcher,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const [name, setName] = useState(dispatcher ? dispatcher.name : "");
@@ -46,13 +49,57 @@ const Dispatcher = ({
     const data = { name };
     if (dispatcher) {
       console.log("dispatcher name: ", name);
-      updateDocument(doc(db, "dispatchers", dispatcher.id), data).then(() => {
-        closeDispatcherModal();
-      });
+      updateDocument(doc(db, "dispatchers", dispatcher.id), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Update Dispatcher",
+              message: "Update Dispatcher in the cloud",
+            },
+          });
+          closeDispatcherModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Update Dispatcher",
+              message: "There was a error updating",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     } else {
-      createUnNamedDocument(collection(db, "dispatchers"), data).then(() => {
-        closeDispatcherModal();
-      });
+      createUnNamedDocument(collection(db, "dispatchers"), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Create Dispatcher",
+              message: "Created new dispatcher in the cloud",
+            },
+          });
+          closeDispatcherModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Create Dispatcher",
+              message: "There was an error creating",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     }
   };
 

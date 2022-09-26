@@ -5,6 +5,7 @@ import CustomerInformation from "../../components/customer_information/CustomerI
 import CustomerSearch from "../../components/customer_search/CustomerSearch.component";
 import NavigationButtons from "../../components/navigation_buttons/NavigationButtons.component";
 import Spinner from "../../components/spinner/Spinner";
+import Toast from "../../components/basic_components/toast/Toast";
 import CustomerNotesList from "../../components/customer_notes/list/CustomerNotesList";
 
 import "../../global_style/style.css";
@@ -568,6 +569,7 @@ const HomePage = () => {
 
   return (
     <div className="homePage">
+      <Toast />
       <div className="homepageTopRow">
         <div className="homepageTopLeft">
           <CustomerSearch

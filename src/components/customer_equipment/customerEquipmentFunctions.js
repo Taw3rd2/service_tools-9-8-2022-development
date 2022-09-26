@@ -31,6 +31,8 @@ export const deleteEquipmentGalleryImage = async (
   customer,
   selectedEquipment,
   selectedImage,
+  activateDeleteCompletionNotification,
+  activateDeleteFailureNotification,
   closeImageViewer,
   closeDelete
 ) => {
@@ -47,27 +49,39 @@ export const deleteEquipmentGalleryImage = async (
     await updateDoc(documentReference, {
       equipmentImageFileName: deleteField(),
       equipmentImageDownloadUrl: deleteField(),
-    }).then(() => {
-      removeImageFromStorage(selectedImage.imageName);
-      closeImageViewer();
-      closeDelete();
-    });
+    })
+      .then(() => {
+        removeImageFromStorage(selectedImage.imageName);
+        activateDeleteCompletionNotification();
+        closeImageViewer();
+        closeDelete();
+      })
+      .catch((error) => {
+        activateDeleteFailureNotification();
+        console.log("Image Delete Error: ", error);
+      });
   } else {
     await updateDoc(documentReference, {
       equipmentGallery: arrayRemove(selectedImage),
     })
       .then(() => {
         removeImageFromStorage(selectedImage.imageName);
+        activateDeleteCompletionNotification();
         closeImageViewer();
         closeDelete();
       })
-      .catch((error) => console.log("error: ", error));
+      .catch((error) => {
+        activateDeleteFailureNotification();
+        console.log("error: ", error);
+      });
   }
 };
 
 export const deleteCustomerEquipment = (
   customer,
   selectedEquipment,
+  activateDeleteCompletionNotification,
+  activateDeleteFailureNotification,
   closeDetails,
   closeDelete
 ) => {
@@ -88,10 +102,12 @@ export const deleteCustomerEquipment = (
   );
   deleteDocument(documentReference)
     .then(() => {
+      activateDeleteCompletionNotification();
       closeDetails();
       closeDelete();
     })
     .catch((error) => {
+      activateDeleteFailureNotification();
       console.log("Firebase Error: ", error);
     });
 };

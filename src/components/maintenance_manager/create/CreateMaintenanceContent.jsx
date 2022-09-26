@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
 import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
 
@@ -13,8 +14,11 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
 import { Close, AddCircleOutline } from "@mui/icons-material";
 import { defaultTableButton } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
+  const { dispatch } = useContext(ToastContext);
+
   const equipment = useSyncedNestedCollection(
     "customers",
     customer.id,
@@ -63,9 +67,35 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
         selectedEquipment,
         maintenanceValues,
         equipment,
+        activateSuccessNotification,
+        activateFailureNotification,
         closeModalTwo
       );
     }
+  };
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Create Maintenance",
+        message: "Equipment maintenance added to the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Create Maintenance",
+        message: "There was an error creating",
+      },
+    });
   };
 
   return (

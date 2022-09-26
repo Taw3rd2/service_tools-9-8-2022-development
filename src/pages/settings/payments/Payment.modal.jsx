@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getFirestore, collection, doc } from "firebase/firestore";
+import { ToastContext } from "../../../context/toastContext";
 
 import {
   createUnNamedDocument,
@@ -19,6 +20,7 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const style = {
   position: "absolute",
@@ -33,6 +35,7 @@ const style = {
 };
 
 const Payment = ({ isPaymentModalOpen, closePaymentModal, payment }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const [item, setItem] = useState(payment ? payment.item : "");
@@ -42,13 +45,57 @@ const Payment = ({ isPaymentModalOpen, closePaymentModal, payment }) => {
     const data = { item };
     if (payment) {
       console.log("payment item: ", item);
-      updateDocument(doc(db, "payments", payment.id), data).then(() => {
-        closePaymentModal();
-      });
+      updateDocument(doc(db, "payments", payment.id), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Update Payment",
+              message: "Payment items updated in the cloud",
+            },
+          });
+          closePaymentModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Update Payment",
+              message: "There was an error updating",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     } else {
-      createUnNamedDocument(collection(db, "payments"), data).then(() => {
-        closePaymentModal();
-      });
+      createUnNamedDocument(collection(db, "payments"), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Add Payment Item",
+              message: "Payment items added in the cloud",
+            },
+          });
+          closePaymentModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Adde Payment Item",
+              message: "There was a error adding payment item",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     }
   };
 

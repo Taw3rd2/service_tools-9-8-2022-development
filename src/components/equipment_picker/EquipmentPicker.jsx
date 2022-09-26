@@ -29,11 +29,9 @@ const EquipmentPicker = ({
         <Grid2 container spacing={2}>
           <Grid2 xs={12}>
             <Typography variant="h4">
-              There is no equipment to apply a warranty to.
+              There is no equipment to apply.
             </Typography>
-            <Typography variant="h4">
-              Please add equipment, then attach the warranty.
-            </Typography>
+            <Typography variant="h4">Please add equipment.</Typography>
           </Grid2>
         </Grid2>
       ) : (

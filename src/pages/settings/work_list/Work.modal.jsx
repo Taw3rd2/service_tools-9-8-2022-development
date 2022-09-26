@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getFirestore, collection, doc } from "firebase/firestore";
+import { ToastContext } from "../../../context/toastContext";
 
 import {
   createUnNamedDocument,
@@ -19,6 +20,7 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const style = {
   position: "absolute",
@@ -33,6 +35,7 @@ const style = {
 };
 
 const Work = ({ isWorkModalOpen, closeWorkModal, work }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const [item, setItem] = useState(work ? work.item : "");
@@ -43,13 +46,57 @@ const Work = ({ isWorkModalOpen, closeWorkModal, work }) => {
     const data = { item, shorthand };
     if (work) {
       console.log("workList item: ", data);
-      updateDocument(doc(db, "workList", work.id), data).then(() => {
-        closeWorkModal();
-      });
+      updateDocument(doc(db, "workList", work.id), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Update Work List Item",
+              message: "Work list item updated in the cloud",
+            },
+          });
+          closeWorkModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Update Work List Item",
+              message: "There was an issue updating",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     } else {
-      createUnNamedDocument(collection(db, "workList"), data).then(() => {
-        closeWorkModal();
-      });
+      createUnNamedDocument(collection(db, "workList"), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Add Work list Item",
+              message: "Added work list item to the cloud",
+            },
+          });
+          closeWorkModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Add Work List Item",
+              message: "There was a error adding item",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     }
   };
 

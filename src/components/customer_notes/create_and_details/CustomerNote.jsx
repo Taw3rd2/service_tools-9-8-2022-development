@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
 import { BasicSelect } from "../../basic_components/select/BasicSelect";
 
@@ -21,6 +22,7 @@ const CustomerNote = ({
   closeModalOne,
   openDeleteCustomerNote,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const dispatchers = useSyncedCollection("dispatchers");
   const types = [
     { name: "Phone", id: 0 },
@@ -74,12 +76,44 @@ const CustomerNote = ({
           customer,
           selectedNote.id,
           updatedNote,
+          activateSuccessNotification,
+          activateFailureNotification,
           closeModalOne
         );
       }
     } else {
-      submitNoteToFirestore(customer, customerNoteValues, closeModalOne);
+      submitNoteToFirestore(
+        customer,
+        customerNoteValues,
+        activateSuccessNotification,
+        activateFailureNotification,
+        closeModalOne
+      );
     }
+  };
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Customer Note",
+        message: "Customer note added in the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Customer Note",
+        message: "There was an error updating",
+      },
+    });
   };
 
   return (

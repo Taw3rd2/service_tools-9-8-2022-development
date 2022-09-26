@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
-import { getFormattedDate } from "../../../utilities/dateUtils";
+import {
+  getFormattedDate,
+  getFormattedDateAndTime,
+} from "../../../utilities/dateUtils";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -23,6 +27,7 @@ import { doc, getFirestore } from "firebase/firestore";
 import { createNamedDocument } from "../../../firebase/firestore.utils";
 
 const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
+  const { dispatch } = useContext(ToastContext);
   const [equipmentValues, setEquipmentValues] = useState({
     equipmentName: "",
     equipmentInstallDate: null,
@@ -67,9 +72,29 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
     );
     createNamedDocument(equipmentDocumentRef, newEquipment)
       .then(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "SUCCESS",
+            title: "Create New Equipment",
+            message: "New equipment added to the customer",
+          },
+        });
         closeModalTwo();
       })
-      .catch((error) => console.log("Firestore Error: ", error));
+      .catch((error) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "ERROR",
+            title: "Create New Equipment",
+            message: "There was a problem adding the equipment",
+          },
+        });
+        console.log("Firestore Error: ", error);
+      });
   };
 
   const handleEquipmentChange = (prop) => (event) => {

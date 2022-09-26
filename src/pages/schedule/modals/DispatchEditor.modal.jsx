@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { collection, doc, getFirestore, onSnapshot } from "firebase/firestore";
 import {
@@ -9,13 +9,18 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import { setDateToZeroHours } from "../../../utilities/dateUtils";
+import {
+  getFormattedDateAndTime,
+  setDateToZeroHours,
+} from "../../../utilities/dateUtils";
 import {
   compareEvents,
   compareHelper,
   compareLead,
   finalUpdate,
 } from "../../../utilities/scheduleUtils";
+
+import { ToastContext } from "../../../context/toastContext";
 
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
@@ -58,6 +63,7 @@ const DispatchEditor = ({
   openJobCompletedModal,
   openDeleteDispatchModal,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
   const navigate = useNavigate();
 
@@ -278,10 +284,31 @@ const DispatchEditor = ({
           console.log("there is no extra dispatch to change");
           // update the original dispatch only
           const eventToUpdate = finalUpdate(updatedDispatch);
-          updateDocument(
-            doc(db, "events", eventToUpdate.id),
-            eventToUpdate
-          ).then(() => closeDispatchEditorModal());
+          updateDocument(doc(db, "events", eventToUpdate.id), eventToUpdate)
+            .then(() => {
+              dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                  id: getFormattedDateAndTime(new Date()),
+                  type: "SUCCESS",
+                  title: "Update Dispatch",
+                  message: "Updated the dispatch in the cloud",
+                },
+              });
+              closeDispatchEditorModal();
+            })
+            .catch((error) => {
+              dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                  id: getFormattedDateAndTime(new Date()),
+                  type: "ERROR",
+                  title: "Update Dispatch",
+                  message: "There was an error updating",
+                },
+              });
+              console.log("Firebase error: ", error);
+            });
         } else {
           console.log("there is a extra dispatch to update");
           //update the first dispatch
@@ -300,8 +327,40 @@ const DispatchEditor = ({
           updateDocument(
             doc(db, "events", secondEventToUpdate.id),
             secondEventToUpdate
-          ).then(() => closeDispatchEditorModal());
-          //updateDispatchSuccessIndicator();
+          )
+            .then(() => {
+              dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                  id: getFormattedDateAndTime(new Date()),
+                  type: "SUCCESS",
+                  title: "Update Dispatch",
+                  message: "Updated the dispatch in the cloud",
+                },
+              });
+              closeDispatchEditorModal();
+            })
+            .catch((error) => {
+              dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                  id: getFormattedDateAndTime(new Date()),
+                  type: "ERROR",
+                  title: "Update Dispatch",
+                  message: "There was an error updating",
+                },
+              });
+              console.log("Firebase error: ", error);
+            });
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Update Dispatch",
+              message: "Updated the dispatch in the cloud",
+            },
+          });
           closeDispatchEditorModal();
         }
       } else {
@@ -338,16 +397,45 @@ const DispatchEditor = ({
               const eventToDelete = {
                 id: selectedDispatch.extendedProps.techHelperId,
               };
-              deleteDocument(doc(db, "events", eventToDelete.id)).then(() =>
-                console.log("event deleted")
-              );
+              deleteDocument(doc(db, "events", eventToDelete.id)).then(() => {
+                dispatch({
+                  type: "ADD_NOTIFICATION",
+                  payload: {
+                    id: getFormattedDateAndTime(new Date()),
+                    type: "INFO",
+                    title: "Submitted",
+                    message: "Requested a cloud update",
+                  },
+                });
+                console.log("event deleted");
+              });
               const eventWithNoTechHelperId = { ...updatedDispatch };
               eventWithNoTechHelperId.techHelperId = "";
               const changedEvent = finalUpdate(eventWithNoTechHelperId);
-              updateDocument(
-                doc(db, "events", changedEvent.id),
-                changedEvent
-              ).then(() => closeDispatchEditorModal());
+              updateDocument(doc(db, "events", changedEvent.id), changedEvent)
+                .then(() => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "SUCCESS",
+                      title: "Updated Dispatch",
+                      message: "Dispatch updated in the cloud",
+                    },
+                  });
+                  closeDispatchEditorModal();
+                })
+                .catch((error) => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "ERROR",
+                      title: "Updated Dispatch",
+                      message: "There was an error updating",
+                    },
+                  });
+                });
               //updateDispatchSuccessIndicator();
             }
           } else {
@@ -368,10 +456,30 @@ const DispatchEditor = ({
               const eventToUpdate = finalUpdate(newEvent);
 
               //this should be named doc, and named the name we supply it
-              createNamedDocument(
-                doc(db, "events", newEvent.id),
-                eventToUpdate
-              ).then(() => console.log("added event"));
+              createNamedDocument(doc(db, "events", newEvent.id), eventToUpdate)
+                .then(() => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "SUCCESS",
+                      title: "Update Dispatch",
+                      message: "Updated the dispatch in the cloud",
+                    },
+                  });
+                  console.log("added event");
+                })
+                .catch((error) => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "ERROR",
+                      title: "Update Dispatch",
+                      message: "There was a error updating",
+                    },
+                  });
+                });
 
               const originalEvent = { ...updatedDispatch };
               originalEvent.techHelperId = generatedId;
@@ -379,8 +487,31 @@ const DispatchEditor = ({
               updateDocument(
                 doc(db, "events", originalEventToUpdate.id),
                 originalEventToUpdate
-              ).then(() => closeDispatchEditorModal());
-              //updateDispatchSuccessIndicator();
+              )
+                .then(() => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "SUCCESS",
+                      title: "Update Dispatch",
+                      message: "Updated the dispatch in the cloud",
+                    },
+                  });
+                  closeDispatchEditorModal();
+                })
+                .catch((error) => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "ERROR",
+                      title: "Update Dispatch",
+                      message: "There was a error updating",
+                    },
+                  });
+                  console.log("Firestore error: ", error);
+                });
             } else {
               console.log(
                 "techHelper changed to another tech and there is a second dispatch",
@@ -390,7 +521,31 @@ const DispatchEditor = ({
               updateDocument(
                 doc(db, "events", firstEventToUpdate.id),
                 firstEventToUpdate
-              ).then(() => console.log("updated first event"));
+              )
+                .then(() => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "SUCCESS",
+                      title: "Update Dispatch",
+                      message: "Updated the dispatch in the cloud",
+                    },
+                  });
+                  console.log("updated first event");
+                })
+                .catch((error) => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "ERROR",
+                      title: "Update Dispatch",
+                      message: "There was a error updating",
+                    },
+                  });
+                  console.log("Firebase error: ", error);
+                });
 
               let newEvent = { ...updatedDispatch };
               console.log("newEvent: ", newEvent);
@@ -402,8 +557,31 @@ const DispatchEditor = ({
               updateDocument(
                 doc(db, "events", secondEventToUpdate.id),
                 secondEventToUpdate
-              ).then(() => closeDispatchEditorModal());
-              //updateDispatchSuccessIndicator();
+              )
+                .then(() => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "SUCCESS",
+                      title: "Update Dispatch",
+                      message: "Updated the dispatch in the cloud",
+                    },
+                  });
+                  closeDispatchEditorModal();
+                })
+                .catch((error) => {
+                  dispatch({
+                    type: "ADD_NOTIFICATION",
+                    payload: {
+                      id: getFormattedDateAndTime(new Date()),
+                      type: "ERROR",
+                      title: "Update Dispatch",
+                      message: "There was a error updating",
+                    },
+                  });
+                  console.log("Firebase error: ", error);
+                });
             }
           }
         }
@@ -413,11 +591,31 @@ const DispatchEditor = ({
         } else {
           console.log("lead has changed");
           const eventToUpdate = finalUpdate(updatedDispatch);
-          updateDocument(
-            doc(db, "events", eventToUpdate.id),
-            eventToUpdate
-          ).then(() => closeDispatchEditorModal());
-          //updateDispatchSuccessIndicator();
+          updateDocument(doc(db, "events", eventToUpdate.id), eventToUpdate)
+            .then(() => {
+              dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                  id: getFormattedDateAndTime(new Date()),
+                  type: "SUCCESS",
+                  title: "Update Dispatch",
+                  message: "Updated the dispatch in the cloud",
+                },
+              });
+              closeDispatchEditorModal();
+            })
+            .catch((error) => {
+              dispatch({
+                type: "ADD_NOTIFICATION",
+                payload: {
+                  id: getFormattedDateAndTime(new Date()),
+                  type: "ERROR",
+                  title: "Update Dispatch",
+                  message: "There was a error updating",
+                },
+              });
+              console.log("Firebase error: ", error);
+            });
           if (
             selectedDispatch.extendedProps.techHelperId === "" ||
             selectedDispatch.extendedProps.techHelperId === undefined
@@ -437,10 +635,31 @@ const DispatchEditor = ({
             newEvent.techHelperId = updatedDispatch.id;
             const eventToUpdate = finalUpdate(newEvent);
             console.log("eventToUpdate: ", eventToUpdate);
-            updateDocument(
-              doc(db, "events", eventToUpdate.id),
-              eventToUpdate
-            ).then(() => closeDispatchEditorModal());
+            updateDocument(doc(db, "events", eventToUpdate.id), eventToUpdate)
+              .then(() => {
+                dispatch({
+                  type: "ADD_NOTIFICATION",
+                  payload: {
+                    id: getFormattedDateAndTime(new Date()),
+                    type: "SUCCESS",
+                    title: "Update Dispatch",
+                    message: "Updated the dispatch in the cloud",
+                  },
+                });
+                closeDispatchEditorModal();
+              })
+              .catch((error) => {
+                dispatch({
+                  type: "ADD_NOTIFICATION",
+                  payload: {
+                    id: getFormattedDateAndTime(new Date()),
+                    type: "ERROR",
+                    title: "Update Dispatch",
+                    message: "There was a error updating",
+                  },
+                });
+                console.log("Firebase error: ", error);
+              });
             // updateDispatchSuccessIndicator();
           }
         }

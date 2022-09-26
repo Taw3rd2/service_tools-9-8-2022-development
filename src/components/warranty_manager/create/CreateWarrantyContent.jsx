@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
 import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
 import { addWarranty } from "../warrantyFunctions";
@@ -11,8 +12,10 @@ import { AddCircleOutline, Close } from "@mui/icons-material";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
+  const { dispatch } = useContext(ToastContext);
   const equipment = useSyncedNestedCollection(
     "customers",
     customer.id,
@@ -65,9 +68,35 @@ const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
         selectedEquipment,
         warrantyValues,
         equipment,
+        activateSuccessNotification,
+        activateFailureNotification,
         closeModalTwo
       );
     }
+  };
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Create Warranty",
+        message: "Warranty added in the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Create Warranty",
+        message: "There was an error creating",
+      },
+    });
   };
 
   return (

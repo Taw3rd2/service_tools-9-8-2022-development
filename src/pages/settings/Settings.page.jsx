@@ -9,6 +9,7 @@ import Technician from "./technicians/Technician.modal";
 import TechnicianList from "./technicians/TechnicianList";
 import Work from "./work_list/Work.modal";
 import WorkList from "./work_list/WorkList";
+import Toast from "../../components/basic_components/toast/Toast";
 
 import "../../global_style/style.css";
 
@@ -72,6 +73,7 @@ const Settings = () => {
 
   return (
     <div className="settings">
+      <Toast />
       <div className="settingsTopRow">
         <div className="settingsTopLeft">
           <DispatcherList

@@ -8,6 +8,8 @@ import {
 export const submitNoteToFirestore = (
   customer,
   note,
+  activateSuccessNotification,
+  activateFailureNotification,
   closeCustomerNoteModal
 ) => {
   const db = getFirestore();
@@ -15,25 +17,41 @@ export const submitNoteToFirestore = (
     collection(db, "customers", customer.id, "Activity"),
     note
   )
-    .then(() => closeCustomerNoteModal())
-    .catch((error) => console.log("firebase error: ", error));
+    .then(() => {
+      activateSuccessNotification();
+      closeCustomerNoteModal();
+    })
+    .catch((error) => {
+      activateFailureNotification();
+      console.log("firebase error: ", error);
+    });
 };
 
 export const updateNoteToFirestore = (
   customer,
   noteId,
   note,
+  activateSuccessNotification,
+  activateFailureNotification,
   closeCustomerNote
 ) => {
   const db = getFirestore();
   updateDocument(doc(db, "customers", customer.id, "Activity", noteId), note)
-    .then(() => closeCustomerNote())
-    .catch((error) => console.log("firebase error", error));
+    .then(() => {
+      activateSuccessNotification();
+      closeCustomerNote();
+    })
+    .catch((error) => {
+      activateFailureNotification();
+      console.log("firebase error", error);
+    });
 };
 
 export const deleteCustomerNote = (
   customer,
   selectedNote,
+  activateSuccessNotification,
+  activateFailureNotification,
   closeDetails,
   closeDelete
 ) => {
@@ -41,8 +59,12 @@ export const deleteCustomerNote = (
 
   deleteDocument(doc(db, "customers", customer.id, "Activity", selectedNote.id))
     .then(() => {
+      activateSuccessNotification();
       closeDetails();
       closeDelete();
     })
-    .catch((error) => console.log("Firestore error: ", error));
+    .catch((error) => {
+      activateFailureNotification();
+      console.log("Firestore error: ", error);
+    });
 };

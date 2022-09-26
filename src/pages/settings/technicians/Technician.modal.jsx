@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getFirestore, collection, doc } from "firebase/firestore";
+import { ToastContext } from "../../../context/toastContext";
 
 import {
   createUnNamedDocument,
@@ -21,6 +22,7 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const style = {
   position: "absolute",
@@ -39,6 +41,7 @@ const Technician = ({
   closeTechnicianModal,
   technician,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const [color, setColor] = useState(technician ? technician.color : "");
@@ -53,13 +56,57 @@ const Technician = ({
     const data = { color, email, name };
     if (technician) {
       console.log("technician: ", data);
-      updateDocument(doc(db, "technicians", technician.id), data).then(() => {
-        closeTechnicianModal();
-      });
+      updateDocument(doc(db, "technicians", technician.id), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Update Technician",
+              message: "Updated technician info in the cloud",
+            },
+          });
+          closeTechnicianModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Update Technician",
+              message: "There was an error updating",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     } else {
-      createUnNamedDocument(collection(db, "technicians"), data).then(() => {
-        closeTechnicianModal();
-      });
+      createUnNamedDocument(collection(db, "technicians"), data)
+        .then(() => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "SUCCESS",
+              title: "Add Technician",
+              message: "Added technician to the cloud",
+            },
+          });
+          closeTechnicianModal();
+        })
+        .catch((error) => {
+          dispatch({
+            type: "ADD_NOTIFICATION",
+            payload: {
+              id: getFormattedDateAndTime(new Date()),
+              type: "ERROR",
+              title: "Add Technician",
+              message: "There was an error adding technician",
+            },
+          });
+          console.log("Firebase error: ", error);
+        });
     }
   };
   return (

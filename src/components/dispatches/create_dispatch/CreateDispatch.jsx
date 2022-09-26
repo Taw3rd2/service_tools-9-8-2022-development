@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useSyncedCollection } from "../../../firebase/firestore.utils";
-import { setDateToZeroHours } from "../../../utilities/dateUtils";
+import { ToastContext } from "../../../context/toastContext";
+import {
+  setDateToZeroHours,
+  getFormattedDateAndTime,
+} from "../../../utilities/dateUtils";
 
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -17,6 +21,7 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 import { submitDispatchToFirestore } from "../dispatchFunctions";
 
 const CreateDispatch = ({ customer, closeModalOne }) => {
+  const { dispatch } = useContext(ToastContext);
   const [dispatchData, setDispatchData] = useState({
     altPhoneName: customer.altPhoneName ? customer.altPhoneName : "",
     altphone: customer.altphone ? customer.altphone : "",
@@ -67,7 +72,46 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
 
   const submitDispatch = (event) => {
     event.preventDefault();
-    submitDispatchToFirestore(customer, dispatchData, closeModalOne);
+    submitDispatchToFirestore(
+      customer,
+      dispatchData,
+      activateSuccessNotification,
+      activateFailureNotification,
+      closeModalOne
+    );
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(dispatchData.start),
+        type: "INFO",
+        title: "Submitted",
+        message: "Requested a cloud update",
+      },
+    });
+  };
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Create Dispatch",
+        message: "Dispatch added in the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Create Dispatch",
+        message: "There was an error adding the dispatch.",
+      },
+    });
   };
 
   //   const localInvoiceId = invoiceId !== undefined ? invoiceId : "";

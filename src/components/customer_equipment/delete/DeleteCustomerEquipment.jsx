@@ -1,11 +1,10 @@
-import React from "react";
-
+import { useContext } from "react";
+import { ToastContext } from "../../../context/toastContext";
 import { deleteCustomerEquipment } from "../customerEquipmentFunctions";
-
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, Typography } from "@mui/material";
 import { Close, DeleteForever } from "@mui/icons-material";
-import { defaultRedButton, defaultTableButton } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
+
+import "../../../global_style/style.css";
 
 const DeleteCustomerEquipment = ({
   customer,
@@ -14,46 +13,67 @@ const DeleteCustomerEquipment = ({
   closeDelete,
 }) => {
   console.log("selectedEquipment: ", selectedEquipment);
+  const { dispatch } = useContext(ToastContext);
+
+  const activateDeleteCompletionNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Equipment Delete",
+        message: "Equipment was deleted from the cloud",
+      },
+    });
+  };
+
+  const activateDeleteFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Equipment Delete",
+        message: "There was an error deleting the equipment",
+      },
+    });
+  };
+
   return (
-    <div>
-      <Grid2 container spacing={2}>
-        <Grid2 xs={12}>
-          <Typography variant="body1" gutterBottom>
-            {`Unrecoverable Delete!`}
-          </Typography>
-        </Grid2>
-      </Grid2>
-      <Grid2
-        container
-        alignItems="flex-start"
-        justifyContent="flex-end"
-        direction="row"
-      >
-        <Button
-          variant="outlined"
-          startIcon={<DeleteForever />}
-          sx={defaultRedButton}
+    <div className="container">
+      <div className="deleteWarningText">Unrecoverable Delete</div>
+      <ul>
+        <li>All equipment information</li>
+        <li>All equipment warranty information</li>
+        <li>All equipment pictures</li>
+      </ul>
+      <div className="buttonBar">
+        <button
+          type="button"
+          className="deleteButton"
           onClick={() =>
             deleteCustomerEquipment(
               customer,
               selectedEquipment,
+              activateDeleteCompletionNotification,
+              activateDeleteFailureNotification,
               closeDetails,
               closeDelete
             )
           }
         >
-          Confirm Unrecoverable Delete
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<Close />}
-          sx={defaultTableButton}
+          <DeleteForever />
+          <span className="iconSeperation">Confirm Unrecoverable Delete</span>
+        </button>
+        <button
+          type="button"
+          className="standardButton"
           onClick={() => closeDelete()}
         >
-          Close
-        </Button>
-      </Grid2>
+          <Close />
+          <span className="iconSeperation">Close</span>
+        </button>
+      </div>
     </div>
   );
 };

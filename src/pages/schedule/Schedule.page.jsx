@@ -4,6 +4,7 @@ import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 
 import Calendar from "./calendar/Calendar.view";
 import Spinner from "../../components/spinner/Spinner";
+import Toast from "../../components/basic_components/toast/Toast";
 
 import { Tab, Tabs } from "@mui/material";
 
@@ -153,6 +154,7 @@ const Schedule = () => {
 
   return (
     <div style={{ width: "100%" }}>
+      <Toast />
       <div style={{ borderBottom: 2, borderColor: "divider" }}>
         <Tabs
           value={tabValue}

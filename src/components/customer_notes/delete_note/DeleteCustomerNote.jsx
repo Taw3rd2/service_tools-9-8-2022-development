@@ -1,5 +1,8 @@
+import { useContext } from "react";
+import { ToastContext } from "../../../context/toastContext";
 import { deleteCustomerNote } from "../customerNoteFunctions";
 import { Close, DeleteForever } from "@mui/icons-material";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const DeleteCustomerNote = ({
   customer,
@@ -7,6 +10,31 @@ const DeleteCustomerNote = ({
   closeDetails,
   closeDelete,
 }) => {
+  const { dispatch } = useContext(ToastContext);
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Delete Customer Note",
+        message: "Customer note was removed from the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Delete Customer Note",
+        message: "There was an error removing the note.",
+      },
+    });
+  };
   return (
     <div className="container">
       <div className="deleteWarningText">Unrecoverable Delete!</div>
@@ -19,6 +47,8 @@ const DeleteCustomerNote = ({
               deleteCustomerNote(
                 customer,
                 selectedNote,
+                activateSuccessNotification,
+                activateFailureNotification,
                 closeDetails,
                 closeDelete
               )

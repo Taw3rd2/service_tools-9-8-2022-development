@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 
@@ -8,6 +9,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { ArrowUpward, Close } from "@mui/icons-material";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const EditSingleField = ({
   customerId,
@@ -17,6 +19,8 @@ const EditSingleField = ({
   fieldValue,
   closeEditSingleField,
 }) => {
+  const { dispatch } = useContext(ToastContext);
+
   const defaultFieldValue =
     fieldKey === "equipmentInstallDate" ? new Date() : "";
 
@@ -40,9 +44,27 @@ const EditSingleField = ({
 
     await updateDoc(documentReference, { [fieldKey]: val })
       .then(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "SUCCESS",
+            title: "Field Update",
+            message: "The equipment field was updated",
+          },
+        });
         closeEditSingleField();
       })
       .catch((error) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "ERROR",
+            title: "Field Update",
+            message: "The equipment field was not updated",
+          },
+        });
         console.log("Firebase error: ", error);
       });
   };

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { collection, doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { updateDocument } from "../../../firebase/firestore.utils";
+import { ToastContext } from "../../../context/toastContext";
 
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
@@ -19,6 +20,7 @@ import {
 import { ArrowUpward, Close } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const modalStyle = {
   position: "absolute",
@@ -38,6 +40,7 @@ const EditDayLabel = ({
   calendarDateSelected,
   selectedDayLabel,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const [technicians, setTechnicians] = useState([]);
@@ -66,9 +69,31 @@ const EditDayLabel = ({
       locationName,
       tech,
     };
-    updateDocument(doc(db, "calLabel", selectedDayLabel.id), updatedLabel).then(
-      () => closeEditDayLabelModal()
-    );
+    updateDocument(doc(db, "calLabel", selectedDayLabel.id), updatedLabel)
+      .then(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "SUCCESS",
+            title: "Update Day Label",
+            message: "Updated the day label in the cloud",
+          },
+        });
+        closeEditDayLabelModal();
+      })
+      .catch((error) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "ERROR",
+            title: "Update Day Label",
+            message: "There was an error updating",
+          },
+        });
+        console.log("Firestore error: ", error);
+      });
   };
 
   return (

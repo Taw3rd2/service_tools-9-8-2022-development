@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
 import { updateMaintenance } from "../maintenanceFunctions";
 
@@ -9,6 +10,7 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Button, InputAdornment, TextField } from "@mui/material";
 import { Close, DeleteForever, Update } from "@mui/icons-material";
 import { defaultRedButton, defaultTableButton } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const MaintenanceDetailsContent = ({
   customer,
@@ -16,6 +18,7 @@ const MaintenanceDetailsContent = ({
   openDeleteMaintenance,
   closeModalTwo,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const [salePrice, setSalePrice] = useState(
     selectedMaintenance.salePrice ? selectedMaintenance.salePrice : ""
   );
@@ -53,7 +56,37 @@ const MaintenanceDetailsContent = ({
       equipmentSerial: selectedMaintenance.equipmentSerial,
     };
 
-    updateMaintenance(customer, maintenanceValues, closeModalTwo);
+    updateMaintenance(
+      customer,
+      maintenanceValues,
+      activateSuccessNotification,
+      activateFailureNotification,
+      closeModalTwo
+    );
+  };
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Update Maintenance",
+        message: "Maintenance updated in the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Update Mainteance",
+        message: "There was an error updating",
+      },
+    });
   };
 
   return (

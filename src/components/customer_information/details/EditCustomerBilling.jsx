@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { TextField } from "@mui/material";
-
-import "../../../global_style/style.css";
-import { ArrowUpward, Close } from "@mui/icons-material";
+import { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 import { updateCustomer } from "../customerInformationFunctions";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
+
+import { TextField } from "@mui/material";
+import { ArrowUpward, Close } from "@mui/icons-material";
+import "../../../global_style/style.css";
 
 const EditCustomerBilling = ({ customer, closeModalOne }) => {
+  const { dispatch } = useContext(ToastContext);
   const [customerValues, setCustomerValues] = useState({
     billingorg: customer.billingorg ? customer.billingorg : "",
     billingPrimaryName: customer.billingPrimaryName
@@ -50,7 +53,37 @@ const EditCustomerBilling = ({ customer, closeModalOne }) => {
 
   const submitBillingChanges = (event) => {
     event.preventDefault();
-    updateCustomer(customer, customerValues, closeModalOne);
+    updateCustomer(
+      customer,
+      customerValues,
+      activateUpdateSuccessNotification,
+      activateUpdateFailureNotification,
+      closeModalOne
+    );
+  };
+
+  const activateUpdateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Update Customer Billing",
+        message: "Customer billing updated in the cloud",
+      },
+    });
+  };
+
+  const activateUpdateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Update Customer Billing",
+        message: "There was an error updating",
+      },
+    });
   };
 
   return (

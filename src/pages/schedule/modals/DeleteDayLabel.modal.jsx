@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ToastContext } from "../../../context/toastContext";
 import { getFirestore, doc } from "firebase/firestore";
 
 import { deleteDocument } from "../../../firebase/firestore.utils";
@@ -8,6 +9,7 @@ import { Backdrop, Button, Fade, Modal, Typography } from "@mui/material";
 import { Close, Delete } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const modalStyle = {
   position: "absolute",
@@ -26,13 +28,35 @@ const DeleteDayLabel = ({
   closeDeleteDayLabelModal,
   selectedDayLabel,
 }) => {
-  console.log(selectedDayLabel);
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   const removeDayLabel = () => {
-    deleteDocument(doc(db, "calLabel", selectedDayLabel.id)).then(() =>
-      closeDeleteDayLabelModal()
-    );
+    deleteDocument(doc(db, "calLabel", selectedDayLabel.id))
+      .then(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "SUCCESS",
+            title: "Delete Day Label",
+            message: "Removed the day label from the cloud",
+          },
+        });
+        closeDeleteDayLabelModal();
+      })
+      .catch((error) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "ERROR",
+            title: "Delete Day Label",
+            message: "There was an error removing the label",
+          },
+        });
+        console.log("Firestore error: ", error);
+      });
   };
 
   return (

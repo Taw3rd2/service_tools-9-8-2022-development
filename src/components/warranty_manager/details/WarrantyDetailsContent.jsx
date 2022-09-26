@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 
 import { updateWarranty } from "../warrantyFunctions";
 
@@ -8,7 +9,10 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Button, TextField } from "@mui/material";
 import { Close, DeleteForever, Update } from "@mui/icons-material";
-import { getFormattedDate } from "../../../utilities/dateUtils";
+import {
+  getFormattedDate,
+  getFormattedDateAndTime,
+} from "../../../utilities/dateUtils";
 import { defaultRedButton, defaultTableButton } from "../../../theme/Theme";
 
 const WarrantyDetailsContent = ({
@@ -17,6 +21,7 @@ const WarrantyDetailsContent = ({
   openDeleteWarranty,
   closeModalTwo,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const [jobNumber, setJobNumber] = useState(
     selectedWarranty ? selectedWarranty.jobNumber : ""
   );
@@ -55,7 +60,37 @@ const WarrantyDetailsContent = ({
       },
     };
 
-    updateWarranty(customer, warrantyValues, closeModalTwo);
+    updateWarranty(
+      customer,
+      warrantyValues,
+      activateSuccessNotification,
+      activateFailureNotification,
+      closeModalTwo
+    );
+  };
+
+  const activateSuccessNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Warranty Update",
+        message: "Warranty updated in the cloud",
+      },
+    });
+  };
+
+  const activateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Warranty Update",
+        message: "There was an error updating",
+      },
+    });
   };
 
   return (

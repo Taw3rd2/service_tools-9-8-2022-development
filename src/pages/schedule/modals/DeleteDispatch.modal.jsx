@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { deleteDoc, doc, getFirestore } from "firebase/firestore";
+import { ToastContext } from "../../../context/toastContext";
 
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Backdrop, Button, Fade, Modal, Typography } from "@mui/material";
 import { Close, Delete } from "@mui/icons-material";
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const modalStyle = {
   position: "absolute",
@@ -25,16 +27,39 @@ const DeleteDispatch = ({
   closeDispatchEditorModal,
   selectedDispatch,
 }) => {
+  const { dispatch } = useContext(ToastContext);
   const db = getFirestore();
 
   //const dispatchesToDelete = [selectedDispatch.id];
 
   const removeDispatchs = async () => {
     await removeSecondDispatch();
-    await deleteDoc(doc(db, "events", selectedDispatch.id)).then(() => {
-      closeDispatchEditorModal();
-      closeDeleteDispatchModal();
-    });
+    await deleteDoc(doc(db, "events", selectedDispatch.id))
+      .then(() => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "SUCCESS",
+            title: "Delete Dispatch",
+            message: "Removed the dispatch from the cloud",
+          },
+        });
+        closeDispatchEditorModal();
+        closeDeleteDispatchModal();
+      })
+      .catch((error) => {
+        dispatch({
+          type: "ADD_NOTIFICATION",
+          payload: {
+            id: getFormattedDateAndTime(new Date()),
+            type: "ERROR",
+            title: "Delete Dispatch",
+            message: "There was a error removing the dispatch",
+          },
+        });
+        console.log("Firestore error: ", error);
+      });
   };
 
   const removeSecondDispatch = async () => {

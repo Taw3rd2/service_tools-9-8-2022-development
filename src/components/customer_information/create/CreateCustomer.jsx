@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ToastContext } from "../../../context/toastContext";
 import { addCustomerToFirestore } from "../customerInformationFunctions";
 import "../../../global_style/style.css";
 import { Checkbox, TextField } from "@mui/material";
 import { Close, PersonAdd } from "@mui/icons-material";
+import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const CreateCustomer = ({ closeModalOne }) => {
+  const { dispatch } = useContext(ToastContext);
   const [customerValues, setCustomerValues] = useState({
     cnotes: "",
     squarefootage: "",
@@ -51,7 +54,36 @@ const CreateCustomer = ({ closeModalOne }) => {
 
   const submitCustomer = (event) => {
     event.preventDefault();
-    addCustomerToFirestore(customerValues, closeModalOne);
+    addCustomerToFirestore(
+      customerValues,
+      activateCreateCompletionNotification,
+      activateCreateFailureNotification,
+      closeModalOne
+    );
+  };
+
+  const activateCreateCompletionNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "SUCCESS",
+        title: "Create Customer",
+        message: "Customer has been added to the cloud",
+      },
+    });
+  };
+
+  const activateCreateFailureNotification = () => {
+    dispatch({
+      type: "ADD_NOTIFICATION",
+      payload: {
+        id: getFormattedDateAndTime(new Date()),
+        type: "ERROR",
+        title: "Create Customer",
+        message: "There was an error adding the customer",
+      },
+    });
   };
 
   return (
