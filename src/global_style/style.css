@@ -250,6 +250,19 @@
     padding-left: 16px;
 }
 
+/* NoCustomerLoaded */
+.containerRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding: 8px;
+}
+
+.centerContent {
+    color: teal;
+}
+
 /* Edits */
 .row {
     display: flex;
