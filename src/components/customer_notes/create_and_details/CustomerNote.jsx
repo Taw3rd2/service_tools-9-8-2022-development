@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
-import { BasicSelect } from "../../basic_components/select/BasicSelect";
-
 import {
   submitNoteToFirestore,
   updateNoteToFirestore,
@@ -15,6 +13,13 @@ import {
 } from "../../../utilities/dateUtils";
 import { ArrowUpward, Close, DeleteForever } from "@mui/icons-material";
 import "../../../global_style/style.css";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 const CustomerNote = ({
   customer,
@@ -28,9 +33,6 @@ const CustomerNote = ({
     { name: "Phone", id: 0 },
     { name: "Note", id: 1 },
   ];
-
-  const [isSelectOperatorMenuOpen, setSelectOperatorMenuOpen] = useState(false);
-  const [isSelectTypeMenuOpen, setSelectTypeMenuOpen] = useState(false);
 
   const [customerNoteValues, setCustomerNoteValues] = useState({
     currentTime:
@@ -49,10 +51,10 @@ const CustomerNote = ({
     });
   };
 
-  const handleSelectChange = (prop) => (value) => {
+  const handleSelectDataChange = (prop) => (event) => {
     setCustomerNoteValues({
       ...customerNoteValues,
-      [prop]: value.name,
+      [prop]: event.target.value,
     });
   };
 
@@ -138,27 +140,59 @@ const CustomerNote = ({
           marginTop: "16px",
         }}
       >
-        <BasicSelect
-          isMenuOpen={isSelectOperatorMenuOpen}
-          setMenuOpen={setSelectOperatorMenuOpen}
-          menuItems={dispatchers}
-          item={customerNoteValues.operator}
-          setItem={handleSelectChange("operator")}
-        />
-        <BasicSelect
-          isMenuOpen={isSelectTypeMenuOpen}
-          setMenuOpen={setSelectTypeMenuOpen}
-          menuItems={types}
-          item={customerNoteValues.type}
-          setItem={handleSelectChange("type")}
-        />
+        {dispatchers.length > 0 && (
+          <FormControl fullWidth>
+            <InputLabel id="select-operator-label">Dispatcher</InputLabel>
+            <Select
+              labelId="select-operator-label"
+              id="operator-select"
+              value={customerNoteValues.operator}
+              label="Dispatcher"
+              onChange={handleSelectDataChange("operator")}
+              inputProps={{ tabIndex: "1" }}
+            >
+              {dispatchers
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((dispatcher, index) => (
+                  <MenuItem key={index} value={dispatcher.name}>
+                    {dispatcher.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        )}
+        {dispatchers.length > 0 && (
+          <FormControl fullWidth>
+            <InputLabel id="select-type-label">Note Type</InputLabel>
+            <Select
+              labelId="select-type-label"
+              id="type-select"
+              value={customerNoteValues.type}
+              label="Note Type"
+              onChange={handleSelectDataChange("type")}
+              inputProps={{ tabIndex: "2" }}
+            >
+              {types
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((type, index) => (
+                  <MenuItem key={type.id} value={type.name}>
+                    {type.name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        )}
       </div>
 
-      <textarea
-        className="textarea"
-        placeholder="Notes"
+      <TextField
+        id="customer-note-details"
+        label="Notes"
+        multiline
+        rows={4}
         value={customerNoteValues.details}
         onChange={handleNoteChange("details")}
+        sx={{ marginTop: "16px" }}
+        fullWidth
       />
 
       <div className="buttonBar">
