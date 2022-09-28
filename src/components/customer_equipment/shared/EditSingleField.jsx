@@ -6,8 +6,7 @@ import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import { Button, TextField } from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { TextField } from "@mui/material";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
@@ -100,35 +99,20 @@ const EditSingleField = ({
           onChange={(e) => setVal(e.target.value)}
         />
       )}
-
-      <Grid2
-        container
-        alignItems="flex-start"
-        justifyContent="flex-end"
-        direction="row"
-        sx={{ marginTop: "24px" }}
-      >
-        <Button
-          sx={{ marginLeft: "8px" }}
-          type="submit"
-          size="medium"
-          variant="outlined"
-          color="primary"
-          startIcon={<ArrowUpward />}
-        >
-          Update
-        </Button>
-        <Button
-          sx={{ marginLeft: "8px" }}
-          size="medium"
-          variant="outlined"
-          color="primary"
-          startIcon={<Close />}
+      <div className="buttonBar">
+        <button type="submit" className="standardButton">
+          <ArrowUpward />
+          <span className="iconSeperation">Update</span>
+        </button>
+        <button
+          type="button"
+          className="standardButton"
           onClick={() => closeEditSingleField()}
         >
-          Close
-        </Button>
-      </Grid2>
+          <Close />
+          <span className="iconSeperation">Close</span>
+        </button>
+      </div>
     </form>
   );
 };
