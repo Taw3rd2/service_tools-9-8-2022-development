@@ -6,11 +6,9 @@ import {
   getFormattedDateAndTime,
 } from "../../../utilities/dateUtils";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import {
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -19,6 +17,8 @@ import {
 } from "@mui/material";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import { submitDispatchToFirestore } from "../dispatchFunctions";
+
+import "../../../global_style/style.css";
 
 const CreateDispatch = ({ customer, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
@@ -123,8 +123,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
 
   return (
     <form onSubmit={submitDispatch} autoComplete="new-password">
-      <Grid2 container spacing={2} style={{ marginTop: "8px" }}>
-        <Grid2 xs={4}>
+      <div className="row">
+        <div className="tripleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Scheduled Date"
@@ -136,8 +136,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="tripleRowInput">
           <TextField
             label="Lead Source"
             value={dispatchData.leadSource}
@@ -146,8 +146,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("leadSource")}
             inputProps={{ tabIndex: "2" }}
           />
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="tripleRowInput">
           {dispatchers.length > 0 && (
             <FormControl fullWidth>
               <InputLabel id="select-operator">Dispatcher</InputLabel>
@@ -169,8 +169,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               </Select>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <TextField
             label="First Name"
             fullWidth
@@ -178,8 +180,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("firstname")}
             inputProps={{ tabIndex: "4" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <TextField
             label="Last Name"
             fullWidth
@@ -188,8 +190,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("lastname")}
             inputProps={{ tabIndex: "5" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <TextField
             label="Job Address"
             fullWidth
@@ -198,8 +202,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("street")}
             inputProps={{ tabIndex: "6" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <TextField
             label="City, State, Zip Code"
             fullWidth
@@ -207,8 +211,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("city")}
             inputProps={{ tabIndex: "7" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <TextField
             label="Primary Contact"
             fullWidth
@@ -216,8 +222,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("phoneName")}
             inputProps={{ tabIndex: "8" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <TextField
             label="Alternate Contact"
             fullWidth
@@ -225,8 +231,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("altPhoneName")}
             inputProps={{ tabIndex: "10" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <TextField
             label="Primary Phone Number"
             fullWidth
@@ -234,8 +242,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("phone")}
             inputProps={{ tabIndex: "9" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <TextField
             label="Alternate Phone Number"
             fullWidth
@@ -243,8 +251,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("altphone")}
             inputProps={{ tabIndex: "11" }}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           {workList.length > 0 && (
             <FormControl fullWidth>
               <InputLabel id="select-work-ordered">Work Ordered</InputLabel>
@@ -266,8 +276,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               </Select>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <TextField
             label="Slotted Time"
             fullWidth
@@ -275,8 +285,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("timeAlotted")}
             inputProps={{ tabIndex: "13" }}
           />
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="tripleRowInput">
           {technicians.length > 0 && (
             <FormControl fullWidth>
               <InputLabel id="select-tech-lead">Tech Lead</InputLabel>
@@ -298,8 +310,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               </Select>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="tripleRowInput">
           {technicians.length > 0 && (
             <FormControl fullWidth>
               <InputLabel id="select-tech-helper">Tech Helper</InputLabel>
@@ -322,8 +334,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               </Select>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="tripleRowInput">
           {payments.length > 0 && (
             <FormControl fullWidth>
               <InputLabel id="select-payment">Payment</InputLabel>
@@ -345,8 +357,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               </Select>
             </FormControl>
           )}
-        </Grid2>
-        <Grid2 xs={12}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="singleRowInput">
           <TextField
             label="Notes"
             multiline
@@ -357,8 +371,10 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("notes")}
             inputProps={{ tabIndex: "17" }}
           />
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="tripleRowInput">
           <FormControl fullWidth>
             <InputLabel id="time-of-day-select">Time Of Day</InputLabel>
             <Select
@@ -377,8 +393,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               <MenuItem value="PM">PM</MenuItem>
             </Select>
           </FormControl>
-        </Grid2>
-        <Grid2 xs={4}>
+        </div>
+        <div className="tripleRowInput">
           <TextField
             label="Job Number"
             fullWidth
@@ -387,40 +403,26 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             onChange={handleDispatchDataChange("jobNumber")}
             inputProps={{ tabIndex: "19" }}
           />
-        </Grid2>
-      </Grid2>
-      <Grid2
-        container
-        alignItems="flex-start"
-        justifyContent="flex-end"
-        direction="row"
-        style={{ marginTop: "16px" }}
-      >
-        <Button
-          variant="outlined"
-          tabIndex={20}
-          color="primary"
-          type="submit"
-          sx={{
-            marginLeft: "8px",
-          }}
-          startIcon={<ArrowUpward />}
-        >
-          Submit
-        </Button>
-        <Button
-          variant="outlined"
+        </div>
+        <div className="tripleRowInput">
+          <div />
+        </div>
+      </div>
+      <div className="buttonBar">
+        <button type="submit" className="standardButton" tabIndex={20}>
+          <ArrowUpward />
+          <span className="iconSeperation">Add To Calendar</span>
+        </button>
+        <button
+          type="button"
+          className="standardButton"
           tabIndex={21}
-          color="primary"
           onClick={() => closeModalOne()}
-          sx={{
-            marginLeft: "8px",
-          }}
-          startIcon={<Close />}
         >
-          Cancel
-        </Button>
-      </Grid2>
+          <Close />
+          <span className="iconSeperation">Close</span>
+        </button>
+      </div>
     </form>
   );
 };

@@ -10,9 +10,7 @@ import {
   getUnixFromDate,
 } from "../../../utilities/dateUtils";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -165,40 +163,28 @@ const CustomerNotesList = ({
             </TableBody>
           </Table>
         </TableContainer>
-        <Grid2
-          container
-          alignItems="flex-start"
-          justifyContent="flex-end"
-          direction="row"
-        >
+        <div className="buttonBar">
           {customer.id ? (
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<NoteAdd />}
-              sx={{
-                marginTop: "16px",
-                background: lightTheme.palette.primary.contrastText,
-              }}
+            <button
+              type="button"
+              className="standardButton"
               onClick={() => openCreateCustomerNote({})}
             >
-              Add New Note
-            </Button>
+              <NoteAdd />
+              <span className="iconSeperation">Add New Note</span>
+            </button>
           ) : (
-            <Button
-              variant="outlined"
-              color="primary"
-              startIcon={<NoteAdd />}
-              sx={{
-                marginTop: "16px",
-                background: lightTheme.palette.primary.contrastText,
-              }}
+            <button
               disabled
+              type="button"
+              className="standardButton"
+              onClick={() => openCreateCustomerNote({})}
             >
-              Add New Note
-            </Button>
+              <NoteAdd />
+              <span className="iconSeperation">Add New Note</span>
+            </button>
           )}
-        </Grid2>
+        </div>
       </div>
     );
   }

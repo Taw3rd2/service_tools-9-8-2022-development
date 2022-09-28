@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, Typography } from "@mui/material";
-import { Close, DeleteForever } from "@mui/icons-material";
-import { defaultRedButton, defaultTableButton } from "../../../theme/Theme";
-
 import { deleteMaintenance } from "../maintenanceFunctions";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
+
+import { Close, DeleteForever } from "@mui/icons-material";
+
+import "../../../global_style/style.css";
 
 const DeleteMaintenanceContent = ({
   customer,
@@ -41,25 +40,15 @@ const DeleteMaintenanceContent = ({
     });
   };
   return (
-    <div>
-      <Grid2 container spacing={2}>
-        <Grid2 xs={12}>
-          <Typography variant="body1" gutterBottom>
-            {`Unrecoverable delete!`}
-          </Typography>
-        </Grid2>
-      </Grid2>
-      <Grid2
-        container
-        alignItems="flex-start"
-        justifyContent="flex-end"
-        direction="row"
-      >
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<DeleteForever />}
-          sx={defaultRedButton}
+    <div className="container">
+      <div className="deleteWarningText">Unrecoverable Delete</div>
+      <ul>
+        <li>All Maintenance information for this unit</li>
+      </ul>
+      <div className="buttonBar">
+        <button
+          type="button"
+          className="deleteButton"
           onClick={() =>
             deleteMaintenance(
               customer,
@@ -71,18 +60,18 @@ const DeleteMaintenanceContent = ({
             )
           }
         >
-          Confirm Delete
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<Close />}
-          sx={defaultTableButton}
+          <DeleteForever />
+          <span className="iconSeperation">Confirm Delete</span>
+        </button>
+        <button
+          type="button"
+          className="standardButton"
           onClick={() => closeDeleteModal()}
         >
-          Close
-        </Button>
-      </Grid2>
+          <Close />
+          <span className="iconSeperation">Close</span>
+        </button>
+      </div>
     </div>
   );
 };

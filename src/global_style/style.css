@@ -291,6 +291,10 @@
     flex: 4;
 }
 
+.quadRowInput {
+    flex: 3;
+}
+
 /* Full Width Button Bar */
 .buttonBarFullWidth {
     display: flex;

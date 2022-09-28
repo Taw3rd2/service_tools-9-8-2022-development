@@ -6,10 +6,8 @@ import { updateMaintenance } from "../maintenanceFunctions";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, InputAdornment, TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import { Close, DeleteForever, Update } from "@mui/icons-material";
-import { defaultRedButton, defaultTableButton } from "../../../theme/Theme";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 const MaintenanceDetailsContent = ({
@@ -91,8 +89,8 @@ const MaintenanceDetailsContent = ({
 
   return (
     <form onSubmit={onUpdateMaintenance} autoComplete="new password">
-      <Grid2 container spacing={2} sx={{ marginTop: "8px" }}>
-        <Grid2 xs={6}>
+      <div className="row">
+        <div className="doubleRowInput">
           <TextField
             label="Sale Price"
             variant="outlined"
@@ -107,8 +105,8 @@ const MaintenanceDetailsContent = ({
             }}
             required
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Sale Date"
@@ -124,8 +122,10 @@ const MaintenanceDetailsContent = ({
               required
             />
           </LocalizationProvider>
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Expiration Date"
@@ -141,8 +141,8 @@ const MaintenanceDetailsContent = ({
               required
             />
           </LocalizationProvider>
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Date Completed"
@@ -157,42 +157,30 @@ const MaintenanceDetailsContent = ({
               )}
             />
           </LocalizationProvider>
-        </Grid2>
-      </Grid2>
-      <Grid2
-        container
-        alignItems="flex-start"
-        justifyContent="flex-end"
-        direction="row"
-      >
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<DeleteForever />}
-          sx={defaultRedButton}
+        </div>
+      </div>
+      <div className="buttonBar">
+        <button
+          type="button"
+          className="deleteButton"
           onClick={() => openDeleteMaintenance(selectedMaintenance)}
         >
-          Delete
-        </Button>
-        <Button
-          type="submit"
-          variant="outlined"
-          color="primary"
-          startIcon={<Update />}
-          sx={defaultTableButton}
-        >
-          Update
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<Close />}
-          sx={defaultTableButton}
+          <DeleteForever />
+          <span className="iconSeperation">Delete</span>
+        </button>
+        <button type="submit" className="standardButton">
+          <Update />
+          <span className="iconSeperation">Update</span>
+        </button>
+        <button
+          type="button"
+          className="standardButton"
           onClick={() => closeModalTwo()}
         >
-          Close
-        </Button>
-      </Grid2>
+          <Close />
+          <span className="iconSeperation">Close</span>
+        </button>
+      </div>
     </form>
   );
 };

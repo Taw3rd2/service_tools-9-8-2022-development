@@ -10,11 +10,11 @@ import EquipmentPicker from "../../equipment_picker/EquipmentPicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import { InputAdornment, TextField, Typography } from "@mui/material";
 import { Close, AddCircleOutline } from "@mui/icons-material";
-import { defaultTableButton } from "../../../theme/Theme";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
+
+import "../../../global_style/style.css";
 
 const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
@@ -106,8 +106,8 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
         handleCheckChange={handleCheckChange}
       />
       <form autoComplete="new password" onSubmit={submitNewMaintenance}>
-        <Grid2 container spacing={2} sx={{ marginTop: "8px" }}>
-          <Grid2 xs={6}>
+        <div className="row">
+          <div className="doubleRowInput">
             <TextField
               label="M-Number"
               variant="outlined"
@@ -117,8 +117,8 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
               onChange={handleMaintenanceChange("mNumber")}
               required
             />
-          </Grid2>
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             <TextField
               label="Sale Price"
               variant="outlined"
@@ -133,8 +133,10 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
               }}
               required
             />
-          </Grid2>
-          <Grid2 xs={6}>
+          </div>
+        </div>
+        <div className="row">
+          <div className="doubleRowInput">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Sale Date"
@@ -149,8 +151,8 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
                 )}
               />
             </LocalizationProvider>
-          </Grid2>
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Expiration Date"
@@ -165,36 +167,25 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
                 )}
               />
             </LocalizationProvider>
-          </Grid2>
-        </Grid2>
-        <Grid2
-          container
-          alignItems="flex-start"
-          justifyContent="flex-end"
-          direction="row"
-        >
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<AddCircleOutline />}
-            sx={defaultTableButton}
-            type="submit"
-          >
-            Submit New Maintenance
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<Close />}
-            sx={defaultTableButton}
+          </div>
+        </div>
+        <div className="buttonBar">
+          <button type="submit" className="standardButton">
+            <AddCircleOutline />
+            <span className="iconSeperation">Add New Maintenance</span>
+          </button>
+          <button
+            type="button"
+            className="standardButton"
             onClick={() => closeModalTwo()}
           >
-            Close
-          </Button>
-        </Grid2>
+            <Close />
+            <span className="iconSeperation">Close</span>
+          </button>
+        </div>
         {equipmentError && (
-          <Grid2 container spacing={2}>
-            <Grid2 xs={12}>
+          <div className="row">
+            <div className="singleRowInput">
               <Typography
                 variant="subtitle1"
                 gutterBottom
@@ -203,8 +194,8 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
                 Please select the equipment you want attached to the maintenance
                 then submit...
               </Typography>
-            </Grid2>
-          </Grid2>
+            </div>
+          </div>
         )}
       </form>
     </div>
