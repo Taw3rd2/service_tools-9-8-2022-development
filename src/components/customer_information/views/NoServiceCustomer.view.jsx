@@ -1,21 +1,17 @@
-import React from "react";
-
 import BusinessContactField from "../fields/BusinessContactField";
 import ContactField from "../fields/ContactField";
 import EmailField from "../fields/EmailField";
 import MainField from "../fields/MainField";
 import Spinner from "../../spinner/Spinner";
+import { Edit, Flag, Hvac } from "@mui/icons-material";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, List, Typography } from "@mui/material";
-import { Flag, Edit } from "@mui/icons-material";
-import { lightTheme } from "../../../theme/Theme";
+import "../../../global_style/style.css";
 
 const NoServiceCustomer = ({
   customer,
   openEditCustomerDetails,
   openEditCustomerBilling,
-  openEquipmentListModal,
+  openCustomerEquipmentList,
 }) => {
   if (customer.lastname === "") {
     return <Spinner />;
@@ -28,210 +24,139 @@ const NoServiceCustomer = ({
           background: "lightgray",
         }}
       >
-        <Grid2 container spacing={0}>
-          <Grid2 xs={3}>
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "8px",
-                color: "red",
-              }}
-            >
-              <Flag />
-            </div>
-          </Grid2>
-          <Grid2 xs={6}>
-            <div style={{ padding: "8px" }}>
-              <Typography
-                variant="h5"
-                gutterBottom
-                sx={{ textAlign: "center", color: "red" }}
-              >
-                No Service
-              </Typography>
-            </div>
-          </Grid2>
-          <Grid2 xs={3}>
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "8px",
-                color: "red",
-              }}
-            >
-              <Flag />
-            </div>
-          </Grid2>
-
-          {customer.billingiscommercial && (
-            <Grid2 xs={12}>
-              <div style={{ padding: "8px" }}>
-                <Typography
-                  variant="h5"
-                  gutterBottom
-                  sx={{ textAlign: "center", color: "red" }}
-                >
-                  Commercial
-                </Typography>
-              </div>
-            </Grid2>
-          )}
-
-          <Grid2 xs={6}>
-            <div style={{ padding: "8px" }}>
-              <MainField
-                title={"Customer Information"}
-                name={`${customer.firstname} ${customer.lastname}`}
-                address={customer.street}
-                address2={`${customer.city},${customer.state} ${customer.zip}`}
-                business={false}
-              />
-            </div>
-          </Grid2>
-
-          <Grid2 xs={6}>
+        <div className="noServiceTitle">
+          <div>
+            <Flag />
+          </div>
+          <div>No Service</div>
+          <div>
+            <Flag />
+          </div>
+        </div>
+        {customer.billingiscommercial && (
+          <div className="noServiceTitle">Commercial</div>
+        )}
+        <div className="row" style={{ margin: "8px" }}>
+          <div className="doubleRowInput">
+            <MainField
+              title={"Customer Information"}
+              name={`${customer.firstname} ${customer.lastname}`}
+              address={customer.street}
+              address2={`${customer.city},${customer.state} ${customer.zip}`}
+              business={false}
+            />
+          </div>
+          <div className="doubleRowInput">
             {customer.billingorg && (
-              <div style={{ padding: "8px" }}>
-                <MainField
-                  title={"Billing Information"}
-                  name={customer.billingorg}
-                  address={customer.billingstreet}
-                  address2={`${customer.billingcity},${customer.billingstate} ${customer.billingzip}`}
-                  business={true}
-                />
-              </div>
+              <MainField
+                title={"Billing Information"}
+                name={customer.billingorg}
+                address={customer.billingstreet}
+                address2={`${customer.billingcity},${customer.billingstate} ${customer.billingzip}`}
+                business={true}
+              />
             )}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+        </div>
+        <div className="row" style={{ margin: "8px" }}>
+          <div className="doubleRowInput">
             {customer.phoneName || customer.phone ? (
-              <div style={{ padding: "8px" }}>
-                <ContactField
-                  title={"Primary Contact"}
-                  name={customer.phoneName}
-                  phone={customer.phone}
-                />
-              </div>
+              <ContactField
+                title={"Primary Contact"}
+                name={customer.phoneName}
+                phone={customer.phone}
+              />
             ) : null}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             {customer.billingPrimaryName || customer.billingPrimaryPhone ? (
-              <div style={{ padding: "8px" }}>
-                <BusinessContactField
-                  title={"Primary Billing Contact"}
-                  name={customer.billingPrimaryName}
-                  phone={customer.billingPrimaryPhone}
-                  email={customer.billingPrimaryEmail}
-                />
-              </div>
+              <BusinessContactField
+                title={"Primary Billing Contact"}
+                name={customer.billingPrimaryName}
+                phone={customer.billingPrimaryPhone}
+                email={customer.billingPrimaryEmail}
+              />
             ) : null}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+        </div>
+        <div className="row" style={{ margin: "8px" }}>
+          <div className="doubleRowInput">
             {customer.altphone || customer.altPhoneName ? (
-              <div style={{ padding: "8px" }}>
-                <ContactField
-                  title={"Alternate Contact"}
-                  name={customer.altPhoneName}
-                  phone={customer.altphone}
-                />
-              </div>
+              <ContactField
+                title={"Alternate Contact"}
+                name={customer.altPhoneName}
+                phone={customer.altphone}
+              />
             ) : null}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             {customer.billingAlternateName || customer.billingAlternatePhone ? (
-              <div style={{ padding: "8px" }}>
-                <BusinessContactField
-                  title={"Alternate Billing Contact"}
-                  name={customer.billingAlternateName}
-                  phone={customer.billingAlternatePhone}
-                  email={customer.billingAlternateEmail}
-                />
-              </div>
+              <BusinessContactField
+                title={"Alternate Billing Contact"}
+                name={customer.billingAlternateName}
+                phone={customer.billingAlternatePhone}
+                email={customer.billingAlternateEmail}
+              />
             ) : null}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+        </div>
+        <div className="row" style={{ margin: "8px" }}>
+          <div className="doubleRowInput">
             {customer.otherPhone || customer.otherPhoneName ? (
-              <div style={{ padding: "8px" }}>
-                <ContactField
-                  title={"Other Contact"}
-                  name={customer.otherPhoneName}
-                  phone={customer.otherPhone}
-                />
-              </div>
+              <ContactField
+                title={"Other Contact"}
+                name={customer.otherPhoneName}
+                phone={customer.otherPhone}
+              />
             ) : null}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             {customer.billingOtherPhone || customer.billingOtherName ? (
-              <div style={{ padding: "8px" }}>
-                <BusinessContactField
-                  title={"Other Billing Contact"}
-                  name={customer.billingOtherName}
-                  phone={customer.billingOtherPhone}
-                  email={customer.billingOtherEmail}
-                />
-              </div>
+              <BusinessContactField
+                title={"Other Billing Contact"}
+                name={customer.billingOtherName}
+                phone={customer.billingOtherPhone}
+                email={customer.billingOtherEmail}
+              />
             ) : null}
-          </Grid2>
-
-          <Grid2 xs={6}>
+          </div>
+        </div>
+        <div className="row" style={{ margin: "8px" }}>
+          <div className="doubleRowInput">
             {customer.email && (
-              <div style={{ padding: "8px" }}>
-                <EmailField title={"Customers Email"} email={customer.email} />
-              </div>
+              <EmailField title={"Customers Email"} email={customer.email} />
             )}
-          </Grid2>
-          <Grid2 xs={6} />
+          </div>
+          <div className="doubleRowInput"></div>
+        </div>
+        <div className="buttonBarFullWidth">
+          <button
+            type="button"
+            className="standardButtonFullWidth"
+            onClick={() => openEditCustomerDetails()}
+          >
+            <Edit />
+            <span className="iconSeperation">Edit Client</span>
+          </button>
 
-          <Grid2 xs={4}>
-            <div style={{ padding: "8px" }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ background: lightTheme.palette.primary.contrastText }}
-                onClick={() => openEditCustomerDetails()}
-                startIcon={<Edit />}
-                fullWidth
-              >
-                Edit Client
-              </Button>
-            </div>
-          </Grid2>
+          <button
+            type="button"
+            className="standardButtonFullWidth"
+            onClick={() => openCustomerEquipmentList()}
+          >
+            <Hvac />
+            <span className="iconSeperation">Equipment</span>
+          </button>
 
-          <Grid2 xs={4}>
-            <div style={{ padding: "8px" }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ background: lightTheme.palette.primary.contrastText }}
-                onClick={() => openEquipmentListModal()}
-                startIcon={<List />}
-                fullWidth
-              >
-                Equipment
-              </Button>
-            </div>
-          </Grid2>
-
-          <Grid2 xs={4}>
-            <div style={{ padding: "8px" }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ background: lightTheme.palette.primary.contrastText }}
-                onClick={() => openEditCustomerBilling()}
-                startIcon={<Edit />}
-                fullWidth
-              >
-                Edit Billing
-              </Button>
-            </div>
-          </Grid2>
-        </Grid2>
+          <button
+            type="button"
+            className="standardButtonFullWidth"
+            onClick={() => openEditCustomerBilling()}
+          >
+            <Edit />
+            <span className="iconSeperation">Edit Billing</span>
+          </button>
+        </div>
       </div>
     );
   }

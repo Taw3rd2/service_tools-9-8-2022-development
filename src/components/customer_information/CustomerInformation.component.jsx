@@ -16,6 +16,7 @@ const CustomerInformation = ({
         customer={customer}
         openEditCustomerDetails={openEditCustomerDetails}
         openEditCustomerBilling={openEditCustomerBilling}
+        openCustomerEquipmentList={openCustomerEquipmentList}
       />
     );
   } else {

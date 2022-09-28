@@ -259,8 +259,17 @@
     padding: 8px;
 }
 
-.centerContent {
+.textTeal {
     color: teal;
+}
+
+/* NoServiceCustomer */
+.noServiceTitle {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 26px;
+    color: red;
+    padding: 8px 0;
 }
 
 /* Edits */
@@ -280,6 +289,18 @@
 
 .tripleRowInput {
     flex: 4;
+}
+
+/* Full Width Button Bar */
+.buttonBarFullWidth {
+    display: flex;
+    flex-direction: row;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.buttonBarFullWidth button {
+    flex: auto;
 }
 
 /* Button Bar */
@@ -340,6 +361,36 @@
     border-radius: 5px;
     font-weight: 500;
     margin-left: 10px;
+    cursor: pointer;
+    color: teal;
+}
+
+.standardButtonFullWidth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(132, 230, 230, 0.8);
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: large;
+    margin: 0 4px;
+    cursor: pointer;
+    color: teal;
+}
+
+.standardButtonFullWidth:hover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid teal;
+    background: whitesmoke;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: large;
+    margin: 0 4px;
     cursor: pointer;
     color: teal;
 }
