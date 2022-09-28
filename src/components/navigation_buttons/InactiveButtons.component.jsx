@@ -1,10 +1,7 @@
-import React from "react";
-
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Typography } from "@mui/material";
 import { AddCircle, Assignment, BuildCircle } from "@mui/icons-material";
-import { ThemeProvider } from "@mui/material";
-import { lightTheme } from "../../theme/Theme";
+
+import "../../global_style/style.css";
 
 const reportButton = {
   border: "1px solid black",
@@ -15,45 +12,45 @@ const reportButton = {
 
 const InactiveButtons = () => {
   return (
-    <ThemeProvider theme={lightTheme}>
-      <div
-        style={{
-          flexGrow: 1,
-          border: "2px solid black",
-          backgroundColor: "lightgray",
-          padding: "4px",
-        }}
-      >
-        <Grid2 container spacing={2}>
-          <Grid2 xs={3}>
-            <div style={reportButton}>
-              <AddCircle style={{ fontSize: 60, color: "grey" }} />
-              <Typography variant="subtitle1">Create New</Typography>
-              <Typography variant="subtitle1">Dispatch</Typography>
-            </div>
-          </Grid2>
-          <Grid2 xs={3}>
-            <div style={reportButton}>
-              <Assignment style={{ fontSize: 60, color: "grey" }} />
-              <Typography variant="subtitle1">All Customer</Typography>
-              <Typography variant="subtitle1">Dispatches</Typography>
-            </div>
-          </Grid2>
-          <Grid2 xs={3}>
-            <div style={reportButton}>
-              <BuildCircle style={{ fontSize: 60, color: "grey" }} />
-              <Typography variant="subtitle1">Maintenance</Typography>
-              <Typography variant="subtitle1">Manager</Typography>
-            </div>
-          </Grid2>
-          <Grid2 xs={3}>
-            <div style={reportButton}>
-              <BuildCircle style={{ fontSize: 60, color: "grey" }} />
-              <Typography variant="subtitle1">Warranty</Typography>
-              <Typography variant="subtitle1">Manager</Typography>
-            </div>
-          </Grid2>
-          {/*
+    <div
+      style={{
+        flexGrow: 1,
+        border: "2px solid black",
+        backgroundColor: "lightgray",
+        padding: "4px",
+      }}
+    >
+      <div className="row">
+        <div className="quadRowInput">
+          <div style={reportButton}>
+            <AddCircle style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">Create New</Typography>
+            <Typography variant="subtitle1">Dispatch</Typography>
+          </div>
+        </div>
+        <div className="quadRowInput">
+          <div style={reportButton}>
+            <Assignment style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">All Customer</Typography>
+            <Typography variant="subtitle1">Dispatches</Typography>
+          </div>
+        </div>
+        <div className="quadRowInput">
+          <div style={reportButton}>
+            <BuildCircle style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">Maintenance</Typography>
+            <Typography variant="subtitle1">Manager</Typography>
+          </div>
+        </div>
+        <div className="quadRowInput">
+          <div style={reportButton}>
+            <BuildCircle style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">Warranty</Typography>
+            <Typography variant="subtitle1">Manager</Typography>
+          </div>
+        </div>
+      </div>
+      {/*
           <Grid2 xs={3}>
             <div style={reportButton}>
               <Assignment style={{ fontSize: 60, color: "grey" }} />
@@ -82,9 +79,7 @@ const InactiveButtons = () => {
             <Typography variant="subtitle1">Equipment Quote</Typography>
           </div>
         </Grid> */}
-        </Grid2>
-      </div>
-    </ThemeProvider>
+    </div>
   );
 };
 

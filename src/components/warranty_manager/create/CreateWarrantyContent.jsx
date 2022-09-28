@@ -6,8 +6,7 @@ import { addWarranty } from "../warrantyFunctions";
 
 import EquipmentPicker from "../../equipment_picker/EquipmentPicker";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { AddCircleOutline, Close } from "@mui/icons-material";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -107,8 +106,8 @@ const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
         handleCheckChange={handleCheckChange}
       />
       <form autoComplete="new password" onSubmit={submitNewWarranty}>
-        <Grid2 container spacing={2} sx={{ marginTop: "8px" }}>
-          <Grid2 xs={6}>
+        <div className="row" style={{ marginTop: "16px" }}>
+          <div className="doubleRowInput">
             <TextField
               label="Job Number"
               variant="outlined"
@@ -117,8 +116,8 @@ const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
               sx={{ input: { color: "primary" } }}
               onChange={handleWarrantyChange("jobNumber")}
             />
-          </Grid2>
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Start Date"
@@ -133,8 +132,10 @@ const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
                 )}
               />
             </LocalizationProvider>
-          </Grid2>
-          <Grid2 xs={6}>
+          </div>
+        </div>
+        <div className="row">
+          <div className="doubleRowInput">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Parts Expiration Date"
@@ -149,8 +150,8 @@ const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
                 )}
               />
             </LocalizationProvider>
-          </Grid2>
-          <Grid2 xs={6}>
+          </div>
+          <div className="doubleRowInput">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Labor Expiration Date"
@@ -165,75 +166,48 @@ const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
                 )}
               />
             </LocalizationProvider>
-          </Grid2>
-        </Grid2>
-        {equipment.length === 0 ? (
-          <Grid2
-            container
-            alignItems="flex-start"
-            justifyContent="flex-end"
-            direction="row"
-            sx={{ marginTop: "24px" }}
-          >
-            <Button
-              sx={{
-                marginLeft: "8px",
-              }}
-              color="primary"
+          </div>
+        </div>
+        {equipment.length < 1 ? (
+          <div className="buttonBar">
+            <button
               type="button"
-              variant="outlined"
+              className="standardButton"
               onClick={() => closeModalTwo()}
-              startIcon={<Close />}
             >
-              Close
-            </Button>
-          </Grid2>
+              <Close />
+              <span className="iconSeperation">Close</span>
+            </button>
+          </div>
         ) : (
-          <Grid2
-            container
-            alignItems="flex-start"
-            justifyContent="flex-end"
-            direction="row"
-            sx={{ marginTop: "24px" }}
-          >
-            <Button
-              sx={{
-                marginLeft: "8px",
-              }}
-              color="primary"
-              type="submit"
-              variant="outlined"
-              startIcon={<AddCircleOutline />}
-            >
-              Submit
-            </Button>
-            <Button
-              sx={{
-                marginLeft: "8px",
-              }}
-              color="primary"
+          <div className="buttonBar">
+            <button type="submit" className="standardButton">
+              <AddCircleOutline />
+              <span className="iconSeperation">Add Warranty</span>
+            </button>
+            <button
               type="button"
-              variant="outlined"
+              className="standardButton"
               onClick={() => closeModalTwo()}
-              startIcon={<Close />}
             >
-              Close
-            </Button>
-          </Grid2>
+              <Close />
+              <span className="iconSeperation">Close</span>
+            </button>
+          </div>
         )}
         {equipmentError && (
-          <Grid2 container spacing={2}>
-            <Grid2 xs={12}>
+          <div className="row">
+            <div className="singleRowInput">
               <Typography
                 variant="subtitle1"
                 gutterBottom
                 sx={{ color: "red" }}
               >
                 Please select the equipment you want attached to the maintenance
-                then submit...
+                then add warranty...
               </Typography>
-            </Grid2>
-          </Grid2>
+            </div>
+          </div>
         )}
       </form>
     </div>

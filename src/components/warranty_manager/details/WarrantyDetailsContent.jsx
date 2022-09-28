@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
 import { updateWarranty } from "../warrantyFunctions";
@@ -6,14 +6,12 @@ import { updateWarranty } from "../warrantyFunctions";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Close, DeleteForever, Update } from "@mui/icons-material";
 import {
   getFormattedDate,
   getFormattedDateAndTime,
 } from "../../../utilities/dateUtils";
-import { defaultRedButton, defaultTableButton } from "../../../theme/Theme";
 
 const WarrantyDetailsContent = ({
   customer,
@@ -95,8 +93,8 @@ const WarrantyDetailsContent = ({
 
   return (
     <form onSubmit={onWarrantyUpdate} autoComplete="new password">
-      <Grid2 container spacing={2} sx={{ marginTop: "8px" }}>
-        <Grid2 xs={6}>
+      <div className="row" style={{ marginTop: "16px" }}>
+        <div className="doubleRowInput">
           <TextField
             label="Job Number"
             variant="outlined"
@@ -105,8 +103,8 @@ const WarrantyDetailsContent = ({
             sx={{ input: { color: "primary" } }}
             onChange={(event) => setJobNumber(event.target.value)}
           />
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Warranty Start Date"
@@ -121,8 +119,10 @@ const WarrantyDetailsContent = ({
               )}
             />
           </LocalizationProvider>
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Parts Expiration Date"
@@ -137,8 +137,8 @@ const WarrantyDetailsContent = ({
               )}
             />
           </LocalizationProvider>
-        </Grid2>
-        <Grid2 xs={6}>
+        </div>
+        <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Labor Expiration Date"
@@ -153,42 +153,30 @@ const WarrantyDetailsContent = ({
               )}
             />
           </LocalizationProvider>
-        </Grid2>
-      </Grid2>
-      <Grid2
-        container
-        alignItems="flex-start"
-        justifyContent="flex-end"
-        direction="row"
-      >
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<DeleteForever />}
-          sx={defaultRedButton}
+        </div>
+      </div>
+      <div className="buttonBar">
+        <button
+          type="button"
+          className="deleteButton"
           onClick={() => openDeleteWarranty(selectedWarranty)}
         >
-          Delete
-        </Button>
-        <Button
-          sx={defaultTableButton}
-          color="primary"
-          type="submit"
-          variant="outlined"
-          startIcon={<Update />}
-        >
-          Update
-        </Button>
-        <Button
-          sx={defaultTableButton}
-          color="primary"
-          variant="outlined"
+          <DeleteForever />
+          <span className="iconSeperation">Delete</span>
+        </button>
+        <button type="submit" className="standardButton">
+          <Update />
+          <span className="iconSeperation">Update</span>
+        </button>
+        <button
+          type="button"
+          className="standardButton"
           onClick={() => closeModalTwo()}
-          startIcon={<Close />}
         >
-          Close
-        </Button>
-      </Grid2>
+          <Close />
+          <span className="iconSeperation">Close</span>
+        </button>
+      </div>
     </form>
   );
 };
