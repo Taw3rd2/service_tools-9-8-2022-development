@@ -9,10 +9,8 @@ import {
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -25,6 +23,8 @@ import { red } from "@mui/material/colors";
 import EquipmentAddonCard from "../shared/EquipmentAddonCard";
 import { doc, getFirestore } from "firebase/firestore";
 import { createNamedDocument } from "../../../firebase/firestore.utils";
+
+import "../../../global_style/style.css";
 
 const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
@@ -108,9 +108,9 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
   return (
     <div>
       <form onSubmit={submitNewEquipment} autoComplete="new password">
-        <Grid2 container spacing={2}>
-          <Grid2 xs={6}>
-            <Grid2 xs={12}>
+        <div className="row">
+          <div className="doubleRowInput">
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Name"
                 value={equipmentValues.equipmentName}
@@ -119,8 +119,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 fullWidth
                 required
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Brand"
                 value={equipmentValues.equipmentBrand}
@@ -129,8 +129,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 fullWidth
                 required
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Model"
                 value={equipmentValues.equipmentModel}
@@ -138,8 +138,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 inputProps={{ tabIndex: "3" }}
                 fullWidth
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Serial"
                 value={equipmentValues.equipmentSerial}
@@ -147,8 +147,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 inputProps={{ tabIndex: "4" }}
                 fullWidth
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Size"
                 value={equipmentValues.equipmentBtu}
@@ -156,8 +156,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 inputProps={{ tabIndex: "5" }}
                 fullWidth
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Efficiency"
                 value={equipmentValues.equipmentEff}
@@ -165,8 +165,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 inputProps={{ tabIndex: "6" }}
                 fullWidth
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Fuel or Freon Type"
                 value={equipmentValues.equipmentFuel}
@@ -174,8 +174,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 inputProps={{ tabIndex: "7" }}
                 fullWidth
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <TextField
                 label="Equipment Voltage"
                 value={equipmentValues.equipmentVoltage}
@@ -183,8 +183,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 inputProps={{ tabIndex: "8" }}
                 fullWidth
               />
-            </Grid2>
-            <Grid2 xs={12}>
+            </div>
+            <div className="singleRowInput" style={{ paddingTop: "8px" }}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="Equipment Installation Date"
@@ -200,9 +200,9 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                   inputProps={{ tabIndex: "9" }}
                 />
               </LocalizationProvider>
-            </Grid2>
-          </Grid2>
-          <Grid2 xs={6}>
+            </div>
+          </div>
+          <div className="doubleRowInput">
             <Card sx={{ maxWidth: 345, marginTop: "8px" }}>
               <CardHeader
                 avatar={
@@ -240,9 +240,8 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                 <Typography variant="h6">
                   {equipmentValues.equipmentSerial}
                 </Typography>
-
-                <Grid2 container spacing={1}>
-                  <Grid2 xs={12}>
+                <div className="row">
+                  <div className="singleRowInput">
                     <Typography
                       variant="body2"
                       color="primary"
@@ -250,66 +249,55 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
                     >
                       Additional Information
                     </Typography>
-                  </Grid2>
-                  <Grid2 xs={6}>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="doubleRowInput">
                     <EquipmentAddonCard
                       cardName="Fuel / Freon Type"
                       cardValue={equipmentValues.equipmentFuel}
                     />
-                  </Grid2>
-                  <Grid2 xs={6}>
+                  </div>
+                  <div className="doubleRowInput">
                     <EquipmentAddonCard
                       cardName="Voltage"
                       cardValue={equipmentValues.equipmentVoltage}
                     />
-                  </Grid2>
-                  <Grid2 xs={6}>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="doubleRowInput">
                     <EquipmentAddonCard
                       cardName="Efficiency"
                       cardValue={equipmentValues.equipmentEff}
                     />
-                  </Grid2>
-                  <Grid2 xs={6}>
+                  </div>
+                  <div className="doubleRowInput">
                     <EquipmentAddonCard
                       cardName="Size"
                       cardValue={equipmentValues.equipmentBtu}
                     />
-                  </Grid2>
-                </Grid2>
+                  </div>
+                </div>
               </CardContent>
             </Card>
-          </Grid2>
-        </Grid2>
-        <Grid2
-          container
-          alignItems="flex-start"
-          justifyContent="flex-end"
-          direction="row"
-          sx={{ marginTop: "24px" }}
-        >
-          <Button
-            sx={{ margin: "8px" }}
-            size="large"
-            variant="outlined"
-            color="primary"
-            startIcon={<ArrowUpward />}
-            type="submit"
-            tabIndex={10}
-          >
-            Create
-          </Button>
-          <Button
-            sx={{ margin: "8px" }}
-            size="large"
-            variant="outlined"
-            color="primary"
-            startIcon={<Close />}
+          </div>
+        </div>
+        <div className="buttonBar">
+          <button type="submit" className="standardButton" tabIndex={10}>
+            <ArrowUpward />
+            <span className="iconSeperation">Create</span>
+          </button>
+          <button
+            type="button"
+            className="standardButton"
             onClick={() => closeModalTwo()}
             tabIndex={11}
           >
-            Cancel
-          </Button>
-        </Grid2>
+            <Close />
+            <span className="iconSeperation">Cancel</span>
+          </button>
+        </div>
       </form>
     </div>
   );
