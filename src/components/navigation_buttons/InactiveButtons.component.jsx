@@ -31,7 +31,7 @@ const InactiveButtons = () => {
         <div className="quadRowInput">
           <div style={reportButton}>
             <Assignment style={{ fontSize: 60, color: "grey" }} />
-            <Typography variant="subtitle1">All Customer</Typography>
+            <Typography variant="subtitle1">Customer</Typography>
             <Typography variant="subtitle1">Dispatches</Typography>
           </div>
         </div>

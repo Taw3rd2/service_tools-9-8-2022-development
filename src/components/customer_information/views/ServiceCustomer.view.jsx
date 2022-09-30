@@ -38,13 +38,19 @@ const ServiceCustomer = ({
             />
           </div>
           <div className="doubleRowInput">
-            <MainField
-              title={"Billing Information"}
-              name={customer.billingorg}
-              address={customer.billingstreet}
-              address2={`${customer.billingcity},${customer.billingstate} ${customer.billingzip}`}
-              business={true}
-            />
+            {customer.billingorg ||
+            customer.billingstreet ||
+            customer.billingcity ||
+            customer.billingstate ||
+            customer.billingzip ? (
+              <MainField
+                title={"Billing Information"}
+                name={customer.billingorg}
+                address={customer.billingstreet}
+                address2={`${customer.billingcity},${customer.billingstate} ${customer.billingzip}`}
+                business={true}
+              />
+            ) : null}
           </div>
         </div>
         <div className="row" style={{ margin: "8px" }}>

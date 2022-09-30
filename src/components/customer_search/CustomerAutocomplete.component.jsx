@@ -30,7 +30,6 @@ const CustomerAutocomplete = ({
       {selectedSearchParameter === "lastname" && (
         <Autocomplete
           id="search-box"
-          sx={{ margin: "8px" }}
           options={groupedCustomers.sort(
             (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
           )}
@@ -73,7 +72,6 @@ const CustomerAutocomplete = ({
       {selectedSearchParameter === "street" && (
         <Autocomplete
           id="search-box"
-          sx={{ margin: "8px" }}
           options={groupedCustomers.sort(
             (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
           )}
@@ -116,7 +114,6 @@ const CustomerAutocomplete = ({
       {selectedSearchParameter === "city" && (
         <Autocomplete
           id="search-box"
-          sx={{ margin: "8px" }}
           options={groupedCustomers.sort(
             (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
           )}

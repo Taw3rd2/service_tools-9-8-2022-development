@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import CustomerExport from "../export_to_excel/CustomerExport";
-
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
-  Button,
   FormControl,
   FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
-  Stack,
-  Typography,
 } from "@mui/material";
 
 import CustomerAutocomplete from "./CustomerAutocomplete.component";
+
+import "../../global_style/style.css";
+import { AddCircleOutline } from "@mui/icons-material";
 
 const CustomerSearch = ({ openCreateCustomer, handleCustomerSelected }) => {
   const db = getFirestore();
@@ -38,13 +36,18 @@ const CustomerSearch = ({ openCreateCustomer, handleCustomerSelected }) => {
 
   return (
     <div>
-      <Grid2 container justifyContent="center" spacing={1}>
-        <Typography variant="h4" color="primary">
+      <div className="containerRow">
+        <div className="searchCustomers">
           Search {customers.length} Customers
-        </Typography>{" "}
-      </Grid2>
-      <Grid2 container justifyContent="center" spacing={2}>
-        <Grid2 xs={6}>
+        </div>
+      </div>
+      <div className="row">
+        <div
+          className="doubleRowInput"
+          style={{
+            margin: "0 8px",
+          }}
+        >
           <FormControl>
             <FormLabel id="customer_search_parameters_radio_group">
               Refine customer search
@@ -74,30 +77,32 @@ const CustomerSearch = ({ openCreateCustomer, handleCustomerSelected }) => {
               />
             </RadioGroup>
           </FormControl>
+        </div>
+        <div className="doubleRowInput"></div>
+      </div>
+      <div className="row">
+        <div className="doubleRowInput">
           <CustomerAutocomplete
             customers={customers}
             selectedSearchParameter={selectedSearchParameter}
             handleCustomerSelected={handleCustomerSelected}
           />
-        </Grid2>
-        <Grid2 xs={6}>
-          <Stack spacing={2} direction="column">
-            <Button
-              sx={{
-                marginTop: "73px",
-              }}
-              color="primary"
-              variant="outlined"
-              size="large"
-              fullWidth
+        </div>
+        <div className="doubleRowInput">
+          <div className="buttonBarStack">
+            <button
+              type="button"
+              className="standardButton"
               onClick={() => openCreateCustomer()}
+              style={{ background: "white" }}
             >
-              Add New Customer
-            </Button>
+              <AddCircleOutline />
+              <span className="iconSeperation">Add New Customer</span>
+            </button>
             <CustomerExport customers={customers} />
-          </Stack>
-        </Grid2>
-      </Grid2>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

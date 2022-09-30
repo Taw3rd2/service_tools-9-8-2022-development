@@ -89,7 +89,7 @@ const ActiveButtons = ({
                 fontSize: 60,
               }}
             />
-            <Typography variant="subtitle1">All Customer</Typography>
+            <Typography variant="subtitle1">Customer</Typography>
             <Typography variant="subtitle1">Dispatches</Typography>
           </div>
         </div>

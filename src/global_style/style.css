@@ -198,11 +198,6 @@
     padding: 8px;
 }
 
-/* Table */
-
-
-
-
 /* Image Viewer */
 .imageContainer {
     max-width: 1100px;
@@ -250,6 +245,12 @@
     padding-left: 16px;
 }
 
+/* Customer Search */
+.searchCustomers {
+    font-size: 30px;
+    color: teal;
+}
+
 /* NoCustomerLoaded */
 .containerRow {
     display: flex;
@@ -295,6 +296,14 @@
     flex: 3;
 }
 
+/* Stack Buttons Full Width */
+.buttonBarStack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
 /* Full Width Button Bar */
 .buttonBarFullWidth {
     display: flex;
@@ -304,6 +313,10 @@
 }
 
 .buttonBarFullWidth button {
+    flex: auto;
+}
+
+.buttonBarStack button {
     flex: auto;
 }
 
@@ -347,6 +360,7 @@
 
 .standardButton {
     display: flex;
+    justify-content: center;
     align-items: center;
     border: 1px solid rgba(132, 230, 230, 0.8);
     padding: 10px;
@@ -449,5 +463,83 @@
 
     to {
         transform: translate(0%);
+    }
+}
+
+@media only screen and (max-width: 1500px) {
+    .homepageTopRow {
+        display: flex;
+    }
+
+    .homepageTopLeft {
+        flex: 6;
+    }
+
+    .homepageTopMiddle {
+        flex: 6;
+    }
+
+    .homepageTopRight {
+        flex: 6;
+    }
+
+    .homepageBottomRight {
+        flex: 6;
+    }
+
+    .homepageBottomLeft {
+        display: none;
+    }
+
+
+}
+
+@media only screen and (max-width: 600px) {
+    .topbarLeft {
+        flex: 10;
+    }
+
+    .topbarCenter {
+        display: none;
+    }
+
+    .topbarRight {
+        display: none;
+    }
+
+    .homepageTopRow {
+        flex-direction: column;
+    }
+
+    .homepageTopLeft {
+        flex: 12;
+    }
+
+    .homepageTopMiddle {
+        flex: 12;
+    }
+
+    .homepageTopRight {
+        flex: 12;
+    }
+
+    .homepageBottomLeft {
+        display: none;
+    }
+
+    .homepageBottomRight {
+        flex: 12;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .buttonBarFullWidth {
+        flex-direction: column;
+    }
+
+    .buttonBarStack {
+        margin-top: 8px;
     }
 }

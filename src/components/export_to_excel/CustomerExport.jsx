@@ -2,9 +2,7 @@ import React from "react";
 import ExcelJs from "exceljs";
 import { getFormattedDateAndTime } from "../../utilities/dateUtils";
 
-import { Button } from "@mui/material";
-import { ThemeProvider } from "@mui/material";
-import { lightTheme } from "../../theme/Theme";
+import { FormatListNumbered } from "@mui/icons-material";
 
 const CustomerExport = ({ customers }) => {
   const exportToExcel = (data) => {
@@ -71,17 +69,15 @@ const CustomerExport = ({ customers }) => {
   };
 
   return (
-    <ThemeProvider theme={lightTheme}>
-      <Button
-        variant="outlined"
-        color="primary"
-        size="large"
-        fullWidth
-        onClick={() => exportToExcel(customers)}
-      >
-        Export Customers To Excel
-      </Button>
-    </ThemeProvider>
+    <button
+      type="button"
+      className="standardButton"
+      onClick={() => exportToExcel(customers)}
+      style={{ background: "white" }}
+    >
+      <FormatListNumbered />
+      <span className="iconSeperation">Export Customers To Excel</span>
+    </button>
   );
 };
 
