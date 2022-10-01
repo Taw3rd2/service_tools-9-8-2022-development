@@ -1,9 +1,10 @@
 .equipmentDetailsContainer {
     display: flex;
-    max-height: 659px;
+    max-height: 725px;
 }
 
 .mainContent {
+    min-width: 405px;
     border-radius: 5px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
@@ -93,10 +94,14 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    max-width: 385px;
+    overflow: auto;
     padding: 10px;
 }
 
 .modelSerialText {
+    max-width: 385px;
+    overflow: auto;
     margin-right: auto;
 }
 
@@ -110,4 +115,16 @@
     font-size: 25px;
     color: teal;
     overflow: auto;
+}
+
+.modelSerialNumber::-webkit-scrollbar {
+    height: 5px;
+}
+
+.modelSerialNumber::-webkit-scrollbar-thumb {
+    background-color: rgb(15, 119, 88);
+}
+
+.modelSerialNumber::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
 }

@@ -149,16 +149,12 @@ const CustomerEquipmentDetails = ({
             <Edit />
           </div>
         </div>
-        <div className="buttonBar" style={{ marginRight: "4px" }}>
+        <div
+          className="buttonBar"
+          style={{ marginLeft: "16px", marginRight: "8px" }}
+        >
           <button
-            type="button"
-            className="deleteButton"
-            onClick={() => openDeleteCustomerEquipment(unit)}
-          >
-            <DeleteForever />
-            <span className="iconSeperation">Delete</span>
-          </button>
-          <button
+            style={{ flex: "0 0 50%" }}
             type="button"
             className="standardButton"
             onClick={() => handleStatbarOpen(unit)}
@@ -167,6 +163,7 @@ const CustomerEquipmentDetails = ({
             <span className="iconSeperation">Stats</span>
           </button>
           <button
+            style={{ flex: "0 0 50%" }}
             type="button"
             className="standardButton"
             onClick={() => handleSidebarOpen(unit)}
@@ -174,7 +171,22 @@ const CustomerEquipmentDetails = ({
             <Camera />
             <span className="iconSeperation">Gallery</span>
           </button>
+        </div>
+        <div
+          className="buttonBar"
+          style={{ marginLeft: "16px", marginRight: "8px" }}
+        >
           <button
+            style={{ flex: "0 0 50%" }}
+            type="button"
+            className="deleteButton"
+            onClick={() => openDeleteCustomerEquipment(unit)}
+          >
+            <DeleteForever />
+            <span className="iconSeperation">Delete</span>
+          </button>
+          <button
+            style={{ flex: "0 0 50%" }}
             type="button"
             className="standardButton"
             onClick={() => closeBasicSecondModal()}

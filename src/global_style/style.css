@@ -336,6 +336,7 @@
 
 .deleteButton {
     display: flex;
+    justify-content: center;
     align-items: center;
     border: 1px solid pink;
     padding: 10px;
@@ -348,6 +349,7 @@
 
 .deleteButton:hover {
     display: flex;
+    justify-content: center;
     align-items: center;
     border: 1px solid red;
     padding: 10px;
