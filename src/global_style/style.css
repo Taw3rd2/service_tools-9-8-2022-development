@@ -79,6 +79,24 @@
     cursor: pointer;
 }
 
+/* loading spinner */
+.calendarSpinner {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.spinnerImg {
+    position: absolute;
+    float: left;
+    left: 50%;
+    top: 50%;
+    height: 100px;
+    width: 100px;
+}
+
 /* notifications */
 .notificationContainer {
     font-size: 14px;
@@ -157,6 +175,11 @@
     padding: 20px 15px 10px 10px;
 }
 
+.deleteWarningText {
+    font-size: 20px;
+    color: red;
+}
+
 
 
 /* homePage */
@@ -196,6 +219,12 @@
 .homepageBottomRight {
     flex: 6;
     padding: 8px;
+}
+
+/* Schedule Page */
+.schedulePage {
+    width: 100%;
+    height: auto;
 }
 
 /* Image Viewer */

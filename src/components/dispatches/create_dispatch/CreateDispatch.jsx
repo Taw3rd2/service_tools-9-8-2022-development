@@ -4,6 +4,7 @@ import { ToastContext } from "../../../context/toastContext";
 import {
   setDateToZeroHours,
   getFormattedDateAndTime,
+  getFormattedExactTime,
 } from "../../../utilities/dateUtils";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -56,7 +57,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
   };
 
   const handleIssueChange = (event) => {
-    const option = workList.filter((i) => event.target.value.includes(i.item));
+    const option = workList.filter((i) => event.target.value === i.item);
 
     setDispatchData({
       ...dispatchData,
@@ -72,22 +73,39 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
 
   const submitDispatch = (event) => {
     event.preventDefault();
-    submitDispatchToFirestore(
-      customer,
-      dispatchData,
-      activateSuccessNotification,
-      activateFailureNotification,
-      closeModalOne
-    );
-    dispatch({
-      type: "ADD_NOTIFICATION",
-      payload: {
-        id: getFormattedDateAndTime(dispatchData.start),
-        type: "INFO",
-        title: "Submitted",
-        message: "Requested a cloud update",
-      },
-    });
+
+    if (dispatchData.techLead === dispatchData.techHelper) {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          id: getFormattedExactTime(new Date()),
+          type: "INFO",
+          title: "Create Dispatch",
+          message: "Lead and Helper are the same",
+        },
+      });
+      setInputError(true);
+      return;
+    } else {
+      setInputError(false);
+
+      submitDispatchToFirestore(
+        customer,
+        dispatchData,
+        activateSuccessNotification,
+        activateFailureNotification,
+        closeModalOne
+      );
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          id: getFormattedDateAndTime(dispatchData.start),
+          type: "INFO",
+          title: "Submitted",
+          message: "Requested a cloud update",
+        },
+      });
+    }
   };
 
   const activateSuccessNotification = () => {
@@ -113,6 +131,8 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
       },
     });
   };
+
+  const [inputError, setInputError] = useState(false);
 
   //   const localInvoiceId = invoiceId !== undefined ? invoiceId : "";
   //   const [jobNumber, setJobNumber] = useState(
@@ -408,6 +428,11 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
           <div />
         </div>
       </div>
+      {inputError && (
+        <p className="deleteWarningText">
+          Technician names can not be the same.
+        </p>
+      )}
       <div className="buttonBar">
         <button type="submit" className="standardButton" tabIndex={20}>
           <ArrowUpward />

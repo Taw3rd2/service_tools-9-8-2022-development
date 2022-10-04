@@ -1,23 +1,51 @@
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import { useSyncedCollection } from "../../firebase/firestore.utils";
 
 import Calendar from "./calendar/Calendar.view";
-import Spinner from "../../components/spinner/Spinner";
+import CalendarSpinner from "../../components/spinner/CalendarSpinner";
 import Toast from "../../components/basic_components/toast/Toast";
 
 import { Tab, Tabs } from "@mui/material";
+import { getFormattedDate } from "../../utilities/dateUtils";
 
-const AddDayLabelModal = lazy(() => import("./modals/AddDayLabel.modal"));
-const DailyOptionsMenuModal = lazy(() =>
-  import("./modals/DailyOptionsMenu.modal")
+import "../../global_style/style.css";
+
+//Modals
+const ModalOne = lazy(() =>
+  import("../../components/basic_components/modal_one/ModalOne")
 );
-const DayLabelEditorModal = lazy(() => import("./modals/DayLabelEditor.modal"));
-const DeleteDayLabelModal = lazy(() => import("./modals/DeleteDayLabel.modal"));
-const DeleteDispatchModal = lazy(() => import("./modals/DeleteDispatch.modal"));
-const DispatchEditorModal = lazy(() => import("./modals/DispatchEditor.modal"));
-const EditDayLabelModal = lazy(() => import("./modals/EditDayLabel.modal"));
-const JobCompletedModal = lazy(() => import("./modals/JobComplete.modal"));
+const ModalTwo = lazy(() =>
+  import("../../components/basic_components/modal_two/ModalTwo")
+);
+const ModalThree = lazy(() =>
+  import("../../components/basic_components/modal_three/ModalThree")
+);
+//Dispatch
+const DispatchDetails = lazy(() =>
+  import("../../components/dispatches/details/DispatchDetails")
+);
+const DeleteDispatch = lazy(() =>
+  import("../../components/dispatches/delete/DeleteDispatch")
+);
+//Menu
+const DailyOptionsMenu = lazy(() =>
+  import("../../components/navigation_buttons/DailyOptionsMenu")
+);
+//Validation
+const JobComplete = lazy(() =>
+  import("../../pages/schedule/validation/JobComplete")
+);
+const SameTech = lazy(() => import("../../pages/schedule/validation/SameTech"));
+//DayLabels
+const DayLabelEditor = lazy(() =>
+  import("../schedule/day_labels/DayLabelEditor")
+);
+const AddDayLabel = lazy(() => import("../schedule/day_labels/AddDayLabel"));
+const DeleteDayLabel = lazy(() =>
+  import("../schedule/day_labels/DeleteDayLabel")
+);
+const EditDayLabel = lazy(() => import("../schedule/day_labels/EditDayLabel"));
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,19 +75,8 @@ function a11yProps(index) {
 }
 
 const Schedule = () => {
-  const db = getFirestore();
-
   //Fetch Technicians
-  const [technicians, setTechnicians] = useState([]);
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "technicians"), (snapshot) =>
-        setTechnicians(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
-      ),
-    [db]
-  );
+  const technicians = useSyncedCollection("technicians");
 
   //Tabs
   const [tabValue, setTabValue] = useState(0);
@@ -67,93 +84,166 @@ const Schedule = () => {
     setTabValue(newTabValue);
   };
 
-  //Dispatch Editor
-  const [isDispatchEditorModalOpen, setDispatchEditorModalOpen] =
-    useState(false);
-  const [selectedDispatch, setSelectedDispatch] = useState({});
-  const openDispatchEditorModal = (info) => {
-    setSelectedDispatch(info);
-    setDispatchEditorModalOpen(true);
+  //Modal One
+  const [isModalOneOpen, setModalOneOpen] = useState(false);
+  const [modalOneSize, setModalOneSize] = useState("45%");
+  const [modalOneTitle, setModalOneTitle] = useState("Modal One");
+  const [modalOneContent, setModalOneContent] = useState(
+    <div>Modal One Content</div>
+  );
+  const openModalOne = (size, title, content) => {
+    setModalOneSize(size);
+    setModalOneTitle(title);
+    setModalOneContent(content);
+    setModalOneOpen(true);
   };
-  const closeDispatchEditorModal = () => {
-    setDispatchEditorModalOpen(false);
+  const closeModalOne = () => {
+    setModalOneSize("45%");
+    setModalOneTitle("Modal One");
+    setModalOneContent(<div>Modal One Content</div>);
+    setModalOneOpen(false);
   };
 
-  //Job Completed
-  const [isJobCompletedModalOpen, setJobCompletedModalOpen] = useState(false);
-  const openJobCompletedModal = () => {
-    setJobCompletedModalOpen(true);
+  //Modal Two
+  const [isModalTwoOpen, setModalTwoOpen] = useState(false);
+  const [modalTwoSize, setModalTwoSize] = useState("45%");
+  const [modalTwoTitle, setModalTwoTitle] = useState("Modal One");
+  const [modalTwoContent, setModalTwoContent] = useState(
+    <div>Modal Two Content</div>
+  );
+  const openModalTwo = (size, title, content) => {
+    setModalTwoSize(size);
+    setModalTwoTitle(title);
+    setModalTwoContent(content);
+    setModalTwoOpen(true);
   };
-  const closeJobCompletedModal = () => {
-    setJobCompletedModalOpen(false);
+  const closeModalTwo = () => {
+    setModalTwoSize("45%");
+    setModalTwoTitle("Modal Two");
+    setModalTwoContent(<div>Modal Two Content</div>);
+    setModalTwoOpen(false);
   };
 
-  //Daily Options
-  const [isDailyOptionsMenuOpen, setDailyOptionsMenuOpen] = useState(false);
-  const [calendarDateSelected, setCalendarDateSelected] = useState({});
+  //Modal Three
+  const [isModalThreeOpen, setModalThreeOpen] = useState(false);
+  const [modalThreeSize, setModalThreeSize] = useState("45%");
+  const [modalThreeTitle, setModalThreeTitle] = useState("Modal Three");
+  const [modalThreeContent, setModalThreeContent] = useState(
+    <div>Modal Three Content</div>
+  );
+  const openModalThree = (size, title, content) => {
+    setModalThreeSize(size);
+    setModalThreeTitle(title);
+    setModalThreeContent(content);
+    setModalThreeOpen(true);
+  };
+  const closeModalThree = () => {
+    setModalThreeSize("45%");
+    setModalThreeTitle("Modal Two");
+    setModalThreeContent(<div>Modal Three Content</div>);
+    setModalThreeOpen(false);
+  };
+
+  const openDispatchDetails = (selectedDispatch) => {
+    openModalOne(
+      "25%",
+      "Dispatch Details",
+      <DispatchDetails
+        selectedDispatch={selectedDispatch}
+        closeModalOne={closeModalOne}
+        openJobCompleted={openJobCompleted}
+        openSameTech={openSameTech}
+        openDeleteDispatch={openDeleteDispatch}
+      />
+    );
+  };
+
+  const openDeleteDispatch = (selectedDispatch) => {
+    openModalTwo(
+      "20%",
+      "Delete Dispatch",
+      <DeleteDispatch
+        selectedDispatch={selectedDispatch}
+        closeModalOne={closeModalOne}
+        closeModalTwo={closeModalTwo}
+      />
+    );
+  };
+
+  const openJobCompleted = () => {
+    openModalTwo(
+      "20%",
+      "Invalid",
+      <JobComplete closeModalTwo={closeModalTwo} />
+    );
+  };
+
+  const openSameTech = () => {
+    openModalTwo("20%", "Invalid", <SameTech closeModalTwo={closeModalTwo} />);
+  };
+
   const openDailyOptionsMenu = (date) => {
-    setCalendarDateSelected(date);
-    setDailyOptionsMenuOpen(true);
-  };
-  const closeDailyOptionsMenu = () => {
-    setCalendarDateSelected({});
-    setDailyOptionsMenuOpen(false);
-  };
-
-  //Day Label Editor
-  const [isDayLabelEditorModalOpen, setDayLabelEditorModalOpen] =
-    useState(false);
-  const [selectedDayLabel, setSelectedDayLabel] = useState({});
-  const openDayLabelEditor = () => {
-    setDayLabelEditorModalOpen(true);
-  };
-  const closeDayLabelEditor = () => {
-    setDayLabelEditorModalOpen(false);
+    openModalOne(
+      "15%",
+      `Daily Options for ${getFormattedDate(date)}`,
+      <DailyOptionsMenu
+        closeModalOne={closeModalOne}
+        calendarDateSelected={date}
+        openDayLabelEditor={openDayLabelEditor}
+      />
+    );
   };
 
-  //Add Day Label Modal
-  const [isAddDayLabelModalOpen, setAddDayLabelModalOpen] = useState(false);
-  const openAddDayLabelModal = () => {
-    setAddDayLabelModalOpen(true);
-  };
-  const closeAddDayLabelModal = () => {
-    setAddDayLabelModalOpen(false);
-  };
-
-  //Delete Day Label Modal
-  const [isDeleteDayLabelModalOpen, setDeleteDayLabelModalOpen] =
-    useState(false);
-  const openDeleteDayLabelModal = (label) => {
-    console.log("dayLabel: ", label);
-    setSelectedDayLabel(label);
-    setDeleteDayLabelModalOpen(true);
-  };
-  const closeDeleteDayLabelModal = () => {
-    setDeleteDayLabelModalOpen(false);
+  const openDayLabelEditor = (date) => {
+    openModalTwo(
+      "30%",
+      `Day Labels for ${getFormattedDate(date)}`,
+      <DayLabelEditor
+        closeModalTwo={closeModalTwo}
+        openAddDayLabel={openAddDayLabel}
+        openDeleteDayLabel={openDeleteDayLabel}
+        openEditDayLabel={openEditDayLabel}
+        calendarDateSelected={date}
+      />
+    );
   };
 
-  //Edit Day Label Modal
-  const [isEditDayLabelModalOpen, setEditDayLabelOpen] = useState(false);
-  const openEditDayLabelModal = (label) => {
-    setSelectedDayLabel(label);
-    setEditDayLabelOpen(true);
-  };
-  const closeEditDayLabelModal = () => {
-    setEditDayLabelOpen(false);
+  const openAddDayLabel = (date) => {
+    openModalThree(
+      "25%",
+      `Add Label for ${getFormattedDate(date)}`,
+      <AddDayLabel
+        closeModalThree={closeModalThree}
+        calendarDateSelected={date}
+      />
+    );
   };
 
-  //Delete Dispatch Modal
-  const [isDeleteDispatchModalOpen, setDeleteDispatchModalOpen] =
-    useState(false);
-  const openDeleteDispatchModal = () => {
-    setDeleteDispatchModalOpen(true);
+  const openDeleteDayLabel = (dayLabel) => {
+    openModalThree(
+      "25%",
+      "Delete Day Label",
+      <DeleteDayLabel
+        closeModalThree={closeModalThree}
+        selectedDayLabel={dayLabel}
+      />
+    );
   };
-  const closeDeleteDispatchModal = () => {
-    setDeleteDispatchModalOpen(false);
+
+  const openEditDayLabel = (date, dayLabel) => {
+    openModalThree(
+      "25%",
+      "Edit Day Label",
+      <EditDayLabel
+        closeModalThree={closeModalThree}
+        calendarDateSelected={date}
+        selectedDayLabel={dayLabel}
+      />
+    );
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div className="schedulePage">
       <Toast />
       <div style={{ borderBottom: 2, borderColor: "divider" }}>
         <Tabs
@@ -180,101 +270,51 @@ const Schedule = () => {
         <Calendar
           technician={"ALL"}
           technicians={technicians}
-          openDispatchEditorModal={openDispatchEditorModal}
+          openDispatchDetails={openDispatchDetails}
           openDailyOptionsMenu={openDailyOptionsMenu}
         />
       </TabPanel>
+      {isModalOneOpen && (
+        <Suspense fallback={<CalendarSpinner />}>
+          <ModalOne
+            modalOneSize={modalOneSize}
+            modalOneTitle={modalOneTitle}
+            modalOneContent={modalOneContent}
+            closeModalOne={closeModalOne}
+          />
+        </Suspense>
+      )}
+      {isModalTwoOpen && (
+        <Suspense fallback={<CalendarSpinner />}>
+          <ModalTwo
+            modalTwoSize={modalTwoSize}
+            modalTwoTitle={modalTwoTitle}
+            modalTwoContent={modalTwoContent}
+            closeModalTwo={closeModalTwo}
+          />
+        </Suspense>
+      )}
+      {isModalThreeOpen && (
+        <Suspense fallback={<CalendarSpinner />}>
+          <ModalThree
+            modalThreeSize={modalThreeSize}
+            modalThreeTitle={modalThreeTitle}
+            modalThreeContent={modalThreeContent}
+            closeModalThree={closeModalThree}
+          />
+        </Suspense>
+      )}
       {technicians.length > 0 &&
         technicians.map((technician, index) => (
           <TabPanel key={technician.id} value={tabValue} index={index + 1}>
             <Calendar
               technician={technician.name}
               technicians={technicians}
-              openDispatchEditorModal={openDispatchEditorModal}
+              openDispatchEditorModal={openDispatchDetails}
               openDailyOptionsMenu={openDailyOptionsMenu}
             />
           </TabPanel>
         ))}
-      {isDispatchEditorModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <DispatchEditorModal
-            isDispatchEditorModalOpen={isDispatchEditorModalOpen}
-            closeDispatchEditorModal={closeDispatchEditorModal}
-            selectedDispatch={selectedDispatch}
-            openJobCompletedModal={openJobCompletedModal}
-            openDeleteDispatchModal={openDeleteDispatchModal}
-          />
-        </Suspense>
-      )}
-      {isJobCompletedModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <JobCompletedModal
-            isJobCompletedModalOpen={isJobCompletedModalOpen}
-            closeJobCompletedModal={closeJobCompletedModal}
-          />
-        </Suspense>
-      )}
-      {isDailyOptionsMenuOpen && (
-        <Suspense fallback={<Spinner />}>
-          <DailyOptionsMenuModal
-            isDailyOptionsMenuOpen={isDailyOptionsMenuOpen}
-            closeDailyOptionsMenu={closeDailyOptionsMenu}
-            calendarDateSelected={calendarDateSelected}
-            openDayLabelEditor={openDayLabelEditor}
-          />
-        </Suspense>
-      )}
-      {isDayLabelEditorModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <DayLabelEditorModal
-            isDayLabelEditorModalOpen={isDayLabelEditorModalOpen}
-            closeDayLabelEditor={closeDayLabelEditor}
-            openAddDayLabelModal={openAddDayLabelModal}
-            openDeleteDayLabelModal={openDeleteDayLabelModal}
-            openEditDayLabelModal={openEditDayLabelModal}
-            calendarDateSelected={calendarDateSelected}
-          />
-        </Suspense>
-      )}
-      {isAddDayLabelModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <AddDayLabelModal
-            isAddDayLabelModalOpen={isAddDayLabelModalOpen}
-            closeAddDayLabelModal={closeAddDayLabelModal}
-            calendarDateSelected={calendarDateSelected}
-          />
-        </Suspense>
-      )}
-      {isDeleteDayLabelModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <DeleteDayLabelModal
-            isDeleteDayLabelModalOpen={isDeleteDayLabelModalOpen}
-            closeDeleteDayLabelModal={closeDeleteDayLabelModal}
-            calendarDateSelected={calendarDateSelected}
-            selectedDayLabel={selectedDayLabel}
-          />
-        </Suspense>
-      )}
-      {isEditDayLabelModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <EditDayLabelModal
-            isEditDayLabelModalOpen={isEditDayLabelModalOpen}
-            closeEditDayLabelModal={closeEditDayLabelModal}
-            calendarDateSelected={calendarDateSelected}
-            selectedDayLabel={selectedDayLabel}
-          />
-        </Suspense>
-      )}
-      {isDeleteDispatchModalOpen && (
-        <Suspense fallback={<Spinner />}>
-          <DeleteDispatchModal
-            isDeleteDispatchModalOpen={isDeleteDispatchModalOpen}
-            closeDeleteDispatchModal={closeDeleteDispatchModal}
-            closeDispatchEditorModal={closeDispatchEditorModal}
-            selectedDispatch={selectedDispatch}
-          />
-        </Suspense>
-      )}
     </div>
   );
 };

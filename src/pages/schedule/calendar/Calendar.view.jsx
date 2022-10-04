@@ -46,7 +46,7 @@ const regButton = {
 const Calendar = ({
   technician,
   technicians,
-  openDispatchEditorModal,
+  openDispatchDetails,
   openDailyOptionsMenu,
 }) => {
   const db = getFirestore();
@@ -215,7 +215,7 @@ const Calendar = ({
   };
 
   const selectEvent = (eventInfo) => {
-    openDispatchEditorModal(eventInfo.event);
+    openDispatchDetails(eventInfo.event);
   };
 
   return (
