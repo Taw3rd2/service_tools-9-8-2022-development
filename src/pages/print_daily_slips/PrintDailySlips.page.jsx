@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import PrintDailySlip from "./PrintDailySlip";
+import { useEffect, useState } from "react";
+
 import {
   collection,
   getFirestore,
@@ -7,11 +7,12 @@ import {
   query,
   where,
 } from "firebase/firestore";
+
 import { useLocation } from "react-router-dom";
 
-import ViewDailySlip from "./ViewDailySlip";
+import PrintDailySlip from "./print_daily/PrintPailySlip";
+import ViewDailySlip from "./view_daily/ViewDailySlip";
 
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useMediaQuery } from "@mui/material";
 
 const PrintDailySlips = () => {
@@ -39,20 +40,22 @@ const PrintDailySlips = () => {
   return (
     <>
       {matchesPrint ? (
-        <div style={{ marginTop: "16px", pageBreakAfter: "always" }}>
-          <Grid2 container spacing={3}>
-            {events.map((event, index) => (
-              <PrintDailySlip key={index}> {event} </PrintDailySlip>
-            ))}
-          </Grid2>
+        <div
+          style={{
+            pageBreakAfter: "always",
+            display: "grid",
+            gridTemplateColumns: "48%48%",
+          }}
+        >
+          {events.map((event, index) => (
+            <PrintDailySlip key={index}> {event} </PrintDailySlip>
+          ))}
         </div>
       ) : (
-        <div style={{ marginTop: "16px", flexGrow: 1 }}>
-          <Grid2 container>
-            {events.map((event, index) => (
-              <ViewDailySlip key={index}> {event} </ViewDailySlip>
-            ))}
-          </Grid2>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {events.map((event, index) => (
+            <ViewDailySlip key={index}> {event} </ViewDailySlip>
+          ))}
         </div>
       )}
     </>

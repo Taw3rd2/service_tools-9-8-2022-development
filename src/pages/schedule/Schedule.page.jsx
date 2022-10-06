@@ -1,15 +1,17 @@
 import React, { lazy, Suspense, useState } from "react";
 
 import { useSyncedCollection } from "../../firebase/firestore.utils";
+import { useNavigate } from "react-router-dom";
 
 import Calendar from "./calendar/Calendar.view";
 import CalendarSpinner from "../../components/spinner/CalendarSpinner";
 import Toast from "../../components/basic_components/toast/Toast";
 
-import { Tab, Tabs } from "@mui/material";
+import { IconButton, Tab, Tabs } from "@mui/material";
 import { getFormattedDate } from "../../utilities/dateUtils";
 
 import "../../global_style/style.css";
+import { Print } from "@mui/icons-material";
 
 //Modals
 const ModalOne = lazy(() =>
@@ -77,6 +79,7 @@ function a11yProps(index) {
 const Schedule = () => {
   //Fetch Technicians
   const technicians = useSyncedCollection("technicians");
+  const navigate = useNavigate();
 
   //Tabs
   const [tabValue, setTabValue] = useState(0);
@@ -144,10 +147,25 @@ const Schedule = () => {
     setModalThreeOpen(false);
   };
 
+  const routeToPrintOneSlip = (selectedDispatch) => {
+    navigate(`/print_one_slip/${selectedDispatch.id}`, {
+      state: selectedDispatch,
+    });
+  };
+
   const openDispatchDetails = (selectedDispatch) => {
     openModalOne(
       "25%",
-      "Dispatch Details",
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <div>Dispatch Details</div>
+        <IconButton
+          style={{ marginLeft: "auto", marginRight: "8px", color: "teal" }}
+          onClick={() => routeToPrintOneSlip(selectedDispatch)}
+          disabled
+        >
+          <Print fontSize="large" />
+        </IconButton>
+      </div>,
       <DispatchDetails
         selectedDispatch={selectedDispatch}
         closeModalOne={closeModalOne}

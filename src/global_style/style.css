@@ -477,6 +477,47 @@
     margin: 8px;
 }
 
+/* Daily Slips */
+.viewSlipsContainer {
+    flex: 0 0 21%;
+    border: 1px solid black;
+    padding: 8px;
+    margin: 16px;
+}
+
+.viewSlipsRow {
+    display: flex;
+    gap: 8px;
+}
+
+.viewSlipsPrimaryText {
+    font-weight: bold;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.viewSlipsSecondaryText {
+    font-weight: bold;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.viewSlipsCaptionText {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.printSlipsContainer {
+    height: 500px;
+    border: 1px solid black;
+    padding: 8px;
+    margin: 5px;
+}
+
+.printSlipsPageBreak {
+    page-break-after: always;
+}
+
 @keyframes modalopen {
     from {
         opacity: 0;
@@ -572,5 +613,11 @@
 
     .buttonBarStack {
         margin-top: 8px;
+    }
+}
+
+@media print {
+    .noPrint {
+        display: none;
     }
 }

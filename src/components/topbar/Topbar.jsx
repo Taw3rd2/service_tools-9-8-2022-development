@@ -60,7 +60,7 @@ const Topbar = ({ setUser }) => {
   };
 
   return (
-    <div className="topbarContainer">
+    <div className="topbarContainer noPrint">
       <div className="topbarLeft">
         <span className="topbarLogo">Service Tools</span>
       </div>
