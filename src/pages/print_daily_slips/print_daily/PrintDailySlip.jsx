@@ -4,7 +4,7 @@ import { getFormattedDate } from "../../../utilities/dateUtils";
 
 import "../../../global_style/style.css";
 
-const PrintPailySlip = (props) => {
+const PrintDailySlip = (props) => {
   const dispatch = props.children[1];
 
   return (
@@ -262,4 +262,4 @@ const PrintPailySlip = (props) => {
   );
 };
 
-export default PrintPailySlip;
+export default PrintDailySlip;

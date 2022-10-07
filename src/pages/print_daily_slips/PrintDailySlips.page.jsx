@@ -10,7 +10,7 @@ import {
 
 import { useLocation } from "react-router-dom";
 
-import PrintDailySlip from "./print_daily/PrintPailySlip";
+import PrintDailySlip from "./print_daily/PrintDailySlip";
 import ViewDailySlip from "./view_daily/ViewDailySlip";
 
 import { useMediaQuery } from "@mui/material";

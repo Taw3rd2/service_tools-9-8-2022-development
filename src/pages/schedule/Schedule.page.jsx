@@ -149,7 +149,8 @@ const Schedule = () => {
 
   const routeToPrintOneSlip = (selectedDispatch) => {
     navigate(`/print_one_slip/${selectedDispatch.id}`, {
-      state: selectedDispatch,
+      state: selectedDispatch.extendedProps,
+      key: selectedDispatch.id,
     });
   };
 
@@ -161,7 +162,6 @@ const Schedule = () => {
         <IconButton
           style={{ marginLeft: "auto", marginRight: "8px", color: "teal" }}
           onClick={() => routeToPrintOneSlip(selectedDispatch)}
-          disabled
         >
           <Print fontSize="large" />
         </IconButton>

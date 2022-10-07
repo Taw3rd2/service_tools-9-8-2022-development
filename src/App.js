@@ -27,7 +27,7 @@ function App() {
 
   return (
     <ThemeProvider theme={lightTheme}>
-      <Topbar currentUser={user} setUser={setUser} />
+      {currentUser ? <Topbar currentUser={user} setUser={setUser} /> : null}
       <Suspense fallback={<Spinner />}>
         <Routes>
           <Route path="/" element={<SignIn setUser={setUser} />} />
