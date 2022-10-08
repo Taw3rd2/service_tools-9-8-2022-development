@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import DeleteItem from "./DeleteItem.modal";
 import Dispatcher from "./dispatchers/Dispatcher.modal";
-import DispatcherList from "./dispatchers/DispatcherList";
+import DispatcherList from "./dispatchers/list/DispatcherList";
 import Payment from "./payments/Payment.modal";
-import PaymentList from "./payments/PaymentList";
+import PaymentList from "./payments/list/PaymentList";
 import Technician from "./technicians/Technician.modal";
-import TechnicianList from "./technicians/TechnicianList";
+import TechnicianList from "./technicians/list/TechnicianList";
 import Work from "./work_list/Work.modal";
-import WorkList from "./work_list/WorkList";
+import WorkList from "./work_list/list/WorkList";
 import Toast from "../../components/basic_components/toast/Toast";
 
 import "../../global_style/style.css";

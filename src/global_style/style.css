@@ -518,6 +518,20 @@
     page-break-after: always;
 }
 
+.settingsCard {
+    border: 1px solid black;
+    background-color: lightgrey;
+    margin: 4px;
+    padding: 8px;
+}
+
+.settingsCardTitle {
+    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: 500;
+    color: teal
+}
+
 @keyframes modalopen {
     from {
         opacity: 0;
