@@ -85,8 +85,8 @@ const DispatchDetails = ({
     shorthand: selectedDispatch.extendedProps.shorthand
       ? selectedDispatch.extendedProps.shorthand
       : "",
-    start: selectedDispatch.extendedProps.start
-      ? selectedDispatch.extendedProps.start
+    start: selectedDispatch.start
+      ? selectedDispatch.start
       : setDateToZeroHours(new Date()),
     street: selectedDispatch.extendedProps.street
       ? selectedDispatch.extendedProps.street
@@ -174,7 +174,6 @@ const DispatchDetails = ({
         techHelperId: selectedDispatch.extendedProps.techHelperId,
         title: selectedDispatch.title,
       };
-      console.log("updated dispatch object 1", updatedDispatch);
       //compare old dispatch with changes to see if techs changed
       const noTechChange = compareEvents(
         selectedDispatch.extendedProps,
