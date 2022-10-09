@@ -235,7 +235,7 @@ const Calendar = ({
         dayCellContent={customDateHeader}
         eventClick={selectEvent}
         eventDidMount={eventBorderColorSetter}
-        height={980}
+        height={1000}
       />
     </ThemeProvider>
   );
