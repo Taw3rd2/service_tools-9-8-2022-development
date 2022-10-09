@@ -532,6 +532,13 @@
     color: teal
 }
 
+.slideIn {
+    margin-top: -225px;
+    opacity: 0;
+    transition-property: margin-top, opacity;
+    transition-duration: 0.4s;
+}
+
 @keyframes modalopen {
     from {
         opacity: 0;

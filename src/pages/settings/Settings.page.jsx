@@ -1,74 +1,126 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 
-import DeleteItem from "./DeleteItem.modal";
-import Dispatcher from "./dispatchers/Dispatcher.modal";
 import DispatcherList from "./dispatchers/list/DispatcherList";
-import Payment from "./payments/Payment.modal";
 import PaymentList from "./payments/list/PaymentList";
-import Technician from "./technicians/Technician.modal";
 import TechnicianList from "./technicians/list/TechnicianList";
-import Work from "./work_list/Work.modal";
 import WorkList from "./work_list/list/WorkList";
 import Toast from "../../components/basic_components/toast/Toast";
 
 import "../../global_style/style.css";
+import Spinner from "../../components/spinner/Spinner";
+import DeleteTechnician from "./technicians/delete/DeleteTechnician";
+
+const ModalOne = lazy(() =>
+  import("../../components/basic_components/modal_one/ModalOne")
+);
+const DeleteDispatcher = lazy(() =>
+  import("./dispatchers/delete/DeleteDispatcher")
+);
+const DispatcherDetails = lazy(() =>
+  import("./dispatchers/create_details/DispatcherDetails")
+);
+const DeletePayment = lazy(() => import("./payments/delete/DeletePayment"));
+const PaymentDetails = lazy(() =>
+  import("./payments/create_details/PaymentDetails")
+);
+const WorkListItemDetails = lazy(() =>
+  import("./work_list/create_details/WorkListItemDetails")
+);
+const DeleteWorkListItem = lazy(() =>
+  import("./work_list/delete/DeleteWorkListItem")
+);
+const TechnicianDetails = lazy(() =>
+  import("./technicians/create_details/TechnicianDetails")
+);
 
 const Settings = () => {
-  //Delete a settings list item
-  const [isDeleteItemModalOpen, setDeleteitemModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState({});
-  const [parentCollection, setParentCollection] = useState("");
-  const openDeleteItemModal = (item, parent) => {
-    setItemToDelete(item);
-    setParentCollection(parent);
-    setDeleteitemModalOpen(true);
+  //Modal One
+  const [isModalOneOpen, setModalOneOpen] = useState(false);
+  const [modalOneSize, setModalOneSize] = useState("45%");
+  const [modalOneTitle, setModalOneTitle] = useState("Modal One");
+  const [modalOneContent, setModalOneContent] = useState(
+    <div>Modal One Content</div>
+  );
+  const openModalOne = (size, title, content) => {
+    setModalOneSize(size);
+    setModalOneTitle(title);
+    setModalOneContent(content);
+    setModalOneOpen(true);
   };
-  const closeDeleteItemModal = () => {
-    setDeleteitemModalOpen(false);
-  };
-
-  //Dispatchers
-  const [isDispatcherModalOpen, setDispatcherModalOpen] = useState(false);
-  const [dispatcher, setDispatcher] = useState({});
-  const openDispatcherModal = (disp) => {
-    setDispatcher(disp);
-    setDispatcherModalOpen(true);
-  };
-  const closeDispatcherModal = () => {
-    setDispatcherModalOpen(false);
+  const closeModalOne = () => {
+    setModalOneSize("45%");
+    setModalOneTitle("Modal One");
+    setModalOneContent(<div>Modal One Content</div>);
+    setModalOneOpen(false);
   };
 
-  //Payments
-  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false);
-  const [payment, setPayment] = useState({});
-  const openPaymentModal = (item) => {
-    setPayment(item);
-    setPaymentModalOpen(true);
-  };
-  const closePaymentModal = () => {
-    setPaymentModalOpen(false);
+  const openDeleteDispatcher = (dispatcher) => {
+    openModalOne(
+      "20%",
+      "Delete Dispatcher",
+      <DeleteDispatcher dispatcher={dispatcher} closeModalOne={closeModalOne} />
+    );
   };
 
-  //Work list
-  const [isWorkModalOpen, setWorkModalOpen] = useState(false);
-  const [work, setWork] = useState({});
-  const openWorkModal = (item) => {
-    setWork(item);
-    setWorkModalOpen(true);
-  };
-  const closeWorkModal = () => {
-    setWorkModalOpen(false);
+  const openDispatcherDetails = (dispatcher) => {
+    openModalOne(
+      "10%",
+      <>{dispatcher !== undefined ? "Dispatcher Details" : "New Dispatcher"}</>,
+      <DispatcherDetails
+        dispatcher={dispatcher}
+        closeModalOne={closeModalOne}
+      />
+    );
   };
 
-  //Technicians
-  const [isTechnicianModalOpen, setTechnicianModalOpen] = useState(false);
-  const [technician, setTechnician] = useState({});
-  const openTechnicianModal = (tech) => {
-    setTechnician(tech);
-    setTechnicianModalOpen(true);
+  const openDeletePayment = (payment) => {
+    openModalOne(
+      "20%",
+      "Delete Payment",
+      <DeletePayment payment={payment} closeModalOne={closeModalOne} />
+    );
   };
-  const closeTechnicianModal = () => {
-    setTechnicianModalOpen(false);
+
+  const openPaymentDetails = (payment) => {
+    openModalOne(
+      "10%",
+      <>{payment !== undefined ? "Payment Details" : "New Payment"}</>,
+      <PaymentDetails payment={payment} closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openWorkListItemDetails = (item) => {
+    openModalOne(
+      "20%",
+      <>
+        {item !== undefined ? "Work List Item Details" : "New Worklist Item"}
+      </>,
+      <WorkListItemDetails workListItem={item} closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openDeleteWorklistItem = (item) => {
+    openModalOne(
+      "20%",
+      "Delete Work List Item",
+      <DeleteWorkListItem workListItem={item} closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openTechnicianDetails = (tech) => {
+    openModalOne(
+      "30%",
+      <>{tech !== undefined ? "Technician Details" : "New Technician"}</>,
+      <TechnicianDetails technician={tech} closeModalOne={closeModalOne} />
+    );
+  };
+
+  const openDeleteTechnician = (tech) => {
+    openModalOne(
+      "20%",
+      "Delete Technician",
+      <DeleteTechnician technician={tech} closeModalOne={closeModalOne} />
+    );
   };
 
   return (
@@ -77,20 +129,20 @@ const Settings = () => {
       <div className="settingsTopRow">
         <div className="settingsTopLeft">
           <DispatcherList
-            openDispatcherModal={openDispatcherModal}
-            openDeleteItemModal={openDeleteItemModal}
+            openDispatcherDetails={openDispatcherDetails}
+            openDeleteDispatcher={openDeleteDispatcher}
           />
         </div>
         <div className="settingsTopMiddle">
           <PaymentList
-            openDeleteItemModal={openDeleteItemModal}
-            openPaymentModal={openPaymentModal}
+            openDeletePayment={openDeletePayment}
+            openPaymentDetails={openPaymentDetails}
           />
         </div>
         <div className="settingsTopRight">
           <WorkList
-            openDeleteItemModal={openDeleteItemModal}
-            openWorkModal={openWorkModal}
+            openDeleteWorkListItem={openDeleteWorklistItem}
+            openWorkListItemDetails={openWorkListItemDetails}
           />
         </div>
       </div>
@@ -98,46 +150,20 @@ const Settings = () => {
         <div className="settingsBottomLeft"></div>
         <div className="settingsBottomRight">
           <TechnicianList
-            openDeleteItemModal={openDeleteItemModal}
-            openTechnicianModal={openTechnicianModal}
+            openDeleteTechnician={openDeleteTechnician}
+            openTechnicianDetails={openTechnicianDetails}
           />
         </div>
       </div>
-      {isDispatcherModalOpen && (
-        <Dispatcher
-          isDispatcherModalOpen={isDispatcherModalOpen}
-          closeDispatcherModal={closeDispatcherModal}
-          dispatcher={dispatcher}
-        />
-      )}
-      {isDeleteItemModalOpen && (
-        <DeleteItem
-          isDeleteItemModalOpen={isDeleteItemModalOpen}
-          closeDeleteItemModal={closeDeleteItemModal}
-          parentCollection={parentCollection}
-          item={itemToDelete}
-        />
-      )}
-      {isPaymentModalOpen && (
-        <Payment
-          isPaymentModalOpen={isPaymentModalOpen}
-          closePaymentModal={closePaymentModal}
-          payment={payment}
-        />
-      )}
-      {isWorkModalOpen && (
-        <Work
-          isWorkModalOpen={isWorkModalOpen}
-          closeWorkModal={closeWorkModal}
-          work={work}
-        />
-      )}
-      {isTechnicianModalOpen && (
-        <Technician
-          isTechnicianModalOpen={isTechnicianModalOpen}
-          closeTechnicianModal={closeTechnicianModal}
-          technician={technician}
-        />
+      {isModalOneOpen && (
+        <Suspense fallback={<Spinner />}>
+          <ModalOne
+            modalOneSize={modalOneSize}
+            modalOneTitle={modalOneTitle}
+            modalOneContent={modalOneContent}
+            closeModalOne={closeModalOne}
+          />
+        </Suspense>
       )}
     </div>
   );
