@@ -23,14 +23,14 @@ const PrintOneSlip = () => {
             gridTemplateColumns: "48%48%",
           }}
         >
-          {dispatches.map((dispatch) => (
-            <PrintDailySlip key={dispatch.id}> {dispatch} </PrintDailySlip>
+          {dispatches.map((dispatch, index) => (
+            <PrintDailySlip key={index}> {dispatch} </PrintDailySlip>
           ))}
         </div>
       ) : (
         <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {dispatches.map((dispatch) => (
-            <ViewDailySlip key={dispatch.id}> {dispatch} </ViewDailySlip>
+          {dispatches.map((dispatch, index) => (
+            <ViewDailySlip key={index}> {dispatch} </ViewDailySlip>
           ))}
         </div>
       )}
