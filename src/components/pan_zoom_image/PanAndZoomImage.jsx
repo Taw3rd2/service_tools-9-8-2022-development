@@ -2,7 +2,7 @@ import React from "react";
 import usePanAndZoom from "./usePanAndZoom/usePanAndZoom";
 import "./PanAndZoomImage.css";
 
-const PanAndZoomImage = ({ src }) => {
+const PanAndZoomImage = React.forwardRef(({ src }) => {
   const { containerRef, onMouseDown, onWheel, translateX, translateY, scale } =
     usePanAndZoom();
 
@@ -22,6 +22,6 @@ const PanAndZoomImage = ({ src }) => {
       </div>
     </div>
   );
-};
+});
 
 export default PanAndZoomImage;
