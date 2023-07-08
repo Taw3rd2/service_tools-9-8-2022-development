@@ -4,9 +4,8 @@ import { AddCircle, Assignment, BuildCircle } from "@mui/icons-material";
 import "../../global_style/style.css";
 
 const reportButton = {
-  border: "1px solid black",
+  border: "1px solid teal",
   textAlign: "center",
-  background: "#FFF",
   padding: "8px",
 };
 
@@ -15,8 +14,7 @@ const InactiveButtons = () => {
     <div
       style={{
         flexGrow: 1,
-        border: "2px solid black",
-        backgroundColor: "lightgray",
+        border: "2px solid teal",
         padding: "4px",
       }}
     >
@@ -38,8 +36,8 @@ const InactiveButtons = () => {
         <div className="quadRowInput">
           <div style={reportButton}>
             <BuildCircle style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">Add</Typography>
             <Typography variant="subtitle1">Maintenance</Typography>
-            <Typography variant="subtitle1">Manager</Typography>
           </div>
         </div>
         <div className="quadRowInput">
@@ -50,35 +48,32 @@ const InactiveButtons = () => {
           </div>
         </div>
       </div>
-      {/*
-          <Grid2 xs={3}>
-            <div style={reportButton}>
-              <Assignment style={{ fontSize: 60, color: "grey" }} />
-              <Typography variant="subtitle1">Customer</Typography>
-              <Typography variant="subtitle1">Parts Quotes</Typography>
-            </div>
-          </Grid2>
-        <Grid item xs={3}>
-          <div style={reportButton}>
-            <Assignment style={{ fontSize: 60, color: "grey" }} />
-            <Typography variant="subtitle1">All Customer</Typography>
-            <Typography variant="subtitle1">Equipment Quotes</Typography>
-          </div>
-        </Grid>
-        <Grid item xs={3}>
+
+      <div className="row">
+        <div className="quadRowInput">
           <div style={reportButton}>
             <AddCircle style={{ fontSize: 60, color: "grey" }} />
-            <Typography variant="subtitle1">Create Blank</Typography>
+            <Typography variant="subtitle1">Blank</Typography>
             <Typography variant="subtitle1">Parts Quote</Typography>
           </div>
-        </Grid>
-        <Grid item xs={3}>
+        </div>
+
+        <div className="quadRowInput">
           <div style={reportButton}>
-            <AddCircle style={{ fontSize: 60, color: "grey" }} />
-            <Typography variant="subtitle1">Create Blank</Typography>
-            <Typography variant="subtitle1">Equipment Quote</Typography>
+            <Assignment style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">Parts</Typography>
+            <Typography variant="subtitle1">Quotes</Typography>
           </div>
-        </Grid> */}
+        </div>
+
+        <div className="quadRowInput">
+          <div style={reportButton}>
+            <Assignment style={{ fontSize: 60, color: "grey" }} />
+            <Typography variant="subtitle1">Equipment</Typography>
+            <Typography variant="subtitle1">Quotes</Typography>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

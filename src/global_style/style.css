@@ -45,7 +45,7 @@
     font-weight: 500;
     margin-right: 20px;
     cursor: pointer;
-    color: teal;
+    /* color: teal; */
 }
 
 .topbarUser {
@@ -221,6 +221,16 @@
     padding: 8px;
 }
 
+/* Customer Search */
+.searchCustomers {
+    font-size: 30px;
+    color: teal;
+}
+
+.customerSearch {
+    color: antiquewhite;
+}
+
 /* Schedule Page */
 .schedulePage {
     width: 100%;
@@ -241,7 +251,7 @@
     height: auto;
 }
 
-.settingsTopRow {
+.settingsRow {
     display: flex;
 }
 
@@ -260,24 +270,28 @@
     padding: 8px;
 }
 
-.settingsBottomRow {
-    display: flex;
-}
-
 .settingsBottomLeft {
     flex: 4;
+    padding: 8px;
 }
 
 .settingsBottomRight {
     flex: 8;
-    padding-right: 8px;
-    padding-left: 16px;
+    padding: 8px;
 }
 
-/* Customer Search */
-.searchCustomers {
-    font-size: 30px;
-    color: teal;
+.settingsCard {
+    border: 1px solid black;
+    background-color: teal;
+    margin: 4px;
+    padding: 8px;
+}
+
+.settingsCardTitle {
+    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: 500;
+    color: white
 }
 
 /* NoCustomerLoaded */
@@ -293,6 +307,17 @@
     color: teal;
 }
 
+.columnHeaderText {
+    font-size: 20px;
+    color: teal;
+}
+
+.pageContainer {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* NoServiceCustomer */
 .noServiceTitle {
     display: flex;
@@ -305,8 +330,13 @@
 /* Edits */
 .row {
     display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.smallRow {
+    display: flex;
     gap: 16px;
-    margin-bottom: 16px;
 }
 
 .singleRowInput {
@@ -323,6 +353,14 @@
 
 .quadRowInput {
     flex: 3;
+}
+
+.twoThirdsRowInput {
+    flex: 8;
+}
+
+.oneThirdRowInput {
+    flex: 4;
 }
 
 /* Stack Buttons Full Width */
@@ -355,12 +393,25 @@
     align-items: flex-start;
     justify-content: flex-end;
     flex-direction: row;
-    margin-top: 16px;
+    margin-top: 12px;
+}
+
+.listItemButtonBar {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 /* Buttons */
 .iconSeperation {
-    margin-left: 8px;
+    flex: 1;
+    padding-right: 16px;
+    padding-left: 16px;
+    text-align: center;
+}
+
+.buttonIcon {
+    width: 40px;
 }
 
 .deleteButton {
@@ -391,7 +442,7 @@
 
 .standardButton {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     border: 1px solid rgba(132, 230, 230, 0.8);
     padding: 10px;
@@ -410,6 +461,54 @@
     border-radius: 5px;
     font-weight: 500;
     margin-left: 10px;
+    cursor: pointer;
+    color: teal;
+}
+
+.standardGoButton {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    border: 1px solid teal;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+    color: green;
+}
+
+.standardGoButton:hover {
+    display: flex;
+    align-items: center;
+    border: 1px solid green;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    margin-left: 10px;
+    cursor: pointer;
+    color: green;
+}
+
+.lineItemButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(132, 230, 230, 0.8);
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+    color: teal;
+}
+
+.lineItemButton:hover {
+    display: flex;
+    align-items: center;
+    border: 1px solid teal;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: 500;
     cursor: pointer;
     color: teal;
 }
@@ -456,8 +555,9 @@
     animation-duration: 0.5s;
 }
 
-.modal {
-    background-color: #f4f4f4;
+.modalDark {
+    background-color: darkslategrey;
+    color: white;
     position: absolute;
     float: left;
     left: 50%;
@@ -467,7 +567,25 @@
     box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
 }
 
-.modalTitle {
+.modalLight {
+    background-color: lightgray;
+    color: teal;
+    position: absolute;
+    float: left;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 8px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+}
+
+.modalTitleDark {
+    margin-left: 8px;
+    font-size: 22px;
+    color: white;
+}
+
+.modalTitleLight {
     margin-left: 8px;
     font-size: 22px;
     color: teal;
@@ -475,6 +593,17 @@
 
 .modalContent {
     margin: 8px;
+}
+
+.customerSearchModal {
+    background-color: darkslategray;
+    position: absolute;
+    float: left;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+    padding: 8px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
 }
 
 /* Daily Slips */
@@ -518,25 +647,98 @@
     page-break-after: always;
 }
 
-.settingsCard {
-    border: 1px solid black;
-    background-color: lightgrey;
-    margin: 4px;
-    padding: 8px;
-}
-
-.settingsCardTitle {
-    margin-bottom: 8px;
-    font-size: 22px;
-    font-weight: 500;
-    color: teal
-}
-
 .slideIn {
     margin-top: -225px;
     opacity: 0;
     transition-property: margin-top, opacity;
     transition-duration: 0.4s;
+}
+
+.centerInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* equipment page */
+.accordionTitle {
+    color: "teal";
+}
+
+.worksheetDate {
+    margin-left: 8px;
+    font-size: 18px;
+}
+
+.worksheetBorder {
+    border: 1px solid black;
+}
+
+.worksheetTitle {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 8px;
+    margin-top: 15px;
+    font-size: 22px;
+    color: teal;
+}
+
+.worksheetContainer {
+    margin: 16px;
+}
+
+.searchBarLabel {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+    color: teal;
+    font-weight: bold;
+    font-size: 28px;
+    overflow: hidden;
+}
+
+.tableHeaderText {
+    font-size: 24px;
+    color: black;
+}
+
+.printTableHeaderText {
+    font-size: 14px;
+    color: black;
+}
+
+.tableCellText {
+    font-size: 22px;
+    color: black;
+}
+
+.printTableCellText {
+    font-size: 12px;
+    color: black;
+}
+
+.pageHeaderText {
+    font-size: 28px;
+    color: black;
+}
+
+.printPageHeaderText {
+    font-size: 20px;
+    color: black;
+}
+
+.pageCaptionText {
+    font-size: 16px;
+    color: black;
+}
+
+.printPageCaptionText {
+    font-size: 12px;
+    color: black;
+}
+
+.zoomRegular {
+    zoom: 100%;
 }
 
 @keyframes modalopen {

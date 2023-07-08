@@ -12,6 +12,7 @@ import { getFormattedDate } from "../../utilities/dateUtils";
 
 import "../../global_style/style.css";
 import { Print } from "@mui/icons-material";
+import CalendarCustomerSearch from "../../components/customer_search/CalendarCustomerSearch";
 
 //Modals
 const ModalOne = lazy(() =>
@@ -23,7 +24,13 @@ const ModalTwo = lazy(() =>
 const ModalThree = lazy(() =>
   import("../../components/basic_components/modal_three/ModalThree")
 );
+const CustomerSearchModal = lazy(() =>
+  import("../../components/customer_search/customerSearchModal")
+);
 //Dispatch
+const CreateDispatch = lazy(() =>
+  import("../../components/dispatches/create_dispatch/CreateDispatch")
+);
 const DispatchDetails = lazy(() =>
   import("../../components/dispatches/details/DispatchDetails")
 );
@@ -147,6 +154,21 @@ const Schedule = () => {
     setModalThreeOpen(false);
   };
 
+  //Customer Search Modal
+  const [isCustomerSearchModalOpen, setCustomerSearchModalOpen] =
+    useState(false);
+  const [customerSearchModalContent, setCustomerSearchContent] = useState(
+    <div>Customer Search Content</div>
+  );
+  const openCustomerSearchModal = (content) => {
+    setCustomerSearchContent(content);
+    setCustomerSearchModalOpen(true);
+  };
+  const closeCustomerSearchModal = () => {
+    setCustomerSearchContent(<div>Customer Search Content</div>);
+    setCustomerSearchModalOpen(false);
+  };
+
   const routeToPrintOneSlip = (selectedDispatch) => {
     navigate(`/print_one_slip/${selectedDispatch.id}`, {
       state: selectedDispatch.extendedProps,
@@ -160,6 +182,7 @@ const Schedule = () => {
       <div style={{ display: "flex", alignItems: "center" }}>
         <div>Dispatch Details</div>
         <IconButton
+          size="small"
           style={{ marginLeft: "auto", marginRight: "8px", color: "teal" }}
           onClick={() => routeToPrintOneSlip(selectedDispatch)}
         >
@@ -206,6 +229,7 @@ const Schedule = () => {
       `Daily Options for ${getFormattedDate(date)}`,
       <DailyOptionsMenu
         closeModalOne={closeModalOne}
+        closeModalTwo={closeModalTwo}
         calendarDateSelected={date}
         openDayLabelEditor={openDayLabelEditor}
       />
@@ -260,6 +284,28 @@ const Schedule = () => {
     );
   };
 
+  const openCreateDispatch = (customer, date) => {
+    openModalTwo(
+      "25%",
+      "Create Dispatch",
+      <CreateDispatch
+        customer={customer}
+        date={date}
+        closeModalOne={closeModalTwo}
+      />
+    );
+  };
+
+  const openCalendarCustomerSearch = (date) => {
+    openCustomerSearchModal(
+      <CalendarCustomerSearch
+        openCreateDispatch={openCreateDispatch}
+        closeModalOne={closeCustomerSearchModal}
+        date={date}
+      />
+    );
+  };
+
   return (
     <div className="schedulePage">
       <Toast />
@@ -290,6 +336,7 @@ const Schedule = () => {
           technicians={technicians}
           openDispatchDetails={openDispatchDetails}
           openDailyOptionsMenu={openDailyOptionsMenu}
+          openCalendarCustomerSearch={openCalendarCustomerSearch}
         />
       </TabPanel>
       {isModalOneOpen && (
@@ -322,6 +369,14 @@ const Schedule = () => {
           />
         </Suspense>
       )}
+      {isCustomerSearchModalOpen && (
+        <Suspense fallback={<CalendarSpinner />}>
+          <CustomerSearchModal
+            customerSearchModalContent={customerSearchModalContent}
+            closeCustomerSearchModal={closeCustomerSearchModal}
+          />
+        </Suspense>
+      )}
       {technicians.length > 0 &&
         technicians.map((technician, index) => (
           <TabPanel key={technician.id} value={tabValue} index={index + 1}>
@@ -330,6 +385,7 @@ const Schedule = () => {
               technicians={technicians}
               openDispatchEditorModal={openDispatchDetails}
               openDailyOptionsMenu={openDailyOptionsMenu}
+              openCalendarCustomerSearch={openCalendarCustomerSearch}
             />
           </TabPanel>
         ))}

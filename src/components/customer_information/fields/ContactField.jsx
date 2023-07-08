@@ -4,7 +4,7 @@ import React from "react";
 
 const ContactField = ({ title, name, phone }) => {
   return (
-    <Card sx={{ padding: "8px" }}>
+    <Card variant="outlined" sx={{ padding: "8px" }}>
       <Typography variant="caption">{title}</Typography>
       <div style={{ display: "flex" }}>
         <Person color="primary" />
@@ -20,7 +20,7 @@ const ContactField = ({ title, name, phone }) => {
       </div>
 
       <div style={{ display: "flex" }}>
-        <PhoneOutlined style={{ color: "black" }} />
+        <PhoneOutlined style={{ color: "blue" }} />
         {phone ? (
           <Typography variant="body1" sx={{ marginLeft: "4px" }}>
             {phone}

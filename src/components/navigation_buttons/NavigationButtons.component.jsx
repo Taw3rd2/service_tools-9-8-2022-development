@@ -6,6 +6,7 @@ import InactiveButtons from "./InactiveButtons.component";
 const NavigationButtons = ({
   customer,
   openCreateDispatch,
+  openCreateMaintenance,
   openDispatchHistory,
   openPartsQuoteList,
   openEquipmentQuotesModal,
@@ -19,6 +20,7 @@ const NavigationButtons = ({
       <ActiveButtons
         customer={customer}
         openCreateDispatch={openCreateDispatch}
+        openCreateMaintenance={openCreateMaintenance}
         openDispatchHistory={openDispatchHistory}
         openPartsQuoteList={openPartsQuoteList}
         openEquipmentQuotesModal={openEquipmentQuotesModal}

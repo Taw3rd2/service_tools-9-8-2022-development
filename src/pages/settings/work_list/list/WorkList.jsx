@@ -1,6 +1,7 @@
 import { useSyncedCollection } from "../../../../firebase/firestore.utils";
 
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -69,26 +70,25 @@ const WorkList = ({ openWorkListItemDetails, openDeleteWorkListItem }) => {
                     {option.shorthand}
                   </TableCell>
                   <TableCell align="center" sx={{ fontSize: 20 }}>
-                    <button
-                      type="button"
-                      className="standardButton"
-                      style={{ margin: "0 auto" }}
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<Edit />}
                       onClick={() => openWorkListItemDetails(option)}
                     >
-                      <Edit />
-                      <span className="iconSeperation">Edit</span>
-                    </button>
+                      Edit
+                    </Button>
                   </TableCell>
                   <TableCell align="left" sx={{ fontSize: 20 }}>
-                    <button
-                      type="button"
-                      className="deleteButton"
-                      style={{ margin: "0 auto" }}
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<DeleteForever />}
                       onClick={() => openDeleteWorkListItem(option)}
+                      style={{ color: "red" }}
                     >
-                      <DeleteForever />
-                      <span className="iconSeperation">Delete</span>
-                    </button>
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

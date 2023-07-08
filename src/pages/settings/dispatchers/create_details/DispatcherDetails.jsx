@@ -84,7 +84,7 @@ const DispatcherDetails = ({ dispatcher, closeModalOne }) => {
   return (
     <form onSubmit={submitDispatcher} autoComplete="new-password">
       <div className="row">
-        <div className="singleRowinput">
+        <div className="singleRowInput">
           <TextField
             label="Name"
             value={name}

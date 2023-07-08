@@ -4,6 +4,8 @@ import EmailField from "../fields/EmailField";
 import MainField from "../fields/MainField";
 import Spinner from "../../spinner/Spinner";
 import { Edit, Hvac } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 const ServiceCustomer = ({
   customer,
@@ -18,8 +20,7 @@ const ServiceCustomer = ({
       <div
         style={{
           flexGrow: 1,
-          border: "1px solid black",
-          backgroundColor: "lightgray",
+          border: "1px solid teal",
         }}
       >
         <div className="noServiceTitle">
@@ -124,34 +125,38 @@ const ServiceCustomer = ({
           </div>
           <div className="doubleRowInput"></div>
         </div>
-        <div className="buttonBarFullWidth">
-          <button
-            type="button"
-            className="standardButtonFullWidth"
-            onClick={() => openEditCustomerDetails()}
-          >
-            <Edit />
-            <span className="iconSeperation">Edit Client</span>
-          </button>
-
-          <button
-            type="button"
-            className="standardButtonFullWidth"
-            onClick={() => openCustomerEquipmentList()}
-          >
-            <Hvac />
-            <span className="iconSeperation">Equipment</span>
-          </button>
-
-          <button
-            type="button"
-            className="standardButtonFullWidth"
-            onClick={() => openEditCustomerBilling()}
-          >
-            <Edit />
-            <span className="iconSeperation">Edit Billing</span>
-          </button>
-        </div>
+        <Grid container spacing={2} sx={{ margin: "2px" }}>
+          <Grid xs={4}>
+            <Button
+              variant="outlined"
+              startIcon={<Edit />}
+              onClick={() => openEditCustomerDetails()}
+              fullWidth
+            >
+              Edit Customer
+            </Button>
+          </Grid>
+          <Grid xs={4}>
+            <Button
+              variant="outlined"
+              startIcon={<Hvac />}
+              onClick={() => openCustomerEquipmentList()}
+              fullWidth
+            >
+              Equipment
+            </Button>
+          </Grid>
+          <Grid xs={4}>
+            <Button
+              variant="outlined"
+              startIcon={<Edit />}
+              onClick={() => openEditCustomerBilling()}
+              fullWidth
+            >
+              Edit Billing
+            </Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }

@@ -35,7 +35,7 @@ const CustomerEquipmentDetails = ({
     if (statbarOpen) {
       setStatbarOpen(false);
     }
-    setSidebarOpen(!sidebarOpen);
+    setSidebarOpen(true);
   };
 
   const [statbarOpen, setStatbarOpen] = useState(false);
@@ -43,7 +43,7 @@ const CustomerEquipmentDetails = ({
     if (sidebarOpen) {
       setSidebarOpen(false);
     }
-    setStatbarOpen(!statbarOpen);
+    setStatbarOpen(true);
   };
 
   const handleOpeningImageViewer = (fileName, url) => {

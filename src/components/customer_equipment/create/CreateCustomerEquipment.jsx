@@ -30,7 +30,7 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
   const [equipmentValues, setEquipmentValues] = useState({
     equipmentName: "",
-    equipmentInstallDate: null,
+    equipmentInstallDate: new Date(),
     equipmentBrand: "",
     equipmentModel: "",
     equipmentSerial: "",
@@ -62,6 +62,7 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
       equipmentName: equipmentValues.equipmentName,
       equipmentSerial: equipmentValues.equipmentSerial,
       equipmentVoltage: equipmentValues.equipmentVoltage,
+      equipmentInstallDate: equipmentValues.equipmentInstallDate,
     };
     const equipmentDocumentRef = doc(
       db,

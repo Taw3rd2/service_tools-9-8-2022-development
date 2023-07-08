@@ -1,65 +1,75 @@
 import React, { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
-import { updateMaintenance } from "../maintenanceFunctions";
+import { updateMaintenance } from "../maintenance_functions/updateMaintenanceFunctions";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
-import { InputAdornment, TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { Close, DeleteForever, Update } from "@mui/icons-material";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
+import { useSyncedDocument } from "../../../firebase/firestore.utils";
 
 const MaintenanceDetailsContent = ({
-  customer,
-  selectedMaintenance,
-  openDeleteMaintenance,
   closeModalTwo,
+  customer,
+  equipmentIndex,
+  openDeleteMaintenance,
+  selectedMaintenance,
+  unit,
 }) => {
   const { dispatch } = useContext(ToastContext);
-  const [salePrice, setSalePrice] = useState(
-    selectedMaintenance.salePrice ? selectedMaintenance.salePrice : ""
+
+  //passing the array here is unstable, so we have to get the array from the source.
+  const currentMaintenanceDocument = useSyncedDocument(
+    "maintenance",
+    selectedMaintenance.id
   );
-  const [saleDate, setSaleDate] = useState(
-    selectedMaintenance.saleDate
-      ? selectedMaintenance.saleDate.toDate()
-      : new Date()
-  );
-  const [expirationDate, setExpirationDate] = useState(
-    selectedMaintenance.expirationDate
-      ? selectedMaintenance.expirationDate.toDate()
-      : new Date()
-  );
+
+  //State
   const [completedDate, setCompletedDate] = useState(
-    selectedMaintenance.completedDate === null
-      ? null
-      : selectedMaintenance.completedDate.toDate()
+    unit.completedDate === null ? null : unit.completedDate.toDate()
   );
+  // const [mNumber, setMNumber] = useState(
+  //   selectedMaintenance.mNumber ? selectedMaintenance.mNumber : ""
+  // );
+  // const [numberOfVisits, setNumberOfVisits] = useState(
+  //   selectedMaintenance.numberOfVisits ? selectedMaintenance.numberOfVisits : 1
+  // );
+  // const [numberOfYears, setNumberOfYears] = useState(
+  //   selectedMaintenance.numberOfYears ? selectedMaintenance.numberOfYears : 1
+  // );
+  // const [saleDate, setSaleDate] = useState(
+  //   selectedMaintenance.saleDate
+  //     ? selectedMaintenance.saleDate.toDate()
+  //     : new Date()
+  // );
+  // const [salePrice, setSalePrice] = useState(
+  //   selectedMaintenance.salePrice ? selectedMaintenance.salePrice : ""
+  // );
 
   const onUpdateMaintenance = (e) => {
     e.preventDefault();
-    const maintenanceValues = {
-      key: selectedMaintenance.key,
-      customerId: selectedMaintenance.customerId,
-      customerLastName: selectedMaintenance.customerLastName,
-      mNumber: selectedMaintenance.mNumber,
-      salePrice,
-      saleDate,
-      expirationDate,
+
+    //get field the updates
+    const newMaintenanceValues = {
       completedDate,
-      equipment: selectedMaintenance.equipment,
-      equipmentName: selectedMaintenance.equipmentName,
-      equipmentBrand: selectedMaintenance.equipmentBrand,
-      equipmentModel: selectedMaintenance.equipmentModel,
-      equipmentSerial: selectedMaintenance.equipmentSerial,
+      // mNumber,
+      // numberOfVisits,
+      // numberOfYears,
+      // saleDate,
+      // salePrice,
     };
 
     updateMaintenance(
-      customer,
-      maintenanceValues,
-      activateSuccessNotification,
-      activateFailureNotification,
-      closeModalTwo
+      activateFailureNotification, //1
+      activateSuccessNotification, //2
+      closeModalTwo, //3
+      selectedMaintenance.id, //4
+      unit, //5
+      newMaintenanceValues, //6
+      currentMaintenanceDocument //7
     );
   };
 
@@ -89,24 +99,12 @@ const MaintenanceDetailsContent = ({
 
   return (
     <form onSubmit={onUpdateMaintenance} autoComplete="new password">
+      {/*
+      <Typography sx={{ margin: "8px" }}>
+        <strong>Maintenance Contract Details</strong>
+      </Typography>
       <div className="row">
-        <div className="doubleRowInput">
-          <TextField
-            label="Sale Price"
-            variant="outlined"
-            value={salePrice}
-            fullWidth
-            sx={{ input: { color: "primary" } }}
-            onChange={(event) => setSalePrice(event.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              ),
-            }}
-            required
-          />
-        </div>
-        <div className="doubleRowInput">
+        <div className="tripleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Sale Date"
@@ -123,29 +121,59 @@ const MaintenanceDetailsContent = ({
             />
           </LocalizationProvider>
         </div>
+        <div className="tripleRowInput">
+          <TextField
+            label="Contract Number"
+            variant="outlined"
+            value={mNumber}
+            fullWidth
+            sx={{ input: { color: "primary" } }}
+            onChange={(event) => setMNumber(event.target.value)}
+            required
+          />
+        </div>
+        <div className="tripleRowInput">
+          <TextField
+            label="Sale Price"
+            variant="outlined"
+            value={salePrice}
+            fullWidth
+            sx={{ input: { color: "primary" } }}
+            onChange={(event) => setSalePrice(event.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">$</InputAdornment>
+              ),
+            }}
+            required
+          />
+        </div>
       </div>
+      <div className="row">
+        <div className="doubleRowInput">
+          <IncrementDigit
+            value={numberOfYears}
+            setValue={setNumberOfYears}
+            label={"Years"}
+          />
+        </div>
+        <div className="doubleRowInput">
+          <IncrementDigit
+            value={numberOfVisits}
+            setValue={setNumberOfVisits}
+            label={"Visits"}
+          />
+        </div>
+      </div>
+          */}
+      <Typography sx={{ marginBottom: "8px" }}>
+        <strong>{unit.equipmentName} Details</strong>
+      </Typography>
       <div className="row">
         <div className="doubleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              label="Expiration Date"
-              fullWidth
-              value={expirationDate}
-              onChange={(newValue) => {
-                setExpirationDate(newValue);
-              }}
-              color="primary"
-              renderInput={(params) => (
-                <TextField {...params} sx={{ width: "100%" }} />
-              )}
-              required
-            />
-          </LocalizationProvider>
-        </div>
-        <div className="doubleRowInput">
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Date Completed"
+              label="Date Maintenance Completed"
               fullWidth
               value={completedDate}
               onChange={(newValue) => {
@@ -163,7 +191,7 @@ const MaintenanceDetailsContent = ({
         <button
           type="button"
           className="deleteButton"
-          onClick={() => openDeleteMaintenance(selectedMaintenance)}
+          onClick={() => openDeleteMaintenance(selectedMaintenance, unit)}
         >
           <DeleteForever />
           <span className="iconSeperation">Delete</span>

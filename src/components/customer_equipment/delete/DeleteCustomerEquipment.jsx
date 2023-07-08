@@ -12,7 +12,6 @@ const DeleteCustomerEquipment = ({
   closeDetails,
   closeDelete,
 }) => {
-  console.log("selectedEquipment: ", selectedEquipment);
   const { dispatch } = useContext(ToastContext);
 
   const activateDeleteCompletionNotification = () => {

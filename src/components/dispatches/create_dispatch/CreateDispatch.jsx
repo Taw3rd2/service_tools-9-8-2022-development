@@ -21,7 +21,7 @@ import { submitDispatchToFirestore } from "../dispatchFunctions";
 
 import "../../../global_style/style.css";
 
-const CreateDispatch = ({ customer, closeModalOne }) => {
+const CreateDispatch = ({ customer, date, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
   const [dispatchData, setDispatchData] = useState({
     altPhoneName: customer.altPhoneName ? customer.altPhoneName : "",
@@ -35,11 +35,11 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
     lastname: customer.lastname ? customer.lastname : "",
     leadSource: "PC",
     notes: "",
-    payment: "C.O.D.",
+    payment: "",
     phone: customer.phone ? customer.phone : "",
     phoneName: customer.phoneName ? customer.phoneName : "",
     shorthand: "",
-    start: setDateToZeroHours(new Date()),
+    start: date ? date : null,
     street: customer.street ? customer.street : "",
     takenBy: "",
     techHelper: "NONE",
@@ -53,7 +53,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
   };
 
   const handleDispatchDateChange = (prop) => (value) => {
-    setDispatchData({ ...dispatchData, [prop]: value });
+    setDispatchData({ ...dispatchData, [prop]: setDateToZeroHours(value) });
   };
 
   const handleIssueChange = (event) => {
@@ -86,9 +86,21 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
       });
       setInputError(true);
       return;
+    } else if (dispatchData.start === null) {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          id: getFormattedExactTime(new Date()),
+          type: "INFO",
+          title: "Create Dispatch",
+          message: "Select a service date.",
+        },
+      });
+      setDateError(true);
+      return;
     } else {
       setInputError(false);
-
+      setDateError(false);
       submitDispatchToFirestore(
         customer,
         dispatchData,
@@ -133,6 +145,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
   };
 
   const [inputError, setInputError] = useState(false);
+  const [dateError, setDateError] = useState(false);
 
   //   const localInvoiceId = invoiceId !== undefined ? invoiceId : "";
   //   const [jobNumber, setJobNumber] = useState(
@@ -154,6 +167,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
               color="primary"
               inputProps={{ tabIndex: "1" }}
               renderInput={(params) => <TextField {...params} />}
+              required
             />
           </LocalizationProvider>
         </div>
@@ -178,6 +192,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
                 label="Dispatcher"
                 onChange={handleDispatchDataChange("takenBy")}
                 inputProps={{ tabIndex: "3" }}
+                required
               >
                 {dispatchers
                   .sort((a, b) => a.name.localeCompare(b.name))
@@ -285,6 +300,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
                 label="Work ordered"
                 onChange={handleIssueChange}
                 inputProps={{ tabIndex: "12" }}
+                required
               >
                 {workList
                   .sort((a, b) => a.item.localeCompare(b.item))
@@ -319,6 +335,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
                 label="Tech Lead"
                 onChange={handleDispatchDataChange("techLead")}
                 inputProps={{ tabIndex: "14" }}
+                required
               >
                 {technicians
                   .sort((a, b) => a.name.localeCompare(b.name))
@@ -366,6 +383,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
                 label="Payment"
                 onChange={handleDispatchDataChange("payment")}
                 inputProps={{ tabIndex: "16" }}
+                required
               >
                 {payments
                   .sort((a, b) => a.item.localeCompare(b.item))
@@ -385,7 +403,7 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
             label="Notes"
             multiline
             fullWidth
-            rows={5}
+            rows={3}
             variant="outlined"
             value={dispatchData.notes}
             onChange={handleDispatchDataChange("notes")}
@@ -432,6 +450,9 @@ const CreateDispatch = ({ customer, closeModalOne }) => {
         <p className="deleteWarningText">
           Technician names can not be the same.
         </p>
+      )}
+      {dateError && (
+        <p className="deleteWarningText">Please set a service date.</p>
       )}
       <div className="buttonBar">
         <button type="submit" className="standardButton" tabIndex={20}>

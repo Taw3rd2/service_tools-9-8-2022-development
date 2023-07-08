@@ -3,7 +3,7 @@ import { ToastContext } from "../../../context/toastContext";
 
 import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
 
-import { addMaintenance } from "../maintenanceFunctions";
+import { addMaintenance } from "../maintenance_functions/createMaintenanceFunctions";
 
 import EquipmentPicker from "../../equipment_picker/EquipmentPicker";
 
@@ -15,6 +15,7 @@ import { Close, AddCircleOutline } from "@mui/icons-material";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 import "../../../global_style/style.css";
+import IncrementDigit from "./IncrementDigit";
 
 const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
@@ -27,23 +28,14 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
   const [selectedEquipment, setSelectedEquipment] = useState([]);
   const [equipmentError, setEquipmentError] = useState(false);
 
-  const handleCheckChange = (name) => (event) => {
-    setSelectedEquipment({
-      ...selectedEquipment,
-      [name]: event.target.checked,
-    });
-  };
-
   const todaysDate = new Date();
-  const defaultExpirationDate = new Date(
-    new Date().setFullYear(new Date().getFullYear() + 1)
-  );
 
   const [maintenanceValues, setMaintenanceValues] = useState({
     mNumber: "",
     salePrice: "",
     saleDate: todaysDate,
-    expirationDate: defaultExpirationDate,
+    numberOfVisits: 1,
+    numberOfYears: 1,
   });
 
   const handleMaintenanceChange = (prop) => (event) => {
@@ -52,6 +44,13 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
 
   const handleMaintenanceDateChange = (prop, value) => {
     setMaintenanceValues({ ...maintenanceValues, [prop]: value });
+  };
+
+  const handleCheckChange = (name) => (event) => {
+    setSelectedEquipment({
+      ...selectedEquipment,
+      [name]: event.target.checked,
+    });
   };
 
   const submitNewMaintenance = (e) => {
@@ -63,13 +62,13 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
     } else {
       setEquipmentError(false);
       addMaintenance(
-        customer,
-        selectedEquipment,
-        maintenanceValues,
-        equipment,
         activateSuccessNotification,
         activateFailureNotification,
-        closeModalTwo
+        closeModalTwo,
+        customer,
+        equipment,
+        maintenanceValues,
+        selectedEquipment
       );
     }
   };
@@ -100,14 +99,15 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
 
   return (
     <div>
+      <Typography>{`${customer.firstname} ${customer.lastname}`}</Typography>
       <EquipmentPicker
         equipment={equipment}
         selectedEquipment={selectedEquipment}
         handleCheckChange={handleCheckChange}
       />
       <form autoComplete="new password" onSubmit={submitNewMaintenance}>
-        <div className="row">
-          <div className="doubleRowInput">
+        <div className="row" style={{ marginTop: "16px" }}>
+          <div className="tripleRowInput">
             <TextField
               label="M-Number"
               variant="outlined"
@@ -118,7 +118,7 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
               required
             />
           </div>
-          <div className="doubleRowInput">
+          <div className="tripleRowInput">
             <TextField
               label="Sale Price"
               variant="outlined"
@@ -134,9 +134,7 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
               required
             />
           </div>
-        </div>
-        <div className="row">
-          <div className="doubleRowInput">
+          <div className="tripleRowInput">
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Sale Date"
@@ -152,37 +150,48 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
               />
             </LocalizationProvider>
           </div>
+        </div>
+        <div className="row">
           <div className="doubleRowInput">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Expiration Date"
-                fullWidth
-                value={maintenanceValues.expirationDate}
-                onChange={(newValue) => {
-                  handleMaintenanceDateChange("expirationDate", newValue);
-                }}
-                color="primary"
-                renderInput={(params) => (
-                  <TextField {...params} sx={{ width: "100%" }} />
-                )}
-              />
-            </LocalizationProvider>
+            <div className="row">
+              <div className="doubleRowInput">
+                <IncrementDigit
+                  value={maintenanceValues.numberOfYears}
+                  setValue={(newValue) =>
+                    handleMaintenanceDateChange("numberOfYears", newValue)
+                  }
+                  label={"Years"}
+                />
+              </div>
+              <div className="doubleRowInput">
+                <IncrementDigit
+                  value={maintenanceValues.numberOfVisits}
+                  setValue={(newValue) =>
+                    handleMaintenanceDateChange("numberOfVisits", newValue)
+                  }
+                  label={"Visits"}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="doubleRowInput">
+            <div className="buttonBar">
+              <button type="submit" className="standardButton">
+                <AddCircleOutline />
+                <span className="iconSeperation">Submit New Maintenance</span>
+              </button>
+              <button
+                type="button"
+                className="standardButton"
+                onClick={() => closeModalTwo()}
+              >
+                <Close />
+                <span className="iconSeperation">Close</span>
+              </button>
+            </div>
           </div>
         </div>
-        <div className="buttonBar">
-          <button type="submit" className="standardButton">
-            <AddCircleOutline />
-            <span className="iconSeperation">Add New Maintenance</span>
-          </button>
-          <button
-            type="button"
-            className="standardButton"
-            onClick={() => closeModalTwo()}
-          >
-            <Close />
-            <span className="iconSeperation">Close</span>
-          </button>
-        </div>
+
         {equipmentError && (
           <div className="row">
             <div className="singleRowInput">
@@ -198,6 +207,21 @@ const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
           </div>
         )}
       </form>
+      <div style={{ marginRight: "auto" }}>Notes:</div>
+      <div style={{ marginRight: "auto" }}>
+        Years will duplicate the maintenance, and automatically advance the
+        expiration dates.
+      </div>
+      <div style={{ marginRight: "auto" }}>
+        More than 1 year will automatically add the year after the M number.
+      </div>
+      <div style={{ marginRight: "auto" }}>
+        Visits will duplicate the maintenance for the same year.
+      </div>
+      <div style={{ marginRight: "auto" }}>
+        More than 1 visit will automatically add the visit number after the M
+        number.
+      </div>
     </div>
   );
 };

@@ -6,6 +6,8 @@ import Spinner from "../../spinner/Spinner";
 import { Edit, Flag, Hvac } from "@mui/icons-material";
 
 import "../../../global_style/style.css";
+import { Button } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
 const NoServiceCustomer = ({
   customer,
@@ -20,8 +22,7 @@ const NoServiceCustomer = ({
       <div
         style={{
           flexGrow: 1,
-          border: "1px solid black",
-          background: "lightgray",
+          border: "1px solid teal",
         }}
       >
         <div className="noServiceTitle">
@@ -129,34 +130,38 @@ const NoServiceCustomer = ({
           </div>
           <div className="doubleRowInput"></div>
         </div>
-        <div className="buttonBarFullWidth">
-          <button
-            type="button"
-            className="standardButtonFullWidth"
-            onClick={() => openEditCustomerDetails()}
-          >
-            <Edit />
-            <span className="iconSeperation">Edit Client</span>
-          </button>
-
-          <button
-            type="button"
-            className="standardButtonFullWidth"
-            onClick={() => openCustomerEquipmentList()}
-          >
-            <Hvac />
-            <span className="iconSeperation">Equipment</span>
-          </button>
-
-          <button
-            type="button"
-            className="standardButtonFullWidth"
-            onClick={() => openEditCustomerBilling()}
-          >
-            <Edit />
-            <span className="iconSeperation">Edit Billing</span>
-          </button>
-        </div>
+        <Grid container spacing={2} sx={{ margin: "2px" }}>
+          <Grid xs={4}>
+            <Button
+              variant="outlined"
+              startIcon={<Edit />}
+              onClick={() => openEditCustomerDetails()}
+              fullWidth
+            >
+              Edit Customer
+            </Button>
+          </Grid>
+          <Grid xs={4}>
+            <Button
+              variant="outlined"
+              startIcon={<Hvac />}
+              onClick={() => openCustomerEquipmentList()}
+              fullWidth
+            >
+              Equipment
+            </Button>
+          </Grid>
+          <Grid xs={4}>
+            <Button
+              variant="outlined"
+              startIcon={<Edit />}
+              onClick={() => openEditCustomerBilling()}
+              fullWidth
+            >
+              Edit Billing
+            </Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }

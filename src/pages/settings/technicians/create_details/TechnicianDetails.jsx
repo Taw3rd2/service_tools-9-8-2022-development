@@ -105,7 +105,11 @@ const TechnicianDetails = ({ technician, closeModalOne }) => {
   };
 
   return (
-    <form onSubmit={submitTechnician} autoComplete="new-password">
+    <form
+      onSubmit={submitTechnician}
+      autoComplete="new-password"
+      style={{ zoom: 1.25 }}
+    >
       <div className="row">
         <div className="tripleRowInput">
           <TextField
@@ -153,6 +157,7 @@ const TechnicianDetails = ({ technician, closeModalOne }) => {
               onChangeComplete={(color) => {
                 handleColorChange("color", color.hex);
               }}
+              disableAlpha={true}
               color={techValues.color}
             />
           </SlideIn>

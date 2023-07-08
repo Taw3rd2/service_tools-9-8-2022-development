@@ -4,7 +4,7 @@ import React from "react";
 
 const MainField = ({ title, name, address, address2, business }) => {
   return (
-    <Card sx={{ padding: "8px" }}>
+    <Card variant="outlined" sx={{ padding: "8px" }}>
       {business ? (
         <>
           <Typography variant="caption">{title}</Typography>

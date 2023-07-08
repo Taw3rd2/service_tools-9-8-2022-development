@@ -12,11 +12,14 @@ import {
     collection, 
     deleteDoc, 
     doc, 
+    getDocs, 
     getFirestore, 
     onSnapshot, 
+    query, 
     setDoc, 
-    updateDoc 
+    updateDoc
 } from "firebase/firestore";
+import { getStorage } from 'firebase/storage'
 
 
 //configuration
@@ -29,11 +32,10 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 };
 const app = initializeApp(firebaseConfig)
-const auth = getAuth()
-
-export const googleAuth = getAuth(app)
 
 //Authorization
+export const auth = getAuth(app)
+export const googleAuth = getAuth(app)
 export default app
 
 export const logOut = async () => {
@@ -165,3 +167,91 @@ export const useSyncedNestedDocument = (collection1, id1, collection2, id2) => {
     }, [db, collection1, id1, collection2, id2])
     return document
 }
+
+//edit part
+const projectStorage = getStorage(app)
+export { projectStorage }
+const firestore = getFirestore(app)
+export { firestore }
+
+//change a field in all documents in a given collection
+export const changeFieldInAllDocuments = async (col, field) => {
+    let count = 0
+    const db = getFirestore();
+    const q = query(collection(db, `${col}`));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+        count += 1
+      updateDoc(doc.ref, {
+        [field]: [],
+      })
+        .then(() => {
+          console.log(`${field} updated successfully`);
+          console.log(`number of docs updated: `, count)
+        })
+        .catch((error) => {
+          count += 1  
+          console.log(`number of docs failed: `, count)
+          console.error("Error updating the docs", error);
+        });
+    });
+  };
+
+  export const checkForMaint = async (docId) => {
+    const db = getFirestore()
+    const q = query(collection(db, "customers", docId, "Maintenance"))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((docu) => {
+        console.log("maintenance found: ", docu.id)
+        //delete all maintnenance
+        deleteDoc(doc(db, "customers", docId, "Maintenance", docu.id)).then(() => {
+            console.log("deleted")
+        })
+    })
+  }
+  
+
+  export const deleteMaintenance = async () => {
+    const db = getFirestore()
+    const q = query(collection(db, "customers"))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+        checkForMaint(doc.id)
+    })
+  }
+
+
+//   export const deleteQueryBatch = async (db, q, resolve) => {
+//     const snapshot = await getDocs(q)
+
+//     const batchSize = await getCountFromServer(q)
+//     console.log("Batch Size: ", batchSize.data().count)
+
+//     if(batchSize.data().count === 0) {
+//         resolve()
+//         return
+//     }
+
+//     //delete all documents in a batch
+//     const batch = writeBatch(db)
+//     snapshot.forEach((doc) => {
+//         batch.delete(doc.ref)
+//     })
+//     await batch.commit()
+
+//     //recurse on the next preccess tick to avoid blowing the stack
+//     // process.nextTick(() => {
+//     //     deleteQueryBatch(db, q, resolve)
+//     // })
+//   }
+
+//   export const deleteCollection = async (collectionPath) => {
+//     const db = getFirestore()
+//     const collectionRef = collection(db, collectionPath)
+//     const q = query(collectionRef, orderBy(`__name__`), limit(500))
+
+//     return new Promise((resolve, reject) => {
+//         deleteQueryBatch(db, q, resolve).catch(reject)
+//     })
+//   }
+  

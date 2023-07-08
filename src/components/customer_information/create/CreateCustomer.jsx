@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 import { addCustomerToFirestore } from "../customerInformationFunctions";
 import "../../../global_style/style.css";
-import { Checkbox, TextField } from "@mui/material";
+import { Button, Checkbox, TextField } from "@mui/material";
 import { Close, PersonAdd } from "@mui/icons-material";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
@@ -389,17 +389,26 @@ const CreateCustomer = ({ closeModalOne }) => {
         </div>
       )}
       <div className="buttonBar">
-        <button className="standardButton" type="submit" tabIndex={14}>
-          <PersonAdd /> <span className="iconSeperation">Add New Customer</span>
-        </button>
-        <button
-          className="standardButton"
+        <Button
+          size="large"
+          variant="outlined"
+          startIcon={<PersonAdd />}
+          type="submit"
+          tabIndex={14}
+        >
+          Add New Customer
+        </Button>
+        <Button
+          size="large"
+          variant="outlined"
+          startIcon={<Close />}
           type="button"
           onClick={() => closeModalOne()}
           tabIndex={15}
+          style={{ marginLeft: "8px" }}
         >
-          <Close /> <span className="iconSeperation">Close</span>
-        </button>
+          Close
+        </Button>
       </div>
     </form>
   );

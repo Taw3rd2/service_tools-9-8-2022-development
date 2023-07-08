@@ -77,7 +77,7 @@ const DispatchList = ({ customer, openDispatchDetails, closeModalOne }) => {
                   <TableRow
                     key={item.id}
                     sx={{ cursor: "pointer" }}
-                    onClick={() => openDispatchDetails()}
+                    onClick={() => openDispatchDetails(item)}
                     hover
                   >
                     <TableCell align="center" sx={defaultBodyTableCell}>

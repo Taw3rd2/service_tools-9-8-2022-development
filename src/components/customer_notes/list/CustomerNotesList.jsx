@@ -11,6 +11,7 @@ import {
 } from "../../../utilities/dateUtils";
 
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -21,7 +22,6 @@ import {
   Typography,
 } from "@mui/material";
 import { NoteAdd } from "@mui/icons-material";
-import { lightTheme } from "../../../theme/Theme";
 
 const CustomerNotesList = ({
   customer,
@@ -66,8 +66,7 @@ const CustomerNotesList = ({
       <div
         style={{
           flexGrow: 1,
-          border: "1px solid black",
-          backgroundColor: "lightgray",
+          border: "1px solid teal",
           margin: "4px",
           padding: "8px",
         }}
@@ -92,8 +91,8 @@ const CustomerNotesList = ({
                   align="left"
                   sx={{
                     minWidth: "40px",
-                    background: lightTheme.palette.primary.light,
-                    color: lightTheme.palette.primary.contrastText,
+                    backgroundColor: "teal",
+                    color: "white",
                   }}
                 >
                   Operator
@@ -102,8 +101,8 @@ const CustomerNotesList = ({
                   align="left"
                   sx={{
                     minWidth: "40px",
-                    background: lightTheme.palette.primary.light,
-                    color: lightTheme.palette.primary.contrastText,
+                    backgroundColor: "teal",
+                    color: "white",
                   }}
                 >
                   Type
@@ -112,8 +111,8 @@ const CustomerNotesList = ({
                   align="left"
                   sx={{
                     minWidth: "40px",
-                    background: lightTheme.palette.primary.light,
-                    color: lightTheme.palette.primary.contrastText,
+                    backgroundColor: "teal",
+                    color: "white",
                   }}
                 >
                   Date
@@ -122,18 +121,15 @@ const CustomerNotesList = ({
                   align="left"
                   sx={{
                     minWidth: "40px",
-                    background: lightTheme.palette.primary.light,
-                    color: lightTheme.palette.primary.contrastText,
+                    backgroundColor: "teal",
+                    color: "white",
                   }}
                 >
                   Time
                 </TableCell>
                 <TableCell
                   align="left"
-                  sx={{
-                    background: lightTheme.palette.primary.light,
-                    color: lightTheme.palette.primary.contrastText,
-                  }}
+                  sx={{ backgroundColor: "teal", color: "white" }}
                 >
                   Note
                 </TableCell>
@@ -165,24 +161,22 @@ const CustomerNotesList = ({
         </TableContainer>
         <div className="buttonBar">
           {customer.id ? (
-            <button
-              type="button"
-              className="standardButton"
-              onClick={() => openCreateCustomerNote({})}
+            <Button
+              variant="outlined"
+              startIcon={<NoteAdd />}
+              onClick={() => openCreateCustomerNote()}
             >
-              <NoteAdd />
-              <span className="iconSeperation">Add New Note</span>
-            </button>
+              Add New Note
+            </Button>
           ) : (
-            <button
+            <Button
               disabled
-              type="button"
-              className="standardButton"
-              onClick={() => openCreateCustomerNote({})}
+              variant="outlined"
+              startIcon={<NoteAdd />}
+              onClick={() => openCreateCustomerNote()}
             >
-              <NoteAdd />
-              <span className="iconSeperation">Add New Note</span>
-            </button>
+              Add New Note
+            </Button>
           )}
         </div>
       </div>

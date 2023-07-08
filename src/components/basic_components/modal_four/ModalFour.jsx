@@ -1,4 +1,5 @@
 import "../../../global_style/style.css";
+import { useTheme } from "@mui/material/styles";
 
 const ModalFour = ({
   modalFourSize,
@@ -6,6 +7,7 @@ const ModalFour = ({
   modalFourContent,
   closeModalFour,
 }) => {
+  const theme = useTheme();
   const onBackgroundClick = (e) => {
     e.preventDefault();
     if (e.target === document.getElementById("modalFourContainer")) {
@@ -25,8 +27,21 @@ const ModalFour = ({
           e.stopPropagation();
         }}
       >
-        <div className="modal" style={{ width: modalFourSize }}>
-          <div className="modalTitle">{modalFourTitle}</div>
+        <div
+          className={
+            theme.palette.mode === "light" ? "modalLight" : "modalDark"
+          }
+          style={{ width: modalFourSize }}
+        >
+          <div
+            className={
+              theme.palette.mode === "light"
+                ? "modalTitleLight"
+                : "modalTitleDark"
+            }
+          >
+            {modalFourTitle}
+          </div>
           <div className="modalContent">{modalFourContent}</div>
         </div>
       </div>

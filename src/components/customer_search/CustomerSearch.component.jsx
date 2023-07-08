@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
-import CustomerExport from "../export_to_excel/CustomerExport";
+//import CustomerExport from "../export_to_excel/CustomerExport";
 import {
+  Button,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
 } from "@mui/material";
@@ -12,9 +12,14 @@ import {
 import CustomerAutocomplete from "./CustomerAutocomplete.component";
 
 import "../../global_style/style.css";
-import { AddCircleOutline } from "@mui/icons-material";
+import { AddCircleOutline, BuildCircleOutlined } from "@mui/icons-material";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
 
-const CustomerSearch = ({ openCreateCustomer, handleCustomerSelected }) => {
+const CustomerSearch = ({
+  handleCustomerSelected,
+  openCreateCustomer,
+  openMaintenanceList,
+}) => {
   const db = getFirestore();
   const [customers, setCustomers] = useState([]);
 
@@ -41,17 +46,9 @@ const CustomerSearch = ({ openCreateCustomer, handleCustomerSelected }) => {
           Search {customers.length} Customers
         </div>
       </div>
-      <div className="row">
-        <div
-          className="doubleRowInput"
-          style={{
-            margin: "0 8px",
-          }}
-        >
+      <Grid container spacing={2}>
+        <Grid xs={6} display="flex" flexDirection="column" alignItems="center">
           <FormControl>
-            <FormLabel id="customer_search_parameters_radio_group">
-              Refine customer search
-            </FormLabel>
             <RadioGroup
               row
               defaultValue="lastname"
@@ -77,32 +74,33 @@ const CustomerSearch = ({ openCreateCustomer, handleCustomerSelected }) => {
               />
             </RadioGroup>
           </FormControl>
-        </div>
-        <div className="doubleRowInput"></div>
-      </div>
-      <div className="row">
-        <div className="doubleRowInput">
           <CustomerAutocomplete
             customers={customers}
             selectedSearchParameter={selectedSearchParameter}
             handleCustomerSelected={handleCustomerSelected}
           />
-        </div>
-        <div className="doubleRowInput">
-          <div className="buttonBarStack">
-            <button
-              type="button"
-              className="standardButton"
-              onClick={() => openCreateCustomer()}
-              style={{ background: "white" }}
-            >
-              <AddCircleOutline />
-              <span className="iconSeperation">Add New Customer</span>
-            </button>
-            <CustomerExport customers={customers} />
-          </div>
-        </div>
-      </div>
+        </Grid>
+        <Grid xs={6}>
+          <Button
+            variant="outlined"
+            startIcon={<AddCircleOutline />}
+            onClick={() => openCreateCustomer()}
+            fullWidth
+            sx={{ marginTop: "42px" }}
+          >
+            Add New Customer
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<BuildCircleOutlined />}
+            onClick={() => openMaintenanceList()}
+            fullWidth
+            sx={{ marginTop: "8px" }}
+          >
+            Maintenance Customer List
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };

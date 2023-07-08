@@ -4,7 +4,7 @@ import React from "react";
 
 const BusinessContactField = ({ title, name, phone, email }) => {
   return (
-    <Card sx={{ padding: "8px" }}>
+    <Card variant="outlined" sx={{ padding: "8px" }}>
       <Typography variant="caption">{title}</Typography>
       <div style={{ display: "flex" }}>
         <Person color="primary" />
@@ -19,7 +19,7 @@ const BusinessContactField = ({ title, name, phone, email }) => {
         )}
       </div>
       <div style={{ display: "flex" }}>
-        <PhoneOutlined style={{ color: "black" }} />
+        <PhoneOutlined style={{ color: "blue" }} />
         {phone ? (
           <Typography variant="body1" sx={{ marginLeft: "4px" }}>
             {phone}

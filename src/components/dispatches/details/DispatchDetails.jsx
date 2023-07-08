@@ -573,7 +573,7 @@ const DispatchDetails = ({
 
   return (
     <form onSubmit={updateDispatch} autoComplete="new-password">
-      <div className="row" style={{ marginTop: "16px" }}>
+      <div className="row">
         <div className="tripleRowInput">
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
@@ -815,7 +815,7 @@ const DispatchDetails = ({
             label="Notes"
             multiline
             fullWidth
-            rows={5}
+            rows={3}
             variant="outlined"
             value={dispatchData.notes}
             onChange={handleDispatchDataChange("notes")}

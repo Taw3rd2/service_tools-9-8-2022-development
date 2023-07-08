@@ -1,4 +1,5 @@
 import "../../../global_style/style.css";
+import { useTheme } from "@mui/material/styles";
 
 const ModalOne = ({
   modalOneSize,
@@ -6,6 +7,8 @@ const ModalOne = ({
   modalOneContent,
   closeModalOne,
 }) => {
+  const theme = useTheme();
+
   const onBackgroundClick = (e) => {
     e.preventDefault();
     if (e.target === document.getElementById("modalOneContainer")) {
@@ -21,12 +24,28 @@ const ModalOne = ({
       onClick={(e) => onBackgroundClick(e)}
     >
       <div
+        onWheelCapture={(e) => {
+          e.stopPropagation();
+        }}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <div className="modal" style={{ width: modalOneSize }}>
-          <div className="modalTitle">{modalOneTitle}</div>
+        <div
+          className={
+            theme.palette.mode === "light" ? "modalLight" : "modalDark"
+          }
+          style={{ width: modalOneSize }}
+        >
+          <div
+            className={
+              theme.palette.mode === "light"
+                ? "modalTitleLight"
+                : "modalTitleDark"
+            }
+          >
+            {modalOneTitle}
+          </div>
           <div className="modalContent">{modalOneContent}</div>
         </div>
       </div>

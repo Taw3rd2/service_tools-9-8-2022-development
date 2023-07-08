@@ -28,7 +28,7 @@ const EditCustomerDetails = ({
     zip: customer.zip ? customer.zip : "",
     phoneName: customer.phoneName ? customer.phoneName : "",
     altPhoneName: customer.altPhoneName ? customer.altPhoneName : "",
-    otherPhoneName: customer.othewrPhoneName ? customer.otherPhoneName : "",
+    otherPhoneName: customer.otherPhoneName ? customer.otherPhoneName : "",
     phone: customer.phone ? customer.phone : "",
     altphone: customer.altphone ? customer.altphone : "",
     otherPhone: customer.otherPhone ? customer.otherPhone : "",

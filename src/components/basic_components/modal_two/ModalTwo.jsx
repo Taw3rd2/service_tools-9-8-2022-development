@@ -1,4 +1,5 @@
 import "../../../global_style/style.css";
+import { useTheme } from "@mui/material/styles";
 
 const ModalTwo = ({
   modalTwoSize,
@@ -6,6 +7,7 @@ const ModalTwo = ({
   modalTwoContent,
   closeModalTwo,
 }) => {
+  const theme = useTheme();
   const onBackgroundClick = (e) => {
     e.preventDefault();
     if (e.target === document.getElementById("modalTwoContainer")) {
@@ -25,8 +27,21 @@ const ModalTwo = ({
           e.stopPropagation();
         }}
       >
-        <div className="modal" style={{ width: modalTwoSize }}>
-          <div className="modalTitle">{modalTwoTitle}</div>
+        <div
+          className={
+            theme.palette.mode === "light" ? "modalLight" : "modalDark"
+          }
+          style={{ width: modalTwoSize }}
+        >
+          <div
+            className={
+              theme.palette.mode === "light"
+                ? "modalTitleLight"
+                : "modalTitleDark"
+            }
+          >
+            {modalTwoTitle}
+          </div>
           <div className="modalContent">{modalTwoContent}</div>
         </div>
       </div>

@@ -85,8 +85,6 @@ export const deleteCustomerEquipment = (
   closeDetails,
   closeDelete
 ) => {
-  console.log("selectedEquipment: ", selectedEquipment);
-
   if (selectedEquipment.equipmentImageFileName) {
     console.log("there is a equipment picture to delete");
     removeImageFromStorage(selectedEquipment.equipmentImageFileName);

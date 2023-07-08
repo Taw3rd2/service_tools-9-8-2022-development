@@ -43,6 +43,19 @@ export const getFormattedDate = (date) => {
   } else return "Not done yet";
 };
 
+export const getFormattedYear = (date) => {
+  if (date !== null) {
+    if (Object.prototype.toString.call(date) === "[object Date]") {
+      const newDateTime = format(date, "yyyy");
+      return newDateTime;
+    } else {
+      const newDate = date.toDate();
+      const newTime = format(newDate, "yyyy");
+      return newTime;
+    }
+  } else return "Not A Date";
+};
+
 //called in warranty list
 export const getWarrantyFormattedDate = (date) => {
   if (date !== null) {

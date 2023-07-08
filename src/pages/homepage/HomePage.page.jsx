@@ -74,6 +74,11 @@ const CreateDispatch = lazy(() =>
 const DispatchHistoryList = lazy(() =>
   import("../../components/dispatches/dispatch_history/DispatchList")
 );
+const CompletedDispatchViewer = lazy(() =>
+  import(
+    "../../components/dispatches/completed_dispatch/CompletedDispatchViewer"
+  )
+);
 //Maintenance Content
 const CreateMaintenance = lazy(() =>
   import("../../components/maintenance_manager/create/CreateMaintenanceContent")
@@ -82,7 +87,7 @@ const DeleteMaintenanceContent = lazy(() =>
   import("../../components/maintenance_manager/delete/DeleteMaintenanceContent")
 );
 const MaintenanceList = lazy(() =>
-  import("../../components/maintenance_manager/list/MaintenanceList")
+  import("../../components/maintenance_manager/list/MaintenanceCustomerList")
 );
 const MaintenanceDetails = lazy(() =>
   import(
@@ -407,9 +412,12 @@ const HomePage = () => {
 
   const openDispatchDetails = (dispatch) => {
     openModalTwo(
-      "40%",
+      "30%",
       "Dispatch Details",
-      <div>I will put this back in after performace updates</div>
+      <CompletedDispatchViewer
+        selectedDispatch={dispatch}
+        closeModalOne={closeModalTwo}
+      />
     );
   };
 
@@ -480,26 +488,29 @@ const HomePage = () => {
     );
   };
 
-  const openMaintenanceDetails = (maint) => {
+  const openMaintenanceDetails = (maint, equipment, equipmentIndex) => {
     openModalTwo(
-      "20%",
-      `${maint.equipmentName} Maintenance Details`,
+      "25%",
+      `${equipment.equipmentName} Maintenance Details`,
       <MaintenanceDetails
-        customer={client}
-        selectedMaintenance={maint}
-        openDeleteMaintenance={openDeleteMaintenance}
         closeModalTwo={closeModalTwo}
+        customer={client}
+        equipmentIndex={equipmentIndex}
+        openDeleteMaintenance={openDeleteMaintenance}
+        selectedMaintenance={maint}
+        unit={equipment}
       />
     );
   };
 
-  const openDeleteMaintenance = (selectedMaintenance) => {
+  const openDeleteMaintenance = (maint, equipment) => {
     openModalThree(
       "30%",
-      `Delete Maintenance for ${selectedMaintenance.equipmentName}`,
+      `Delete Maintenance for ${equipment.equipmentName}`,
       <DeleteMaintenanceContent
         customer={client}
-        selectedMaintenance={selectedMaintenance}
+        selectedMaintenance={maint}
+        unit={equipment}
         closeDetailsModal={closeModalTwo}
         closeDeleteModal={closeModalThree}
       />
@@ -508,12 +519,11 @@ const HomePage = () => {
 
   const openMaintenanceList = () => {
     openModalOne(
-      "50%",
+      "80%",
       "Maintenance List",
       <MaintenanceList
         customer={client}
         openMaintenanceDetails={openMaintenanceDetails}
-        openCreateMaintenance={openCreateMaintenance}
         closeModalOne={closeModalOne}
       />
     );
@@ -575,6 +585,7 @@ const HomePage = () => {
           <CustomerSearch
             handleCustomerSelected={handleCustomerSelected}
             openCreateCustomer={openCreateCustomer}
+            openMaintenanceList={openMaintenanceList}
           />
         </div>
         <div className="homepageTopMiddle">
@@ -588,8 +599,8 @@ const HomePage = () => {
         <div className="homepageTopRight">
           <NavigationButtons
             openCreateDispatch={openCreateDispatch}
+            openCreateMaintenance={openCreateMaintenance}
             openDispatchHistory={openDispatchHistory}
-            openMaintenanceList={openMaintenanceList}
             openWarrantyList={openWarrantyList}
             openPartsQuoteList={openPartsQuoteList}
             customer={client}

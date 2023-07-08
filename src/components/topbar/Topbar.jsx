@@ -1,59 +1,73 @@
-import { useEffect, useRef, useState } from "react";
-import { getAuth } from "firebase/auth";
+import { useRef, useState } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase/firestore.utils";
 
-import { logOut } from "../../firebase/firestore.utils";
 import { useNavigate } from "react-router-dom";
 
-import { CalendarMonth, People, Settings } from "@mui/icons-material";
+import {
+  Brightness4,
+  Brightness7,
+  CalendarMonth,
+  HomeRepairService,
+  People,
+  Queue,
+  Settings,
+  Widgets,
+} from "@mui/icons-material";
+import { Button, IconButton } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import "../../global_style/style.css";
 
-const Topbar = ({ setUser }) => {
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
-
+const Topbar = ({ authUser, colorMode }) => {
+  const theme = useTheme();
   let navigate = useNavigate();
   const btnRef = useRef();
 
   const [isDropDownopen, setDropDownOpen] = useState(false);
 
-  //click anywhere to close the logout menu
-  useEffect(() => {
-    const closeDropDown = (e) => {
-      if (e.path[0] !== btnRef.current) {
-        setDropDownOpen(false);
-      }
-    };
-    document.body.addEventListener("click", closeDropDown);
-    return () => document.body.removeEventListener("click", closeDropDown);
-  }, []);
-
-  const handleLogOut = async () => {
+  const handleLogOut = () => {
     console.log("Logout triggered!");
-    try {
-      logOut().then(() => {
-        console.log("Signed Out!");
-        setDropDownOpen(false);
-        setUser({});
-        navigate("/");
-      });
-    } catch {
-      alert("I had trouble signing out! Network conjestion?");
-    }
+    signOut(auth).then(() => {
+      console.log("Sign out successful");
+      navigate("/");
+    });
   };
 
   const links = [
-    { name: "Customers", path: "/homepage", key: 0, icon: <People /> },
+    {
+      name: "Customers",
+      path: "/homepage",
+      key: 0,
+      icon: <People />,
+    },
     { name: "Schedule", path: "/schedule", key: 1, icon: <CalendarMonth /> },
-    { name: "Settings", path: "/settings", key: 2, icon: <Settings /> },
-    // { name: "Inventory", link: "/parts_catalog", key: 3 },
-    // { name: "Accounting", link: "/accounting", key: 4 },
+    {
+      name: "Parts",
+      path: "/parts_catalog",
+      key: 2,
+      icon: <Widgets />,
+    },
+    {
+      name: "Equipment",
+      path: "/equipment_catalog",
+      key: 3,
+      icon: <Queue />,
+    },
+    {
+      name: "Services",
+      path: "/services_catalog",
+      key: 4,
+      icon: <HomeRepairService />,
+    },
+    { name: "Settings", path: "/settings", key: 5, icon: <Settings /> },
+    // { name: "Accounting", link: "/accounting", key: 6 },
   ];
 
   const getDisplayName = (user) => {
-    if (currentUser && user.displayName) {
-      return user.displayName;
-    } else if (currentUser && user.email) {
-      return user.email;
+    if (authUser && authUser.displayName) {
+      return authUser.displayName;
+    } else if (authUser && authUser.email) {
+      return authUser.email;
     } else {
       return "";
     }
@@ -65,9 +79,17 @@ const Topbar = ({ setUser }) => {
         <span className="topbarLogo">Service Tools</span>
       </div>
       <div className="topbarCenter">
-        {(currentUser !== null && currentUser.displayName) ||
-        (currentUser !== null && currentUser.email) ? (
+        {(authUser !== null && authUser.displayName) ||
+        (authUser !== null && authUser.email) ? (
           links.map((link) => (
+            // <Button
+            //   variant="outlined"
+            //   startIcon={link.icon}
+            //   key={link.key}
+            //   onClick={() => navigate(link.path)}
+            // >
+            //   {link.name}
+            // </Button>
             <button
               key={link.key}
               onClick={() => navigate(link.path)}
@@ -88,7 +110,7 @@ const Topbar = ({ setUser }) => {
             className="topbarUser"
             onClick={() => setDropDownOpen(!isDropDownopen)}
           >
-            {getDisplayName(currentUser)}
+            {getDisplayName(authUser)}
           </div>
 
           {isDropDownopen && (
@@ -102,6 +124,9 @@ const Topbar = ({ setUser }) => {
             </div>
           )}
         </div>
+        <IconButton onClick={() => colorMode.toggleColorMode()} color="inherit">
+          {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
+        </IconButton>
       </div>
     </div>
   );

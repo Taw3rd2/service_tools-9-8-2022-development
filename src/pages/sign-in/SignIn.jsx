@@ -1,15 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { googleAuth, logIn } from "../../firebase/firestore.utils";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
-import { useNavigate } from "react-router-dom";
-
 import { HourglassEmpty } from "@mui/icons-material";
-
 import "./signin.css";
 
-export default function SignIn({ setUser }) {
+export default function SignIn() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -21,7 +19,6 @@ export default function SignIn({ setUser }) {
     setLoading(true);
     try {
       await logIn(email, password).then((res) => {
-        setUser(res.user);
         setLoading(false);
         navigate("/homepage");
       });
@@ -35,7 +32,6 @@ export default function SignIn({ setUser }) {
     const provider = new GoogleAuthProvider();
     signInWithPopup(googleAuth, provider)
       .then((res) => {
-        setUser(res.user);
         setLoading(false);
         navigate("/homepage");
       })

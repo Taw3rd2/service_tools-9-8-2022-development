@@ -3,8 +3,6 @@ import React from "react";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Autocomplete, TextField, Typography } from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
-import { ThemeProvider } from "@mui/material";
-import { lightTheme } from "../../theme/Theme";
 
 const CustomerAutocomplete = ({
   customers,
@@ -26,16 +24,17 @@ const CustomerAutocomplete = ({
   });
 
   return (
-    <ThemeProvider theme={lightTheme}>
+    <>
       {selectedSearchParameter === "lastname" && (
         <Autocomplete
+          fullWidth
           id="search-box"
           options={groupedCustomers.sort(
             (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
           )}
           filterOptions={filterOptions}
           onChange={(event, value) => handleCustomerSelected(value)}
-          groupBy={(customers) => customers.firstLetter}
+          // groupBy={(customers) => customers.firstLetter}
           isOptionEqualToValue={(option, value) =>
             option.lastname === value.lastname
           }
@@ -43,7 +42,7 @@ const CustomerAutocomplete = ({
           renderOption={(props, option) => (
             <Grid2
               container
-              style={{ color: "black", fontSize: 18 }}
+              style={{ fontSize: 18, margin: "8px" }}
               {...props}
               key={option.id}
             >
@@ -71,13 +70,14 @@ const CustomerAutocomplete = ({
       )}
       {selectedSearchParameter === "street" && (
         <Autocomplete
+          fullWidth
           id="search-box"
           options={groupedCustomers.sort(
             (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
           )}
           filterOptions={filterOptions}
           onChange={(event, value) => handleCustomerSelected(value)}
-          groupBy={(customers) => customers.firstLetter}
+          // groupBy={(customers) => customers.firstLetter}
           isOptionEqualToValue={(option, value) =>
             option.lastname === value.lastname
           }
@@ -85,7 +85,7 @@ const CustomerAutocomplete = ({
           renderOption={(props, option) => (
             <Grid2
               container
-              style={{ color: "black", fontSize: 18 }}
+              style={{ fontSize: 18 }}
               {...props}
               key={option.id}
             >
@@ -113,13 +113,14 @@ const CustomerAutocomplete = ({
       )}
       {selectedSearchParameter === "city" && (
         <Autocomplete
+          fullWidth
           id="search-box"
           options={groupedCustomers.sort(
             (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
           )}
           filterOptions={filterOptions}
           onChange={(event, value) => handleCustomerSelected(value)}
-          groupBy={(customers) => customers.firstLetter}
+          // groupBy={(customers) => customers.firstLetter}
           isOptionEqualToValue={(option, value) =>
             option.lastname === value.lastname
           }
@@ -127,7 +128,7 @@ const CustomerAutocomplete = ({
           renderOption={(props, option) => (
             <Grid2
               container
-              style={{ color: "black", fontSize: 18 }}
+              style={{ fontSize: 18 }}
               {...props}
               key={option.id}
             >
@@ -153,7 +154,7 @@ const CustomerAutocomplete = ({
           )}
         />
       )}
-    </ThemeProvider>
+    </>
   );
 };
 

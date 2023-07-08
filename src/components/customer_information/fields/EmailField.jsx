@@ -4,7 +4,7 @@ import React from "react";
 
 const EmailField = ({ title, email }) => {
   return (
-    <Card sx={{ padding: "8px" }}>
+    <Card variant="outlined" sx={{ padding: "8px" }}>
       <Typography variant="caption">{title}</Typography>
       <div style={{ display: "flex" }}>
         <MailOutline color="primary" />

@@ -14,8 +14,6 @@ import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
 
 const settingsButton = {
-  color: lightTheme.palette.primary.light,
-  backgroundColor: lightTheme.palette.primary.contrastText,
   borderRadius: "5px",
   marginTop: "4px",
   marginLeft: "4px",
@@ -32,8 +30,6 @@ const settingsButton = {
 };
 const regButton = {
   textAlign: "center",
-  color: lightTheme.palette.primary.light,
-  backgroundColor: lightTheme.palette.primary.contrastText,
   marginTop: "4px",
   minWidth: 33,
   maxWidth: 33,
@@ -48,6 +44,7 @@ const Calendar = ({
   technicians,
   openDispatchDetails,
   openDailyOptionsMenu,
+  openCalendarCustomerSearch,
 }) => {
   const db = getFirestore();
 
@@ -164,12 +161,15 @@ const Calendar = ({
       });
       return (
         <div style={{ display: "flex", flexDirection: "row" }}>
-          <button
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
             style={settingsButton}
             onClick={() => openDailyOptionsMenu(date)}
           >
             <SettingsOutlined style={{ margin: "0px", padding: "0px" }} />
-          </button>
+          </Button>
 
           <Typography
             sx={{
@@ -190,6 +190,7 @@ const Calendar = ({
             color="primary"
             size="small"
             sx={regButton}
+            onClick={() => openCalendarCustomerSearch(date)}
           >
             <strong>{dayNumberText}</strong>
           </Button>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
-import { deleteMaintenance } from "../maintenanceFunctions";
+import { deleteMaintenance } from "../maintenance_functions/deleteMaintenanceFunctions";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
 
 import { Close, DeleteForever } from "@mui/icons-material";
@@ -11,6 +11,7 @@ import "../../../global_style/style.css";
 const DeleteMaintenanceContent = ({
   customer,
   selectedMaintenance,
+  unit,
   closeDetailsModal,
   closeDeleteModal,
 }) => {
@@ -43,7 +44,11 @@ const DeleteMaintenanceContent = ({
     <div className="container">
       <div className="deleteWarningText">Unrecoverable Delete</div>
       <ul>
-        <li>All Maintenance information for this unit</li>
+        <li>All maintenance information for this unit.</li>
+        <li>
+          All maintenance information for all other units that fall under this
+          contract.{" "}
+        </li>
       </ul>
       <div className="buttonBar">
         <button
@@ -51,8 +56,8 @@ const DeleteMaintenanceContent = ({
           className="deleteButton"
           onClick={() =>
             deleteMaintenance(
-              customer,
               selectedMaintenance,
+              unit,
               activateSuccessNotification,
               activateFailureNotification,
               closeDetailsModal,
