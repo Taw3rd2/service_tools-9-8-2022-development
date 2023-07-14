@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
+import { useSyncedCollection } from "../../../firebase/firestore.utils";
 
 import {
   getDateFromString,
@@ -27,6 +27,7 @@ import {
   greenBodyTableCell,
   redBodyTableCell,
 } from "../../../theme/Theme";
+import { collection } from "firebase/firestore";
 
 const CustomerEquipmentListContent = ({
   customer,
@@ -34,10 +35,8 @@ const CustomerEquipmentListContent = ({
   openCreateCustomerEquipment,
   closeModalOne,
 }) => {
-  const equipment = useSyncedNestedCollection(
-    "customers",
-    customer.id,
-    "Equipment"
+  const equipment = useSyncedCollection(
+    collection(db, "customers", customer.id, "Equipment")
   );
 
   const getStyledTableCell = (stringValue) => {

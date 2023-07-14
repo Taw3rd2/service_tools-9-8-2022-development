@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
+  db,
   createUnNamedDocument,
   updateDocument,
 } from "../../../../firebase/firestore.utils";
@@ -32,7 +33,6 @@ const LaborRateDetails = ({ laborRate, closeModalOne }) => {
 
     if (laborRate !== undefined) {
       //update the laborRate
-      const db = getFirestore();
       const data = { rate, rateDescription };
       data.rate = stringPriceToNumber(data.rate);
       updateDocument(doc(db, "laborRate", laborRate.id), data)
@@ -62,7 +62,6 @@ const LaborRateDetails = ({ laborRate, closeModalOne }) => {
         });
     } else {
       //create a new Labor Rate
-      const db = getFirestore();
       const data = { rate, rateDescription };
       data.rate = stringPriceToNumber(data.rate);
       createUnNamedDocument(collection(db, "laborRate"), data)

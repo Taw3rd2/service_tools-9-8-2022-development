@@ -8,9 +8,10 @@ import {
   buildMaterialPrices,
   fetchEquipmentByModel,
 } from "./equipmentFunctions";
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 import { toCurrency } from "../../../../utilities/currencyUtils";
 import { TableCell, TableRow, styled, tableCellClasses } from "@mui/material";
+import { collection } from "firebase/firestore";
 
 const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.body}`]: {
@@ -19,9 +20,9 @@ const StyledTableCell = styled(TableCell)(() => ({
 }));
 
 const PrintEquipmentPriceSheets = ({ equipmentType, matchesPrint }) => {
-  const equipment = useSyncedCollection("equipment");
-  const parts = useSyncedCollection("parts");
-  const services = useSyncedCollection("services");
+  const equipment = useSyncedCollection(collection(db, "equipment"));
+  const parts = useSyncedCollection(collection(db, "parts"));
+  const services = useSyncedCollection(collection(db, "services"));
 
   //get unit data
 

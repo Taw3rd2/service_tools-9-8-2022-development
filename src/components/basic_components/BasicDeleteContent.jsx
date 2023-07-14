@@ -5,7 +5,7 @@ import { Button, Typography } from "@mui/material";
 import { Close, DeleteForever } from "@mui/icons-material";
 import { defaultRedButton, defaultTableButton } from "../../theme/Theme";
 
-import { deletePartsQuote } from "../parts_quotes/delete/deletePartsQuote";
+import { deletePartsQuote } from "../parts_quotes/delete/DeletePartsQuote";
 
 const DeleteContent = ({ customer, itemToDelete, closeModal }) => {
   return (

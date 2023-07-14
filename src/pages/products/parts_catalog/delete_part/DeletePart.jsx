@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { ToastContext } from "../../../../context/toastContext";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
-import { doc, getFirestore } from "firebase/firestore";
-import { deleteDocument } from "../../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, deleteDocument } from "../../../../firebase/firestore.utils";
 
 import { Close, DeleteForever } from "@mui/icons-material";
 import "../../../../global_style/style.css";
@@ -12,8 +12,6 @@ const DeletePart = ({ partToDelete, closeModalOne, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removePart = async () => {
-    const db = getFirestore();
-
     if (partToDelete.id) {
       deleteDocument(doc(db, "parts", partToDelete.id))
         .then(() => {

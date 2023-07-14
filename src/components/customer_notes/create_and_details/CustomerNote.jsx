@@ -1,11 +1,12 @@
 import { useContext, useState } from "react";
+import { collection } from "firebase/firestore";
 import { ToastContext } from "../../../context/toastContext";
 
 import {
   submitNoteToFirestore,
   updateNoteToFirestore,
 } from "../customerNoteFunctions";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import {
   getFormattedDate,
   getFormattedDateAndTime,
@@ -28,7 +29,7 @@ const CustomerNote = ({
   openDeleteCustomerNote,
 }) => {
   const { dispatch } = useContext(ToastContext);
-  const dispatchers = useSyncedCollection("dispatchers");
+  const dispatchers = useSyncedCollection(collection(db, "dispatchers"));
   const types = [
     { name: "Phone", id: 0 },
     { name: "Note", id: 1 },

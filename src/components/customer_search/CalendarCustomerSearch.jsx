@@ -1,16 +1,17 @@
+import { db, useSyncedCollection } from "../../firebase/firestore.utils";
+
 import { Autocomplete, Button, TextField, Typography } from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
-import React from "react";
-import { useSyncedCollection } from "../../firebase/firestore.utils";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Close } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
 
 const CalendarCustomerSearch = ({
   openCreateDispatch,
   date,
   closeModalOne,
 }) => {
-  const customers = useSyncedCollection("customers");
+  const customers = useSyncedCollection(collection(db, "customers"));
 
   const filterOptions = createFilterOptions({
     matchFrom: "any",

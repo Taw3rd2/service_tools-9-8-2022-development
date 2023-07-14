@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../firebase/firestore.utils";
@@ -22,7 +23,7 @@ const EditDayLabel = ({
   calendarDateSelected,
   selectedDayLabel,
 }) => {
-  const technicians = useSyncedCollection("technicians");
+  const technicians = useSyncedCollection(collection(db, "technicians"));
   const { dispatch } = useContext(ToastContext);
 
   const [label, setLabelData] = useState({
@@ -46,7 +47,6 @@ const EditDayLabel = ({
       locationName: label.locationName,
       tech: label.tech,
     };
-    const db = getFirestore();
     updateDocument(doc(db, "calLabel", selectedDayLabel.id), updatedLabel)
       .then(() => {
         dispatch({

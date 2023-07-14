@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../../firebase/firestore.utils";
@@ -16,15 +18,11 @@ import {
   toCurrency,
 } from "../../../../utilities/currencyUtils";
 import { ToastContext } from "../../../../context/toastContext";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
 const AddLaborToEquipment = ({ selectedEquipmentId, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
-  const laborRates = useSyncedCollection("laborRate");
-
-  //fetch the existing default labor list
-  const db = getFirestore();
+  const laborRates = useSyncedCollection(collection(db, "laborRate"));
 
   // a place to store the fetched equipment labor
   const [tempArray, setTempArray] = useState([]);
@@ -57,7 +55,7 @@ const AddLaborToEquipment = ({ selectedEquipmentId, closeModalTwo }) => {
       }
     );
     return () => unsubscribe();
-  }, [db, laborRates, selectedEquipmentId]);
+  }, [laborRates, selectedEquipmentId]);
 
   const [laborValues, setLaborValues] = useState({
     description: "",

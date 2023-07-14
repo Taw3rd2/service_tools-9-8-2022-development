@@ -18,9 +18,6 @@ export const ToastContextProvider = (props) => {
     }
   }, notifications);
 
-  //   dispatch({ type: "ADD_NOTIFICATION", payload: { id, type, title, message } });
-  //   dispatch({ type: "DELETE_NOTIFICATION", payload: { id } });
-
   return (
     <ToastContext.Provider value={{ state, dispatch }}>
       {props.children}

@@ -1,8 +1,8 @@
 import { Close, DeleteForever } from "@mui/icons-material";
-import { doc, getFirestore } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import { useContext } from "react";
 import { ToastContext } from "../../../../context/toastContext";
-import { deleteDocument } from "../../../../firebase/firestore.utils";
+import { db, deleteDocument } from "../../../../firebase/firestore.utils";
 import "../../../../global_style/style.css";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
@@ -10,8 +10,6 @@ const DeletePayment = ({ payment, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removePayment = async () => {
-    const db = getFirestore();
-
     if (payment.id) {
       deleteDocument(doc(db, "payments", payment.id))
         .then(() => {

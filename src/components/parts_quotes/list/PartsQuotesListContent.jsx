@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 
 import { getFormattedDate } from "../../../utilities/dateUtils";
 
@@ -22,6 +22,7 @@ import {
   defaultBodyTableCell,
   getDefaultHeadTableCell,
 } from "../../../theme/Theme";
+import { collection } from "firebase/firestore";
 
 const PartsQuotesListContent = ({
   customer,
@@ -29,10 +30,8 @@ const PartsQuotesListContent = ({
   openCreatePartsQuote,
   closeBasicModal,
 }) => {
-  const quoteList = useSyncedNestedCollection(
-    "customers",
-    customer.id,
-    "partsQuotes"
+  const quoteList = useSyncedCollection(
+    collection(db, "customers", customer.id, "partsQuotes")
   );
   return (
     <div style={{ padding: "8px" }}>

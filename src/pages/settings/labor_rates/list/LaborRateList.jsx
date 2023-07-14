@@ -1,4 +1,4 @@
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 import { toCurrency } from "../../../../utilities/currencyUtils";
 
 import {
@@ -13,9 +13,10 @@ import {
 } from "@mui/material";
 import "../../../../global_style/style.css";
 import { Add, DeleteForever, Edit } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
 
 const LaborRateList = ({ openLaborRateDetails, openDeleteLaborRate }) => {
-  const laborRate = useSyncedCollection("laborRate");
+  const laborRate = useSyncedCollection(collection(db, "laborRate"));
 
   return (
     <div className="settingsCard">

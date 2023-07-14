@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { ToastContext } from "../../../../context/toastContext";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
-import { doc, getFirestore } from "firebase/firestore";
-import { updateDocument } from "../../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, updateDocument } from "../../../../firebase/firestore.utils";
 
 import { Close, DeleteForever } from "@mui/icons-material";
 import "../../../../global_style/style.css";
@@ -13,8 +13,6 @@ const DeleteCrossReference = ({ part, crossReferenceIndex, closeModalTwo }) => {
 
   const removeCrossReference = async () => {
     part.crossReference.splice(crossReferenceIndex, 1);
-
-    const db = getFirestore();
 
     if (part.id) {
       updateDocument(doc(db, "parts", part.id), {

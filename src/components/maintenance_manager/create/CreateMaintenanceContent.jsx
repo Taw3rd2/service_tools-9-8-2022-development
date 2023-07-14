@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
-
-import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
+import { collection } from "firebase/firestore";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 
 import { addMaintenance } from "../maintenance_functions/createMaintenanceFunctions";
 
@@ -20,10 +20,8 @@ import IncrementDigit from "./IncrementDigit";
 const CreateMaintenanceContent = ({ customer, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
 
-  const equipment = useSyncedNestedCollection(
-    "customers",
-    customer.id,
-    "Equipment"
+  const equipment = useSyncedCollection(
+    collection(db, "customers", customer.id, "Equipment")
   );
   const [selectedEquipment, setSelectedEquipment] = useState([]);
   const [equipmentError, setEquipmentError] = useState(false);

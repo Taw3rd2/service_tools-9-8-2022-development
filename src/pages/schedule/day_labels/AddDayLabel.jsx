@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { collection, getFirestore } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import {
+  db,
   createUnNamedDocument,
   useSyncedCollection,
 } from "../../../firebase/firestore.utils";
@@ -18,7 +19,7 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 import { getFormattedExactTime } from "../../../utilities/dateUtils";
 
 const AddDayLabel = ({ closeModalThree, calendarDateSelected }) => {
-  const technicians = useSyncedCollection("technicians");
+  const technicians = useSyncedCollection(collection(db, "technicians"));
   const { dispatch } = useContext(ToastContext);
 
   const [label, setLabelData] = useState({
@@ -33,7 +34,6 @@ const AddDayLabel = ({ closeModalThree, calendarDateSelected }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    const db = getFirestore();
     createUnNamedDocument(collection(db, "calLabel"), label)
       .then(() => {
         dispatch({

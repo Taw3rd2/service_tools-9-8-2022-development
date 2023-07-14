@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../firebase/firestore.utils";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -32,7 +33,6 @@ const EditSingleField = ({
   const submitToFirestore = async (event) => {
     event.preventDefault();
 
-    const db = getFirestore();
     const documentReference = doc(
       db,
       "customers",

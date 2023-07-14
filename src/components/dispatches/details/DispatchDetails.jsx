@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 
 import { collection, doc, getFirestore } from "firebase/firestore";
 import {
+  db,
   createNamedDocument,
   deleteDocument,
   updateDocument,
@@ -40,10 +41,10 @@ const DispatchDetails = ({
 }) => {
   const { dispatch } = useContext(ToastContext);
 
-  const dispatchers = useSyncedCollection("dispatchers");
-  const technicians = useSyncedCollection("technicians");
-  const workList = useSyncedCollection("workList");
-  const payments = useSyncedCollection("payments");
+  const dispatchers = useSyncedCollection(collection(db, "dispatchers"));
+  const technicians = useSyncedCollection(collection(db, "technicians"));
+  const workList = useSyncedCollection(collection(db, "workList"));
+  const payments = useSyncedCollection(collection(db, "payments"));
 
   const [dispatchData, setDispatchData] = useState({
     altPhoneName: selectedDispatch.extendedProps.altPhoneName

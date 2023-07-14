@@ -1,14 +1,15 @@
+import {
+  db,
+  createUnNamedDocument,
+  updateDocument,
+} from "../../../../firebase/firestore.utils";
+import { collection, doc } from "firebase/firestore";
 import { useContext, useState } from "react";
 import { ToastContext } from "../../../../context/toastContext";
 
 import { TextField } from "@mui/material";
 import "../../../../global_style/style.css";
 import { Add, ArrowUpward, Close } from "@mui/icons-material";
-import {
-  createUnNamedDocument,
-  updateDocument,
-} from "../../../../firebase/firestore.utils";
-import { collection, doc, getFirestore } from "firebase/firestore";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
 const WorkListItemDetails = ({ workListItem, closeModalOne }) => {
@@ -28,7 +29,6 @@ const WorkListItemDetails = ({ workListItem, closeModalOne }) => {
         closeModalOne();
       } else {
         //update work list item
-        const db = getFirestore();
         const data = { item, shorthand };
         updateDocument(doc(db, "workList", workListItem.id), data)
           .then(() => {
@@ -58,7 +58,6 @@ const WorkListItemDetails = ({ workListItem, closeModalOne }) => {
       }
     } else {
       //create new work list item
-      const db = getFirestore();
       const data = { item, shorthand };
       createUnNamedDocument(collection(db, "workList"), data)
         .then(() => {

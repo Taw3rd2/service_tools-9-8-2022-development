@@ -1,6 +1,7 @@
+import { collection } from "firebase/firestore";
 import { Suspense, lazy, useState } from "react";
 import { Tab, Tabs } from "@mui/material";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import ServicesCatalogList from "./services_catalog_list/ServicesCatalogList";
 import BasicSearchBar from "../../../components/basic_components/BasicSearchBar";
 import Spinner from "../../../components/spinner/Spinner";
@@ -46,7 +47,7 @@ function a11yProps(index) {
 
 const ServicesCatalog = () => {
   //fetch services
-  const services = useSyncedCollection("services");
+  const services = useSyncedCollection(collection(db, "services"));
   const [searchableServices, setSerchableServices] = useState(services);
   const [servicesQuantity, setServicesQuantity] = useState(services.length);
 
@@ -69,7 +70,7 @@ const ServicesCatalog = () => {
   };
 
   //fetch services tabs
-  const servicesTabs = useSyncedCollection("servicesTabs");
+  const servicesTabs = useSyncedCollection(collection(db, "servicesTabs"));
 
   //keep track of tabs
   const [tabValue, setTabValue] = useState(0);

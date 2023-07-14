@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { ToastContext } from "../../../../context/toastContext";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
-import { doc, getFirestore } from "firebase/firestore";
-import { updateDocument } from "../../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, updateDocument } from "../../../../firebase/firestore.utils";
 import { InputAdornment, TextField } from "@mui/material";
 import { ArrowUpward, Close } from "@mui/icons-material";
 
@@ -50,7 +50,6 @@ const EditCrossReference = ({ part, crossReferenceIndex, closeModalTwo }) => {
     part.crossReference.push(updatedCrossReference);
 
     if (part.id !== undefined) {
-      const db = getFirestore();
       updateDocument(doc(db, "parts", part.id), {
         crossReference: part.crossReference,
       })

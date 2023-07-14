@@ -1,4 +1,4 @@
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 import {
   Button,
   Paper,
@@ -11,9 +11,10 @@ import {
 } from "@mui/material";
 import "../../../../global_style/style.css";
 import { Add, DeleteForever, Edit } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
 
 const PaymentList = ({ openPaymentDetails, openDeletePayment }) => {
-  const payments = useSyncedCollection("payments");
+  const payments = useSyncedCollection(collection(db, "payments"));
 
   return (
     <div className="settingsCard">

@@ -1,3 +1,11 @@
+import { useContext, useState } from "react";
+import { collection } from "firebase/firestore";
+import {
+  db,
+  createUnNamedDocument,
+  useSyncedCollection,
+} from "../../../../firebase/firestore.utils";
+
 import { ArrowUpward, Close } from "@mui/icons-material";
 import {
   FormControl,
@@ -8,17 +16,11 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { collection, getFirestore } from "firebase/firestore";
-import { useContext, useState } from "react";
 import { ToastContext } from "../../../../context/toastContext";
-import {
-  createUnNamedDocument,
-  useSyncedCollection,
-} from "../../../../firebase/firestore.utils";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
 const CreatePart = ({ closeModalOne }) => {
-  const tabs = useSyncedCollection("tabs");
+  const tabs = useSyncedCollection(collection(db, "tabs"));
   const { dispatch } = useContext(ToastContext);
 
   const [partValues, setPartValues] = useState({
@@ -54,7 +56,6 @@ const CreatePart = ({ closeModalOne }) => {
 
   const submitNewPart = (e) => {
     e.preventDefault();
-    const db = getFirestore();
     const newPart = {
       category: partValues.category,
       crossReference: partValues.crossReference,

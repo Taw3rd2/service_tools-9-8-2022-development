@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import { ToastContext } from "../../../../context/toastContext";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../../firebase/firestore.utils";
@@ -11,7 +13,6 @@ import "../../../../global_style/style.css";
 import { toCurrency } from "../../../../utilities/currencyUtils";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import BasicSearchBar from "../../../../components/basic_components/BasicSearchBar";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 import BasicDisabledSearchBar from "../../../../components/basic_components/BasicDisabledSearchBar";
 
@@ -26,10 +27,7 @@ const WorksheetMaterialPicker = ({ selectedEquipmentId, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
 
   //get the parts list from the parts inventory
-  const parts = useSyncedCollection("parts");
-
-  //get the database
-  const db = getFirestore();
+  const parts = useSyncedCollection(collection(db, "parts"));
 
   //set a place to activate and deactivate the search bar
   const [activeSearchBar, setActiveSearchBar] = useState(true);
@@ -48,7 +46,7 @@ const WorksheetMaterialPicker = ({ selectedEquipmentId, closeModalTwo }) => {
       }
     );
     return () => unsubscribe();
-  }, [db, selectedEquipmentId]);
+  }, [selectedEquipmentId]);
 
   //Search Bar
   const [selectedParts, setSelectedParts] = useState([]);

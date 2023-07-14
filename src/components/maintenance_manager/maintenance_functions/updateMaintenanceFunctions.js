@@ -1,5 +1,5 @@
-import { doc, getFirestore } from "firebase/firestore";
-import { updateDocument } from "../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, updateDocument } from "../../../firebase/firestore.utils";
 
 export const updateMaintenance = async (
   activateFailureNotification,
@@ -162,7 +162,6 @@ export const updateMaintenance = async (
   // mNumber: newMaintenanceValues.mNumber,
   //};
 
-  const db = getFirestore();
   updateDocument(doc(db, "maintenance", contractId), updatedMaintenanceDoc)
     .then(() => {
       activateSuccessNotification();

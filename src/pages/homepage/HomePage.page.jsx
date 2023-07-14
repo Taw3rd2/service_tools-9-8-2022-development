@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/firestore.utils";
 
 import CustomerInformation from "../../components/customer_information/CustomerInformation.component";
 import CustomerSearch from "../../components/customer_search/CustomerSearch.component";
@@ -129,23 +130,21 @@ const HomePage = () => {
     setCustomer(customer);
   };
 
-  const db = getFirestore();
+  //keep customer data display current
   useEffect(() => {
     if (customer === null || customer.id === "") {
       setClient({ id: "" });
     } else {
-      const unsubscribe = onSnapshot(
+      console.log("homepage useEffect");
+      const subscribeToCustomer = onSnapshot(
         doc(db, "customers", customer.id),
         (doc) => {
           setClient({ ...doc.data(), id: doc.id });
-        },
-        (error) => {
-          console.log(error.message);
         }
       );
-      return () => unsubscribe();
+      return () => subscribeToCustomer();
     }
-  }, [db, customer]);
+  }, [customer]);
 
   //ModalOne
   const [isModalOneOpen, setModalOneOpen] = useState(false);

@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { ToastContext } from "../../../../context/toastContext";
 
 import {
+  db,
   createUnNamedDocument,
   updateDocument,
 } from "../../../../firebase/firestore.utils";
@@ -19,7 +20,6 @@ const PaymentDetails = ({ payment, closeModalOne }) => {
 
   const onSubmitPayment = (event) => {
     event.preventDefault();
-    const db = getFirestore();
     if (payment !== undefined) {
       if (payment.item === item) {
         closeModalOne();

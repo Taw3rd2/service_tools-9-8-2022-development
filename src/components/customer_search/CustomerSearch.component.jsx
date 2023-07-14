@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { useState } from "react";
 //import CustomerExport from "../export_to_excel/CustomerExport";
 import {
   Button,
@@ -14,24 +13,15 @@ import CustomerAutocomplete from "./CustomerAutocomplete.component";
 import "../../global_style/style.css";
 import { AddCircleOutline, BuildCircleOutlined } from "@mui/icons-material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import { db, useSyncedCollection } from "../../firebase/firestore.utils";
+import { collection } from "firebase/firestore";
 
 const CustomerSearch = ({
   handleCustomerSelected,
   openCreateCustomer,
   openMaintenanceList,
 }) => {
-  const db = getFirestore();
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "customers"), (snapshot) =>
-        setCustomers(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
-      ),
-    [db]
-  );
+  const customers = useSyncedCollection(collection(db, "customers"));
 
   const [selectedSearchParameter, setSelectedSearchParameter] =
     useState("lastname");

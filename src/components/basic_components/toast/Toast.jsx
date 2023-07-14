@@ -43,14 +43,17 @@ const Toast = () => {
   };
 
   return (
-    <div className="notificationContainer notificationPosition">
+    <div
+      className="notificationContainer notificationPosition"
+      style={{ boxSizing: "unset" }}
+    >
       {state.map((notification, index) => {
         setTimeout(() => {
           dispatch({
             type: "DELETE_NOTIFICATION",
             payload: notification.id,
           });
-        }, 4000);
+        }, 5000);
         return (
           <div
             key={notification.id}

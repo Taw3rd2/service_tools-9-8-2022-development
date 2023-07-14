@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
-import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import { addWarranty } from "../warrantyFunctions";
 
 import EquipmentPicker from "../../equipment_picker/EquipmentPicker";
@@ -12,13 +12,12 @@ import { AddCircleOutline, Close } from "@mui/icons-material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { getFormattedDateAndTime } from "../../../utilities/dateUtils";
+import { collection } from "firebase/firestore";
 
 const CreateWarrantyContent = ({ customer, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
-  const equipment = useSyncedNestedCollection(
-    "customers",
-    customer.id,
-    "Equipment"
+  const equipment = useSyncedCollection(
+    collection(db, "customers", customer.id, "Equipment")
   );
 
   const [selectedEquipment, setSelectedEquipment] = useState([]);

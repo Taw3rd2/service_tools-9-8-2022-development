@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 import BasicTable from "../../../../components/basic_components/BasicTable";
 import { Checkbox, TableCell, tableCellClasses, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -8,6 +8,7 @@ import { toCurrency } from "../../../../utilities/currencyUtils";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import BasicSearchBar from "../../../../components/basic_components/BasicSearchBar";
 import BasicDisabledSearchBar from "../../../../components/basic_components/BasicDisabledSearchBar";
+import { collection } from "firebase/firestore";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -17,7 +18,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const JobAdditionsPicker = ({ additions, setAdditions, closeModalTwo }) => {
-  const services = useSyncedCollection("services");
+  const services = useSyncedCollection(collection(db, "services"));
 
   //set a place to activate and deactivate the search bar
   const [activeSearchBar, setActiveSearchBar] = useState(true);

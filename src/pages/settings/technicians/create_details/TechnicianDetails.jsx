@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { ToastContext } from "../../../../context/toastContext";
 
 import {
+  db,
   createUnNamedDocument,
   updateDocument,
 } from "../../../../firebase/firestore.utils";
@@ -46,7 +47,6 @@ const TechnicianDetails = ({ technician, closeModalOne }) => {
         closeModalOne();
       } else {
         //update technican
-        const db = getFirestore();
         updateDocument(doc(db, "technicians", technician.id), techValues)
           .then(() => {
             dispatch({
@@ -75,7 +75,6 @@ const TechnicianDetails = ({ technician, closeModalOne }) => {
       }
     } else {
       //add new tech
-      const db = getFirestore();
       createUnNamedDocument(collection(db, "technicians"), techValues)
         .then(() => {
           dispatch({

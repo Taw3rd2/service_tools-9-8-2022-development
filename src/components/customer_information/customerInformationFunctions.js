@@ -1,6 +1,7 @@
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
   createUnNamedDocument,
+  db,
   deleteDocument,
   updateDocument,
 } from "../../firebase/firestore.utils";
@@ -13,8 +14,6 @@ export const deleteCustomer = (
   closeDetails,
   closeDelete
 ) => {
-  const db = getFirestore();
-
   deleteDocument(doc(db, "customers", customer.id))
     .then(() => {
       handleCustomerSelected({ id: "" });
@@ -35,8 +34,6 @@ export const updateCustomer = (
   activateUpateFailureNotification,
   closeEditor
 ) => {
-  const db = getFirestore();
-
   updateDocument(doc(db, "customers", customer.id), updatedValueSet)
     .then(() => {
       activateUpdateSuccessNotification();
@@ -54,8 +51,6 @@ export const addCustomerToFirestore = (
   activateCreateFailureNotification,
   closeModalOne
 ) => {
-  const db = getFirestore();
-
   createUnNamedDocument(collection(db, "customers"), customer)
     .then(() => {
       activateCreateCompletionNotification();

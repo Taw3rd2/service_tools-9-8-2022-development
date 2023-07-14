@@ -1,5 +1,6 @@
-import { doc, getFirestore } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import {
+  db,
   deleteDocument,
   updateDocument,
 } from "../../../firebase/firestore.utils";
@@ -12,8 +13,6 @@ export const deleteMaintenance = (
   closeDetailsModal,
   closeDeleteModal
 ) => {
-  const db = getFirestore();
-
   //android
   updateDocument(
     doc(

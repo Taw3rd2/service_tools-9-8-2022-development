@@ -1,6 +1,6 @@
 import { addHours, getUnixTime } from "date-fns";
-import { collection, doc, getFirestore } from "firebase/firestore";
-import { createNamedDocument } from "../../firebase/firestore.utils";
+import { collection, doc } from "firebase/firestore";
+import { createNamedDocument, db } from "../../firebase/firestore.utils";
 import { setDateToZeroHours } from "../../utilities/dateUtils";
 
 export const submitDispatchToFirestore = (
@@ -10,7 +10,6 @@ export const submitDispatchToFirestore = (
   activateFailureNotification,
   closeModalOne
 ) => {
-  const db = getFirestore();
   const docForId = doc(collection(db, "events"));
   const techLeadGeneratedId = docForId.id;
   if (dispatch.techHelper === "NONE") {

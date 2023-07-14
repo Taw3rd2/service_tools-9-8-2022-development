@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { collection } from "firebase/firestore";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import { ToastContext } from "../../../context/toastContext";
 import {
   setDateToZeroHours,
@@ -66,10 +67,10 @@ const CreateDispatch = ({ customer, date, closeModalOne }) => {
     });
   };
 
-  const dispatchers = useSyncedCollection("dispatchers");
-  const technicians = useSyncedCollection("technicians");
-  const workList = useSyncedCollection("workList");
-  const payments = useSyncedCollection("payments");
+  const dispatchers = useSyncedCollection(collection(db, "dispatchers"));
+  const technicians = useSyncedCollection(collection(db, "technicians"));
+  const workList = useSyncedCollection(collection(db, "workList"));
+  const payments = useSyncedCollection(collection(db, "payments"));
 
   const submitDispatch = (event) => {
     event.preventDefault();

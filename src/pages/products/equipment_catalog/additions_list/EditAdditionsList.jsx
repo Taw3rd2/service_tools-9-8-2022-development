@@ -6,8 +6,8 @@ import { TableCell, tableCellClasses, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import "../../../../global_style/style.css";
 import { toCurrency } from "../../../../utilities/currencyUtils";
-import { doc, getFirestore } from "firebase/firestore";
-import { updateDocument } from "../../../../firebase/firestore.utils";
+import { collection, doc } from "firebase/firestore";
+import { db, updateDocument } from "../../../../firebase/firestore.utils";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 import { useSyncedCollection } from "../../../../firebase/firestore.utils";
 import QuantityControl from "../../../../components/quantity_control/QuantityControl";
@@ -25,7 +25,7 @@ const EditAdditionsList = ({
   openWorksheetAdditionsPicker,
   closeModalOne,
 }) => {
-  const services = useSyncedCollection("services");
+  const services = useSyncedCollection(collection(db, "services"));
 
   const { dispatch } = useContext(ToastContext);
 
@@ -63,7 +63,6 @@ const EditAdditionsList = ({
   };
 
   const saveServicesToEquipment = () => {
-    const db = getFirestore();
     //if there is no services, and we want to save that, save []
     if (editableServicesList.length > 0) {
       //make sure we have a id

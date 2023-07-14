@@ -1,7 +1,9 @@
+import { useContext, useState } from "react";
+import { collection } from "firebase/firestore";
+import { db } from "../../../../firebase/firestore.utils";
+
 import { ArrowUpward, Close } from "@mui/icons-material";
 import { TextField } from "@mui/material";
-import { collection, getFirestore } from "firebase/firestore";
-import { useContext, useState } from "react";
 import { ToastContext } from "../../../../context/toastContext";
 import { createUnNamedDocument } from "../../../../firebase/firestore.utils";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
@@ -13,7 +15,6 @@ const CreateCategory = ({ tab, closeModalOne }) => {
 
   const submitCategory = (e) => {
     e.preventDefault();
-    const db = getFirestore();
     const newCategory = {
       equipmentTab: tab.name,
       name: name,

@@ -1,4 +1,4 @@
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 
 import {
   Button,
@@ -12,9 +12,10 @@ import {
 } from "@mui/material";
 import "../../../../global_style/style.css";
 import { Add, DeleteForever, Edit } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
 
 const DispatcherList = ({ openDispatcherDetails, openDeleteDispatcher }) => {
-  const dispatchers = useSyncedCollection("dispatchers");
+  const dispatchers = useSyncedCollection(collection(db, "dispatchers"));
 
   return (
     <div className="settingsCard">

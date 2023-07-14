@@ -1,4 +1,4 @@
-import { useSyncedNestedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import {
   Table,
   TableBody,
@@ -19,6 +19,7 @@ import {
   getUnixFromDate,
 } from "../../../utilities/dateUtils";
 import { AddCircleOutline, Close } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
 
 const CustomerEquipmentList = ({
   customer,
@@ -26,10 +27,8 @@ const CustomerEquipmentList = ({
   openCreateCustomerEquipment,
   closeModalOne,
 }) => {
-  const equipment = useSyncedNestedCollection(
-    "customers",
-    customer.id,
-    "Equipment"
+  const equipment = useSyncedCollection(
+    collection(db, "customers", customer.id, "Equipment")
   );
 
   const getStyledTableCell = (stringValue) => {

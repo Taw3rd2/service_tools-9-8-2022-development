@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { doc, getFirestore } from "firebase/firestore";
-import { deleteDocument } from "../../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, deleteDocument } from "../../../../firebase/firestore.utils";
 import { ToastContext } from "../../../../context/toastContext";
 
 import { Close, DeleteForever } from "@mui/icons-material";
@@ -11,8 +11,6 @@ const DeleteLaborRate = ({ laborRate, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removeLaborRate = async () => {
-    const db = getFirestore();
-
     if (laborRate.id) {
       deleteDocument(doc(db, "laborRate", laborRate.id))
         .then(() => {

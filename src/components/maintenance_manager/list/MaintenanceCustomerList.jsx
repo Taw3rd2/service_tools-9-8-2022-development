@@ -1,5 +1,5 @@
 import { useState, Fragment } from "react";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import {
   defaultBodyTableCell,
   getDefaultHeadTableCell,
@@ -26,9 +26,10 @@ import {
 import BasicSearchBar from "../../basic_components/BasicSearchBar";
 //import MaintenanceExport from "../../export_to_excel/MaintenanceExport";
 import EquipmentTableBody from "./components/EquipmentTableBody";
+import { collection } from "firebase/firestore";
 
 const MaintenanceCustomerList = ({ openMaintenanceDetails, closeModalOne }) => {
-  const maintenance = useSyncedCollection("maintenance");
+  const maintenance = useSyncedCollection(collection(db, "maintenance"));
 
   const [searchableMaintenance, setSearchableMaintenance] =
     useState(maintenance);

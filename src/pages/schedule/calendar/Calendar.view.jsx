@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import {
+  db,
+  useSyncedEvents,
+  useSyncedLabels,
+} from "../../../firebase/firestore.utils";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -12,6 +14,7 @@ import { SettingsOutlined } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/material";
 import { lightTheme } from "../../../theme/Theme";
+import { collection } from "firebase/firestore";
 
 const settingsButton = {
   borderRadius: "5px",
@@ -46,41 +49,10 @@ const Calendar = ({
   openDailyOptionsMenu,
   openCalendarCustomerSearch,
 }) => {
-  const db = getFirestore();
+  const labels = useSyncedLabels(collection(db, "calLabel"));
+  const events = useSyncedEvents(collection(db, "events"));
 
-  const [events, setEvents] = useState([]);
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "events"), (snapshot) =>
-        setEvents(
-          snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-            start: doc.data().start.toDate(),
-            end: doc.data().end.toDate(),
-            dateCreated: doc.data().dateCreated.toDate(),
-            dateModified: doc.data().dateModified.toDate(),
-            dateScheduled: doc.data().dateScheduled.toDate(),
-          }))
-        )
-      ),
-    [db]
-  );
-
-  const [labels, setLabels] = useState([]);
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "calLabel"), (snapshot) =>
-        setLabels(
-          snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-            labelDate: doc.data().labelDate.toDate(),
-          }))
-        )
-      ),
-    [db]
-  );
+  console.log("events", events.length);
 
   const getFilteredEvents = () => {
     let filteredEvents = [];

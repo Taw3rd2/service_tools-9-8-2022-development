@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import { ToastContext } from "../../../../context/toastContext";
+import { collection, doc } from "firebase/firestore";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../../firebase/firestore.utils";
-import { doc, getFirestore } from "firebase/firestore";
+import { ToastContext } from "../../../../context/toastContext";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 import {
   FormControl,
@@ -19,7 +20,7 @@ import { ArrowUpward, Close, DeleteForever } from "@mui/icons-material";
 
 const ServiceDetails = ({ service, openDeleteService, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
-  const servicesTabs = useSyncedCollection("servicesTabs");
+  const servicesTabs = useSyncedCollection(collection(db, "servicesTabs"));
 
   const onBaseCostLoad = (number) => {
     return parseFloat(number / 100).toFixed(2);
@@ -50,7 +51,6 @@ const ServiceDetails = ({ service, openDeleteService, closeModalOne }) => {
 
   const onSubmitService = (e) => {
     e.preventDefault();
-    const db = getFirestore();
 
     const updatedService = {
       category: serviceValues.category,

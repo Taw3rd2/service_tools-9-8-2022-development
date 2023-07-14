@@ -1,4 +1,4 @@
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 
 import {
   Button,
@@ -12,12 +12,13 @@ import {
 } from "@mui/material";
 import { Add, DeleteForever, Edit } from "@mui/icons-material";
 import "../../../../global_style/style.css";
+import { collection } from "firebase/firestore";
 
 const InventoryTabList = ({
   openInventoryTabDetails,
   openDeleteInventoryTab,
 }) => {
-  const inventoryTabs = useSyncedCollection("tabs");
+  const inventoryTabs = useSyncedCollection(collection(db, "tabs"));
   return (
     <div className="settingsCard">
       <div className="settingsCardTitle">Parts Tabs</div>

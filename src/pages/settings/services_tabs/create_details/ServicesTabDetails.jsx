@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
+  db,
   createUnNamedDocument,
   updateDocument,
 } from "../../../../firebase/firestore.utils";
@@ -19,7 +20,6 @@ const ServicesTabDetails = ({ servicesTab, closeModalOne }) => {
 
   const submitServicesTab = (event) => {
     event.preventDefault();
-    const db = getFirestore();
     if (servicesTab !== undefined) {
       if (servicesTab.name === name) {
         closeModalOne();

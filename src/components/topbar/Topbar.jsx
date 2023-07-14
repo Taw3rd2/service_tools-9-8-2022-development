@@ -14,7 +14,7 @@ import {
   Settings,
   Widgets,
 } from "@mui/icons-material";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import "../../global_style/style.css";
 

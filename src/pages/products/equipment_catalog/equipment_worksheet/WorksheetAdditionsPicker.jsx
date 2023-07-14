@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import { ToastContext } from "../../../../context/toastContext";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../../firebase/firestore.utils";
@@ -11,7 +13,7 @@ import "../../../../global_style/style.css";
 import { toCurrency } from "../../../../utilities/currencyUtils";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import BasicSearchBar from "../../../../components/basic_components/BasicSearchBar";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 import BasicDisabledSearchBar from "../../../../components/basic_components/BasicDisabledSearchBar";
 
@@ -26,10 +28,7 @@ const WorksheetAdditionsPicker = ({ selectedEquipmentId, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
 
   //get the services list from the services inventory
-  const services = useSyncedCollection("services");
-
-  //get the database
-  const db = getFirestore();
+  const services = useSyncedCollection(collection(db, "services"));
 
   //set a place to activate and deactivate the search bar
   const [activeSearchBar, setActiveSearchBar] = useState(true);
@@ -49,7 +48,7 @@ const WorksheetAdditionsPicker = ({ selectedEquipmentId, closeModalTwo }) => {
       }
     );
     return () => unsubscribe();
-  }, [db, selectedEquipmentId]);
+  }, [selectedEquipmentId]);
 
   //Search Bar
   const [selectedServices, setSelectedServices] = useState([]);

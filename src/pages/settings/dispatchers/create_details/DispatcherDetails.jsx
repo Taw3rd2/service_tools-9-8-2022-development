@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
+  db,
   createUnNamedDocument,
   updateDocument,
 } from "../../../../firebase/firestore.utils";
@@ -19,7 +20,6 @@ const DispatcherDetails = ({ dispatcher, closeModalOne }) => {
 
   const submitDispatcher = (event) => {
     event.preventDefault();
-    const db = getFirestore();
     if (dispatcher !== undefined) {
       if (dispatcher.name === name) {
         closeModalOne();

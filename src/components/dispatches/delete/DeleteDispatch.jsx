@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { deleteDoc, doc, getFirestore } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../../firebase/firestore.utils";
 import { ToastContext } from "../../../context/toastContext";
 import { getFormattedExactTime } from "../../../utilities/dateUtils";
 import { Close, DeleteForever } from "@mui/icons-material";
@@ -9,7 +10,6 @@ const DeleteDispatch = ({ selectedDispatch, closeModalOne, closeModalTwo }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removeSecondDispatch = async () => {
-    const db = getFirestore();
     if (selectedDispatch.extendedProps.techHelperId) {
       await deleteDoc(
         doc(db, "events", selectedDispatch.extendedProps.techHelperId)
@@ -41,7 +41,6 @@ const DeleteDispatch = ({ selectedDispatch, closeModalOne, closeModalTwo }) => {
   };
 
   const removeDispatches = async () => {
-    const db = getFirestore();
     await removeSecondDispatch();
     await deleteDoc(doc(db, "events", selectedDispatch.id))
       .then(() => {

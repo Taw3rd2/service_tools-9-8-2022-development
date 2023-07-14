@@ -3,13 +3,13 @@ import {
   collection,
   doc,
   getDocs,
-  getFirestore,
   query,
   updateDoc,
   where,
 } from "firebase/firestore";
 import {
   createUnNamedDocument,
+  db,
   updateDocument,
 } from "../../../firebase/firestore.utils";
 import {
@@ -18,7 +18,6 @@ import {
 } from "../../../utilities/dateUtils";
 
 export const getListOfMaintenance = async (custId) => {
-  const db = getFirestore();
   const maintQuery = query(
     collection(db, "maintenance"),
     where("customerId", "==", custId)
@@ -88,7 +87,6 @@ export const updateEquipmentMaintenanceDate = (
   maintenanceValues,
   selectedEquipment
 ) => {
-  const db = getFirestore();
   const finalExpirationDate = new Date(maintenanceValues.saleDate);
   finalExpirationDate.setFullYear(
     finalExpirationDate.getFullYear() + maintenanceValues.numberOfYears
@@ -142,7 +140,6 @@ export const updateExistingMaintenanceEquipment = async (
     maintenanceValues,
     selectedEquipment
   );
-  const db = getFirestore();
   const maintenanceReference = doc(db, "maintenance", id);
   await updateDoc(maintenanceReference, {
     equipment: arrayUnion(arrayOfUnits[0]),
@@ -190,7 +187,6 @@ export const buildNewMaintenance = async (
     saleDate: maintenanceValues.saleDate,
     salePrice: maintenanceValues.salePrice,
   };
-  const db = getFirestore();
   await createUnNamedDocument(collection(db, "maintenance"), maintenanceObject)
     .then(() => {
       activateSuccessNotification();

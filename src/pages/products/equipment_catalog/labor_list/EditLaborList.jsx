@@ -1,4 +1,10 @@
 import { useContext, useEffect, useState } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import {
+  db,
+  updateDocument,
+  useSyncedCollection,
+} from "../../../../firebase/firestore.utils";
 import { ToastContext } from "../../../../context/toastContext";
 import {
   TableCell,
@@ -16,11 +22,6 @@ import {
   Remove,
 } from "@mui/icons-material";
 import BasicTable from "../../../../components/basic_components/BasicTable";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import {
-  updateDocument,
-  useSyncedCollection,
-} from "../../../../firebase/firestore.utils";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -37,14 +38,12 @@ const rootStyles = {
 
 const EditLaborList = ({ unitId, openAddLaborToEquipment, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
-  const laborRates = useSyncedCollection("laborRate");
+  const laborRates = useSyncedCollection(collection(db, "laborRate"));
   const [defaultLaborList, setDefaultLaborList] = useState([]);
   const [model, setModel] = useState("");
   const [subCategory, setSubCategory] = useState("");
 
   const [pickerButtonActive, setPickerButtonActive] = useState(true);
-
-  const db = getFirestore();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -70,7 +69,7 @@ const EditLaborList = ({ unitId, openAddLaborToEquipment, closeModalOne }) => {
       }
     );
     return () => unsubscribe();
-  }, [db, unitId, laborRates]);
+  }, [unitId, laborRates]);
 
   const updateHours = (value, index) => {
     setPickerButtonActive(false);

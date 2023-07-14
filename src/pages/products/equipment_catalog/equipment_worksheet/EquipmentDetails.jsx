@@ -1,5 +1,7 @@
 import { useContext, useEffect } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../../firebase/firestore.utils";
@@ -19,7 +21,6 @@ import {
   TextField,
 } from "@mui/material";
 import "../../../../global_style/style.css";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import {
   Add,
   ArrowUpward,
@@ -39,11 +40,12 @@ const EquipmentDetails = ({
   openEditMaterialList,
   openEditAdditionsList,
 }) => {
-  const subCategories = useSyncedCollection("equipmentSubCategories");
+  const subCategories = useSyncedCollection(
+    collection(db, "equipmentSubCategories")
+  );
   const { dispatch } = useContext(ToastContext);
 
   useEffect(() => {
-    const db = getFirestore();
     const unsubscribe = onSnapshot(
       doc(db, "equipment", selectedEquipmentId),
       (doc) => {
@@ -89,7 +91,6 @@ const EquipmentDetails = ({
 
   const submitEquipment = (e) => {
     e.preventDefault();
-    const db = getFirestore();
     const equipmentFields = {
       btu: selectedEquipmentValues.btu,
       cost: stringPriceToNumber(selectedEquipmentValues.cost),

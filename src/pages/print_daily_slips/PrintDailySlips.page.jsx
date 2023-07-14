@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "../../firebase/firestore.utils";
 
 import { useLocation } from "react-router-dom";
 
@@ -16,7 +11,6 @@ import ViewDailySlip from "./view_daily/ViewDailySlip";
 import { useMediaQuery } from "@mui/material";
 
 const PrintDailySlips = () => {
-  const db = getFirestore();
   const location = useLocation();
   const matchesPrint = useMediaQuery("print");
 
@@ -35,7 +29,7 @@ const PrintDailySlips = () => {
     });
 
     return () => unsubscribe();
-  }, [db, location.state.date, location.state.techLead]);
+  }, [location.state.date, location.state.techLead]);
 
   return (
     <>

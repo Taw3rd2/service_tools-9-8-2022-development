@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { db } from "../../../firebase/firestore.utils";
 
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 import NoCustomerLoaded from "../../customer_information/views/NoCustomerLoaded.view";
 
@@ -32,32 +33,78 @@ const CustomerNotesList = ({
     console.log("No Customer Loaded");
   };
 
-  const db = getFirestore();
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     if (customer === null || customer.id === "") {
       setNoCustomerLoaded();
     } else {
-      setNotes([]);
-      const unsubscribe = onSnapshot(
-        collection(db, "customers", customer.id, "Activity"),
-        (snapshot) => {
-          setNotes(
-            snapshot.docs.map((doc) => ({
-              ...doc.data(),
-              id: doc.id,
-              sortingDate: getUnixFromDate(doc.data().currentTime.toDate()),
-            }))
-          );
-        },
-        (error) => {
-          console.log(error.message);
-        }
+      console.log("useSyncedCustomerNotes fired");
+      const customerNotesColRef = collection(
+        db,
+        "customers",
+        customer.id,
+        "Activity"
       );
-      return () => unsubscribe();
+      const subscription = onSnapshot(customerNotesColRef, (snapshot) => {
+        const source = snapshot.metadata.fromCache ? "local cache" : "server";
+        console.log("customer notes data came from " + source);
+
+        const notesArray = [];
+        snapshot.forEach((doc) => {
+          notesArray.push({
+            ...doc.data(),
+            id: doc.id,
+            sortingDate: getUnixFromDate(doc.data().currentTime.toDate()),
+          });
+        });
+        setNotes(notesArray);
+        return () => subscription.unsubscribe();
+      });
     }
-  }, [db, customer]);
+  }, [customer]);
+
+  // useEffect(() => {
+  //   if (customer === null || customer.id === "") {
+  //     setNoCustomerLoaded();
+  //   } else {
+  //     const customerNotesColRef = collection(
+  //       db,
+  //       "customers",
+  //       customer.id,
+  //       "Activity"
+  //     );
+
+  //     const subscribeToNotes = async () => {
+  //       const data = await getDocs(customerNotesColRef);
+  //       setNotes(
+  //         data.docs.map((doc) => ({
+  //           ...doc.data(),
+  //           id: doc.id,
+  //           sortingDate: getUnixFromDate(doc.data().currentTime.toDate()),
+  //         }))
+  //       );
+  //     };
+  //     subscribeToNotes();
+
+  // const unsubscribe = onSnapshot(
+  //   collection(db, "customers", customer.id, "Activity"),
+  //   (snapshot) => {
+  //     setNotes(
+  //       snapshot.docs.map((doc) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //         sortingDate: getUnixFromDate(doc.data().currentTime.toDate()),
+  //       }))
+  //     );
+  //   },
+  //   (error) => {
+  //     console.log(error.message);
+  //   }
+  // );
+  // return () => unsubscribe();
+  //   }
+  // }, [customer]);
 
   if (customer === null || customer.id === "") {
     return <NoCustomerLoaded />;

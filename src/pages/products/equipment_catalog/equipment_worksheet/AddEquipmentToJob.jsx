@@ -4,8 +4,8 @@ import {
 } from "../../../../utilities/currencyUtils";
 import "../../../../global_style/style.css";
 import { useEffect, useState } from "react";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 import { Add, Close, PostAdd } from "@mui/icons-material";
 
 const AddEquipmentToJob = ({
@@ -18,11 +18,10 @@ const AddEquipmentToJob = ({
   setMaterial,
   closeModalOne,
 }) => {
-  const parts = useSyncedCollection("parts");
-  const services = useSyncedCollection("services");
+  const parts = useSyncedCollection(collection(db, "parts"));
+  const services = useSyncedCollection(collection(db, "services"));
 
   //get the unit
-  const db = getFirestore();
   const [btu, setBtu] = useState("");
   const [cost, setCost] = useState("");
   const [dateUpdated, setDateUpdated] = useState(null);
@@ -58,7 +57,7 @@ const AddEquipmentToJob = ({
       }
     );
     return () => unsubscribe();
-  }, [db, selectedEquipmentId]);
+  }, [selectedEquipmentId]);
 
   const loadEquipmentOnly = () => {
     //remove the material, labor, and additions lists, and prepare cost

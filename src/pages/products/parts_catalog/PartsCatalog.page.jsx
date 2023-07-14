@@ -1,10 +1,11 @@
 import { lazy, Suspense, useState } from "react";
 import { Tab, Tabs } from "@mui/material";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import PartsCatalogList from "./parts_catalog_list/PartsCatalogList";
 import BasicSearchBar from "../../../components/basic_components/BasicSearchBar";
 import Spinner from "../../../components/spinner/Spinner";
 import Toast from "../../../components/basic_components/toast/Toast";
+import { collection } from "firebase/firestore";
 
 const ModalOne = lazy(() =>
   import("../../../components/basic_components/modal_one/ModalOne")
@@ -55,7 +56,7 @@ function a11yProps(index) {
 
 const PartsCatalog = () => {
   //fetch parts
-  const parts = useSyncedCollection("parts");
+  const parts = useSyncedCollection(collection(db, "parts"));
   const [searchableParts, setSerchableParts] = useState(parts);
   const [partQuantity, setPartQuantity] = useState(parts.length);
 
@@ -81,7 +82,7 @@ const PartsCatalog = () => {
   };
 
   //fetch parts tabs
-  const partsTabs = useSyncedCollection("tabs");
+  const partsTabs = useSyncedCollection(collection(db, "tabs"));
 
   //keep track of tabs
   const [tabValue, setTabValue] = useState(0);

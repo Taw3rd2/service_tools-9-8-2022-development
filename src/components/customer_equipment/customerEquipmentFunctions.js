@@ -1,12 +1,6 @@
-import {
-  arrayRemove,
-  deleteField,
-  doc,
-  getFirestore,
-  updateDoc,
-} from "firebase/firestore";
+import { arrayRemove, deleteField, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, getStorage, ref } from "firebase/storage";
-import { deleteDocument } from "../../firebase/firestore.utils";
+import { db, deleteDocument } from "../../firebase/firestore.utils";
 
 export const removeImageFromStorage = (equipmentImgName) => {
   const storage = getStorage();
@@ -36,7 +30,6 @@ export const deleteEquipmentGalleryImage = async (
   closeImageViewer,
   closeDelete
 ) => {
-  const db = getFirestore();
   const documentReference = doc(
     db,
     "customers",
@@ -90,7 +83,6 @@ export const deleteCustomerEquipment = (
     removeImageFromStorage(selectedEquipment.equipmentImageFileName);
   }
 
-  const db = getFirestore();
   const documentReference = doc(
     db,
     "customers",

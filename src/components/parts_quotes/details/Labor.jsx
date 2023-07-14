@@ -6,11 +6,12 @@ import {
   TextField,
 } from "@mui/material";
 import React from "react";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import { toCurrency } from "../../../utilities/currencyUtils";
+import { collection } from "firebase/firestore";
 
 const Labor = ({ quoteValues, handleQuoteValueChange }) => {
-  const laborRates = useSyncedCollection("laborRate");
+  const laborRates = useSyncedCollection(collection(db, "laborRate"));
 
   return (
     <>

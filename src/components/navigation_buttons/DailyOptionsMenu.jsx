@@ -1,16 +1,17 @@
-import { useSyncedCollection } from "../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../firebase/firestore.utils";
 import { Link } from "react-router-dom";
 
 import { Button } from "@mui/material";
 import { CalendarMonth, CalendarToday, Close } from "@mui/icons-material";
 import "../../global_style/style.css";
+import { collection } from "firebase/firestore";
 
 const DailyOptionsMenu = ({
   closeModalOne,
   calendarDateSelected,
   openDayLabelEditor,
 }) => {
-  const technicians = useSyncedCollection("technicians");
+  const technicians = useSyncedCollection(collection(db, "technicians"));
   return (
     <div className="container">
       <div className="buttonBarStack">

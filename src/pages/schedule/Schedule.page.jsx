@@ -1,6 +1,7 @@
-import React, { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 
-import { useSyncedCollection } from "../../firebase/firestore.utils";
+import { collection } from "firebase/firestore";
+import { db, useSyncedCollection } from "../../firebase/firestore.utils";
 import { useNavigate } from "react-router-dom";
 
 import Calendar from "./calendar/Calendar.view";
@@ -85,7 +86,7 @@ function a11yProps(index) {
 
 const Schedule = () => {
   //Fetch Technicians
-  const technicians = useSyncedCollection("technicians");
+  const technicians = useSyncedCollection(collection(db, "technicians"));
   const navigate = useNavigate();
 
   //Tabs

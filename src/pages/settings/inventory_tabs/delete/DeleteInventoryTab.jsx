@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { doc, getFirestore } from "firebase/firestore";
-import { deleteDocument } from "../../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, deleteDocument } from "../../../../firebase/firestore.utils";
 import { ToastContext } from "../../../../context/toastContext";
 
 import { Close, DeleteForever } from "@mui/icons-material";
@@ -11,8 +11,6 @@ const DeleteInventoryTab = ({ inventoryTab, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removeInventoryTab = async () => {
-    const db = getFirestore();
-
     if (inventoryTab.id) {
       deleteDocument(doc(db, "tabs", inventoryTab.id))
         .then(() => {

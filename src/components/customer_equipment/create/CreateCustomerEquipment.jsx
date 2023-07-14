@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ToastContext } from "../../../context/toastContext";
 
 import {
@@ -21,8 +21,8 @@ import { ArrowUpward, Close } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
 
 import EquipmentAddonCard from "../shared/EquipmentAddonCard";
-import { doc, getFirestore } from "firebase/firestore";
-import { createNamedDocument } from "../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, createNamedDocument } from "../../../firebase/firestore.utils";
 
 import "../../../global_style/style.css";
 
@@ -44,7 +44,6 @@ const CreateCustomerEquipment = ({ customer, closeModalTwo }) => {
   const equipmentLabor = "";
   const equipmentContract = "";
   const equipmentNotes = "";
-  const db = getFirestore();
 
   const submitNewEquipment = (e) => {
     e.preventDefault();

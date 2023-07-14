@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { doc, getFirestore } from "firebase/firestore";
+import { doc } from "firebase/firestore";
 import { ToastContext } from "../../../../context/toastContext";
-import { deleteDocument } from "../../../../firebase/firestore.utils";
+import { db, deleteDocument } from "../../../../firebase/firestore.utils";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 
 import { Close, DeleteForever } from "@mui/icons-material";
@@ -11,8 +11,6 @@ const DeleteWorkListItem = ({ workListItem, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removeWorkListItem = async () => {
-    const db = getFirestore();
-
     if (workListItem.id) {
       deleteDocument(doc(db, "workList", workListItem.id))
         .then(() => {

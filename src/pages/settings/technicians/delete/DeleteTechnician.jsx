@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { doc, getFirestore } from "firebase/firestore";
-import { deleteDocument } from "../../../../firebase/firestore.utils";
+import { doc } from "firebase/firestore";
+import { db, deleteDocument } from "../../../../firebase/firestore.utils";
 import { ToastContext } from "../../../../context/toastContext";
 
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
@@ -12,8 +12,6 @@ const DeleteTechnician = ({ technician, closeModalOne }) => {
   const { dispatch } = useContext(ToastContext);
 
   const removeTechnician = async () => {
-    const db = getFirestore();
-
     if (technician.id) {
       deleteDocument(doc(db, "technicians", technician.id))
         .then(() => {

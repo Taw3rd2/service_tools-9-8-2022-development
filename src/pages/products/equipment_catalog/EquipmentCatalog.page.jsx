@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Button, Tab, Tabs } from "@mui/material";
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 
 import EquipmentCatalogList from "./equipment_catalog_list/EquipmentCalalogList";
 import EquipmentWorksheet from "./equipment_worksheet/EquipmentWorksheet";
@@ -8,6 +8,7 @@ import Spinner from "../../../components/spinner/Spinner";
 import Toast from "../../../components/basic_components/toast/Toast";
 import { Add, Print } from "@mui/icons-material";
 import { ReactToPrint } from "../../../components/react_to_print/ReactToPrint";
+import { collection } from "firebase/firestore";
 
 const ModalOne = lazy(() =>
   import("../../../components/basic_components/modal_one/ModalOne")
@@ -74,9 +75,11 @@ const a11yProps = (index) => {
 
 const EquipmentCatalog = () => {
   //fetch equipment tabs, and sub categories
-  const equipmentTabs = useSyncedCollection("equipmentTabs");
-  const subCategories = useSyncedCollection("equipmentSubCategories");
-  const listOfEquipment = useSyncedCollection("equipment");
+  const equipmentTabs = useSyncedCollection(collection(db, "equipmentTabs"));
+  const subCategories = useSyncedCollection(
+    collection(db, "equipmentSubCategories")
+  );
+  const listOfEquipment = useSyncedCollection(collection(db, "equipment"));
 
   //keep track of tabs
   const [tabValue, setTabValue] = useState(0);

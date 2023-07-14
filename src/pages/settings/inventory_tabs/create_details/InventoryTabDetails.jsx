@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import {
+  db,
   createUnNamedDocument,
   updateDocument,
 } from "../../../../firebase/firestore.utils";
@@ -19,7 +20,6 @@ const InventoryTabDetails = ({ inventoryTab, closeModalOne }) => {
 
   const submitInventoryTab = (event) => {
     event.preventDefault();
-    const db = getFirestore();
     if (inventoryTab !== undefined) {
       if (inventoryTab.name === name) {
         closeModalOne();

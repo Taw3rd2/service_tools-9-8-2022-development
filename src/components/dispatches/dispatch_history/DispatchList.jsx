@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, query, where } from "firebase/firestore";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 import { getFormattedDate } from "../../../utilities/dateUtils";
 import { Close } from "@mui/icons-material";
 import "../../../global_style/style.css";
@@ -23,25 +17,11 @@ import {
 } from "../../../theme/Theme";
 
 const DispatchList = ({ customer, openDispatchDetails, closeModalOne }) => {
-  const db = getFirestore();
-
-  const [dispatches, setDispatches] = useState([]);
-
-  useEffect(() => {
-    const dispatchReferece = collection(db, "events");
-    const dispatchQuery = query(
-      dispatchReferece,
-      where("customerId", "==", customer.id)
-    );
-
-    const unsubscribe = onSnapshot(dispatchQuery, (snapshot) => {
-      setDispatches(
-        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-      );
-    });
-
-    return () => unsubscribe();
-  }, [db, customer.id]);
+  const dispatchQuery = query(
+    collection(db, "events"),
+    where("customerId", "==", customer.id)
+  );
+  const dispatches = useSyncedCollection(dispatchQuery);
 
   return (
     <div>

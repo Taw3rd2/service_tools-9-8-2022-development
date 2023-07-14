@@ -1,4 +1,13 @@
-import { ArrowUpward, Clear } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
+import { useContext, useState } from "react";
+import { ToastContext } from "../../../../context/toastContext";
+import {
+  createUnNamedDocument,
+  db,
+  useSyncedCollection,
+} from "../../../../firebase/firestore.utils";
+import { stringPriceToNumber } from "../../../../utilities/currencyUtils";
+import { getFormattedExactTime } from "../../../../utilities/dateUtils";
 import {
   FormControl,
   InputAdornment,
@@ -8,18 +17,12 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { collection, getFirestore } from "firebase/firestore";
-import { useContext, useState } from "react";
-import { ToastContext } from "../../../../context/toastContext";
-import {
-  createUnNamedDocument,
-  useSyncedCollection,
-} from "../../../../firebase/firestore.utils";
-import { stringPriceToNumber } from "../../../../utilities/currencyUtils";
-import { getFormattedExactTime } from "../../../../utilities/dateUtils";
+import { ArrowUpward, Clear } from "@mui/icons-material";
 
 const BlankEquipmentSheet = () => {
-  const subCategories = useSyncedCollection("equipmentSubCategories");
+  const subCategories = useSyncedCollection(
+    collection(db, "equipmentSubCategories")
+  );
   const { dispatch } = useContext(ToastContext);
 
   const [equipmentValues, setEquipmentValues] = useState({
@@ -54,7 +57,6 @@ const BlankEquipmentSheet = () => {
 
   const submitEquipment = (e) => {
     e.preventDefault();
-    const db = getFirestore();
     const equipmentFields = {
       btu: equipmentValues.btu,
       cost: stringPriceToNumber(equipmentValues.cost),

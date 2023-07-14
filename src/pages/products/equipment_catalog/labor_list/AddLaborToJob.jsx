@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../../firebase/firestore.utils";
 import { ArrowUpward, Close } from "@mui/icons-material";
 import {
   FormControl,
@@ -12,9 +12,10 @@ import {
   stringPriceToNumber,
   toCurrency,
 } from "../../../../utilities/currencyUtils";
+import { collection } from "firebase/firestore";
 
 const AddLaborToJob = ({ labor, setLabor, closeModalTwo }) => {
-  const laborRates = useSyncedCollection("laborRate");
+  const laborRates = useSyncedCollection(collection(db, "laborRate"));
 
   const [laborValues, setLaborValues] = useState({
     description: "",

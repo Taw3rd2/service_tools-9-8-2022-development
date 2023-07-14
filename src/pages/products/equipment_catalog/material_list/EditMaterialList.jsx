@@ -1,4 +1,10 @@
 import { useContext, useEffect, useState } from "react";
+import { collection, doc } from "firebase/firestore";
+import {
+  db,
+  updateDocument,
+  useSyncedCollection,
+} from "../../../../firebase/firestore.utils";
 import { ToastContext } from "../../../../context/toastContext";
 import BasicTable from "../../../../components/basic_components/BasicTable";
 import { Add, ArrowUpward, Close, DeleteForever } from "@mui/icons-material";
@@ -7,10 +13,7 @@ import { TableCell, tableCellClasses, TableRow } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import "../../../../global_style/style.css";
 import { toCurrency } from "../../../../utilities/currencyUtils";
-import { doc, getFirestore } from "firebase/firestore";
-import { updateDocument } from "../../../../firebase/firestore.utils";
 import { getFormattedExactTime } from "../../../../utilities/dateUtils";
-import { useSyncedCollection } from "../../../../firebase/firestore.utils";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,7 +28,7 @@ const EditMaterialList = ({
   openWorksheetMaterialPicker,
   closeModalOne,
 }) => {
-  const parts = useSyncedCollection("parts");
+  const parts = useSyncedCollection(collection(db, "parts"));
 
   const { dispatch } = useContext(ToastContext);
 
@@ -62,7 +65,6 @@ const EditMaterialList = ({
   };
 
   const saveMaterialToEquipment = () => {
-    const db = getFirestore();
     //if there is no parts and we want to save that, save []
     if (editableMaterialList.length > 0) {
       //make sure we have a id

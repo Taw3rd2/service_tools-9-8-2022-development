@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import {
+  db,
   updateDocument,
   useSyncedCollection,
 } from "../../../../firebase/firestore.utils";
@@ -37,7 +38,7 @@ import {
 } from "../../../../utilities/currencyUtils";
 import uploadPicture from "../../../../utilities/images/upload_cloud.jpg";
 import ProgressBar from "../../../../components/progress_bar/ProgressBar";
-import { doc, getFirestore } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { Add, ArrowUpward, Close, DeleteForever } from "@mui/icons-material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -56,7 +57,7 @@ const PartDetails = ({
   closeModalOne,
 }) => {
   const { dispatch } = useContext(ToastContext);
-  const tabs = useSyncedCollection("tabs");
+  const tabs = useSyncedCollection(collection(db, "tabs"));
 
   const onBaseCostLoad = (number) => {
     return parseFloat(number / 100).toFixed(2);
@@ -111,7 +112,6 @@ const PartDetails = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const db = getFirestore();
 
     const updatedPart = {
       category: partValues.category,

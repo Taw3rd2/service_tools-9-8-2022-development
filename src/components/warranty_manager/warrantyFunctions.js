@@ -1,5 +1,5 @@
-import { deleteField, doc, getFirestore } from "firebase/firestore";
-import { updateDocument } from "../../firebase/firestore.utils";
+import { deleteField, doc } from "firebase/firestore";
+import { db, updateDocument } from "../../firebase/firestore.utils";
 import { getFormattedDate } from "../../utilities/dateUtils";
 
 export const addWarranty = (
@@ -11,7 +11,6 @@ export const addWarranty = (
   activateFailureNotification,
   closeBasicModal
 ) => {
-  const db = getFirestore();
   if (selectedEquipment === undefined || selectedEquipment.length === 0) {
     alert("No Equipment Selected..");
   } else {
@@ -62,7 +61,6 @@ export const updateWarranty = (
   activateFailureNotification,
   closeModal
 ) => {
-  const db = getFirestore();
   console.log("updatedWarranty: ", warrantyValues);
   updateDocument(
     doc(db, "customers", customer.id, "Equipment", warrantyValues.key),
@@ -87,7 +85,6 @@ export const deleteWarranty = (
   closeDelete
 ) => {
   console.log("selectedWarranty", selectedWarranty);
-  const db = getFirestore();
 
   updateDocument(
     doc(

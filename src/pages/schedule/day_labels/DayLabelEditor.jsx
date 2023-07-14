@@ -1,4 +1,4 @@
-import { useSyncedCollection } from "../../../firebase/firestore.utils";
+import { db, useSyncedCollection } from "../../../firebase/firestore.utils";
 
 import {
   Paper,
@@ -12,6 +12,7 @@ import {
 import "../../../global_style/style.css";
 import { isEqual } from "date-fns";
 import { Add, Close, DeleteForever, Edit } from "@mui/icons-material";
+import { collection } from "firebase/firestore";
 
 const DayLabelEditor = ({
   closeModalTwo,
@@ -20,7 +21,7 @@ const DayLabelEditor = ({
   openDeleteDayLabel,
   calendarDateSelected,
 }) => {
-  const labels = useSyncedCollection("calLabel");
+  const labels = useSyncedCollection(collection(db, "calLabel"));
 
   return (
     <div className="container">
